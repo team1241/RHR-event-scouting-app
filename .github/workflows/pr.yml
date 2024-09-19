@@ -1,0 +1,12 @@
+name: PR Actions
+run-name: PR checks for branch ${{ github.ref_name }} authored by ${{ github.actor }}
+on:
+  pull_request:
+    types: [opened, reopened]
+jobs:
+  lint_pr:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run lint
+      
