@@ -3,18 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 4000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:migrate-dev": "prisma migrate dev",
+    "db:generate": "prisma generate",
+    "ngrok:setup": "ngrok http --domain=turtle-patient-bat.ngrok-free.app 4000"
   },
   "dependencies": {
+    "@clerk/nextjs": "^5.6.0",
+    "@prisma/client": "^5.19.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.441.0",
     "next": "14.2.11",
     "react": "^18",
     "react-dom": "^18",
+    "svix": "^1.35.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7"
   },
@@ -25,7 +31,11 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.11",
     "postcss": "^8",
+    "prisma": "^5.19.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "prisma": {
+    "schema": "./src/db/schema.prisma"
   }
 }
