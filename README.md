@@ -2,6 +2,8 @@
 
 This is a Next.js project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app) to be used for scouters to log scouting data at competitions.
 
+sample change to test PR
+
 ### Technical Stack Details
 
 This app uses the following technologies:
