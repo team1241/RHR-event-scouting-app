@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Users" ADD COLUMN     "isSignupComplete" BOOLEAN NOT NULL DEFAULT false,
+ALTER COLUMN "firstName" DROP NOT NULL,
+ALTER COLUMN "team" DROP NOT NULL;

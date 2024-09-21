@@ -14,9 +14,30 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum Team {
+  THEORY
+  BANG
+}
+
+model Users {
+  id               Int     @id @default(autoincrement())
+  clerkId          String  @unique
+  firstName        String?
+  lastName         String?
+  grade            String?
+  team             Team?
+  isActive         Boolean @default(true)
+  isAdmin          Boolean @default(false)
+  isSignupComplete Boolean @default(false)
+  createdAt        String
+  updatedAt        String
+}
+
 model Seasons {
   id        Int    @id @default(autoincrement())
   seasonKey String @unique
   year      Int
   gameName  String
+  createdAt String
+  updatedAt String
 }

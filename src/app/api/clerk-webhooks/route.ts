@@ -1,6 +1,8 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
+import prisma from "~/db";
+import { formatISO } from "date-fns";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
@@ -50,15 +52,32 @@ export async function POST(req: Request) {
 
   // Do something with the payload
   // For this guide, you simply log the payload to the console
-  const { id } = evt.data;
   const eventType = evt.type;
-  if (evt.type === "user.created") {
-    console.log("webhookId:", id);
-    console.log("webhook eventType:", eventType);
-    console.log("webhook body:", body);
-    console.log("userId:", evt.data.id);
-    console.log("firstName:", evt.data.first_name);
-  }
 
-  return new Response("", { status: 200 });
+  if (eventType === "user.created") {
+    let newUser;
+    try {
+      newUser = await prisma.users.create({
+        data: {
+          clerkId: evt.data.id,
+          firstName: evt.data.first_name,
+          lastName: evt.data.last_name,
+          createdAt: formatISO(new Date(evt.data.created_at)),
+          updatedAt: formatISO(new Date(evt.data.created_at)),
+        },
+      });
+
+      console.log("Created new user: ", newUser);
+      return Response.json({ data: { user: newUser }, status: 200 });
+    } catch (error) {
+      console.log(error);
+      return new Error("There was an error");
+    }
+  } else if (eventType === "user.updated") {
+    return new Response("", { status: 200 });
+  } else if (eventType === "user.deleted") {
+    return new Response("", { status: 200 });
+  } else {
+    return new Response("", { status: 500 });
+  }
 }

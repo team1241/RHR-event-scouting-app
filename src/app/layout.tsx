@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import {
   ClerkProvider,
-  // SignedIn,
+  SignedIn,
   // SignedOut,
   // SignInButton,
   // SignUpButton,
-  // SignOutButton,
+  SignOutButton,
 } from "@clerk/nextjs";
 import "./globals.css";
+import ThemeProvider from "~/components/providers/theme-provider";
+import { Toaster } from "~/components/ui/sonner";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,16 +38,20 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <main>
-            {/* <SignedOut>
+          <ThemeProvider attribute="class" defaultTheme="dark">
+            <main>
+              {/* <SignedOut>
               <SignInButton mode="modal" />
               <SignUpButton />
             </SignedOut>
-            <SignedIn>
-              <SignOutButton />
-            </SignedIn> */}
-            {children}
-          </main>
+               */}
+              <SignedIn>
+                <SignOutButton />
+              </SignedIn>
+              {children}
+            </main>
+            <Toaster richColors position="top-right" />
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
