@@ -22,7 +22,7 @@ import {
 import { completeUserRegistration } from "~/db/queries/user";
 import { cn } from "~/lib/utils";
 
-export default function CompleteProfileModal({ clerkID }: { clerkID: string }) {
+export default function CompleteProfileModal({ clerkId }: { clerkId: string }) {
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -46,7 +46,7 @@ export default function CompleteProfileModal({ clerkID }: { clerkID: string }) {
     if (error) return;
 
     try {
-      await completeUserRegistration(clerkID, grade, team);
+      await completeUserRegistration(clerkId, grade, team);
       toast.success("Your profile is complete!");
       setIsDialogOpen(false);
     } catch {
