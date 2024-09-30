@@ -43,7 +43,10 @@ export default function CompleteProfileModal({ clerkId }: { clerkId: string }) {
       error = true;
     }
 
-    if (error) return;
+    if (error) {
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       await completeUserRegistration(clerkId, grade, team);
@@ -85,7 +88,7 @@ export default function CompleteProfileModal({ clerkId }: { clerkId: string }) {
               </SelectContent>
               <p
                 className={cn(
-                  "hidden text-sm font-medium text-red-500 dark:text-red-900",
+                  "hidden text-sm font-medium text-red-500 dark:text-red-700",
                   gradeError && "block"
                 )}
               >
@@ -111,7 +114,7 @@ export default function CompleteProfileModal({ clerkId }: { clerkId: string }) {
             </Select>
             <p
               className={cn(
-                "hidden text-sm font-medium text-red-500 dark:text-red-900",
+                "hidden text-sm font-medium text-red-500 dark:text-red-700",
                 teamError && "block"
               )}
             >
