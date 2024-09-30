@@ -11,7 +11,7 @@ export default async function Landing() {
   }
 
   return (
-    <div className="font-[family-name:var(--font-geist-sans)]">
+    <div>
       This is a sample home page
       {user && !user.isSignupComplete && (
         <CompleteProfileModal clerkId={user.clerkId} />

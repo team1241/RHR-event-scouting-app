@@ -37,7 +37,7 @@ export default function Navbar() {
     if (!isLoaded && !user) {
       return (
         <>
-          <Skeleton className="rounded-md w-32 h-3" />
+          <Skeleton className="rounded-md w-24 md:w-32 h-3" />
           <Skeleton className="rounded-full h-8 w-8" />
         </>
       );
