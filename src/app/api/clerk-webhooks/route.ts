@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import prisma from "~/db";
 import { formatISO } from "date-fns";
+import { revalidatePath } from "next/cache";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
@@ -68,6 +69,7 @@ export async function POST(req: Request) {
       });
 
       console.log("Created new user: ", newUser);
+      revalidatePath("/");
       return Response.json({ data: { user: newUser }, status: 200 });
     } catch (error) {
       console.log(error);
