@@ -1,6 +1,6 @@
 const NAVIGATION_ROUTES = [
   {
-    href: "/",
+    href: "/dashboard",
     label: "Dashboard",
   },
   {

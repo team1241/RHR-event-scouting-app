@@ -63,6 +63,8 @@ export default function Navbar() {
     setIsMenuOpen(false);
   }, [pathname]);
 
+  if (pathname.includes("sign-in") || pathname.includes("sign-in")) return null;
+
   return (
     <div className="sticky top-0 z-10 left-0 w-screen h-20 px-4 grid grid-cols-3 gap-4 shadow-md border-b bg-slate-950 border-slate-900">
       <div className="flex flex-row gap-2 items-center justify-self-start col-span-2 md:col-span-1">
