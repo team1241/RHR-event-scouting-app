@@ -1,10 +1,13 @@
 "use client";
+import Link from "next/link";
 import Image from "next/image";
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { Button } from "~/components/ui/button";
 import { Skeleton } from "~/components/ui/skeleton";
 
-import logo from "~/public/logo.png";
+import { Menu } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -12,21 +15,23 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "~/components/ui/navigation-menu";
-import { Menu } from "lucide-react";
-import { useEffect, useState } from "react";
-import { cn } from "~/lib/utils";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTrigger,
 } from "~/components/ui/sheet";
-import { usePathname } from "next/navigation";
+import { cn } from "~/lib/utils";
+import logo from "~/public/logo.png";
 
-import { NAVIGATION_ROUTES } from "~/components/navbar/routes";
-import Link from "next/link";
+import {
+  ADMIN_NAVIGATION_ROUTES,
+  PUBLIC_NAVIGATION_ROUTES,
+} from "~/components/navbar/routes";
+import { getUserByClerkId } from "~/db/queries/user";
 
 export default function Navbar() {
+  const [isUserAdmin, setIsUserAdmin] = useState(false);
   const { isLoaded, isSignedIn, user } = useUser();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -63,6 +68,17 @@ export default function Navbar() {
     setIsMenuOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    const fetchUserFromDb = async (clerkId: string) => {
+      const dbUser = await getUserByClerkId(clerkId);
+      setIsUserAdmin(dbUser?.isAdmin ?? false);
+    };
+
+    if (user) {
+      fetchUserFromDb(user.id);
+    }
+  }, [user]);
+
   if (pathname.includes("sign-in") || pathname.includes("sign-in")) return null;
 
   return (
@@ -86,7 +102,7 @@ export default function Navbar() {
             <SheetHeader className="font-semibold text-xl text-left mb-4">
               Menu
             </SheetHeader>
-            {NAVIGATION_ROUTES.map((route) => (
+            {PUBLIC_NAVIGATION_ROUTES.map((route) => (
               <Link
                 key={`sideSheetMenuItem-${route.label}`}
                 href={route.href}
@@ -98,6 +114,19 @@ export default function Navbar() {
                 {route.label}
               </Link>
             ))}
+            {isUserAdmin &&
+              ADMIN_NAVIGATION_ROUTES.map((route) => (
+                <Link
+                  key={`sideSheetMenuItem-${route.label}`}
+                  href={route.href}
+                  className={cn(
+                    "px-4 py-2 rounded-md mb-2 font-semibold",
+                    pathname === route.href && "text-blue-600 font-semibold"
+                  )}
+                >
+                  {route.label}
+                </Link>
+              ))}
           </SheetContent>
         </Sheet>
         <Image src={logo} width={60} height={60} alt="Logo" />
@@ -106,7 +135,7 @@ export default function Navbar() {
 
       <NavigationMenu className="justify-self-center hidden md:inline-grid">
         <NavigationMenuList>
-          {NAVIGATION_ROUTES.map((route) => (
+          {PUBLIC_NAVIGATION_ROUTES.map((route) => (
             <NavigationMenuItem key={`navbarMenuItem-${route.label}`}>
               <NavigationMenuLink
                 active={pathname === route.href}
@@ -117,6 +146,18 @@ export default function Navbar() {
               </NavigationMenuLink>
             </NavigationMenuItem>
           ))}
+          {isUserAdmin &&
+            ADMIN_NAVIGATION_ROUTES.map((route) => (
+              <NavigationMenuItem key={`navbarMenuItem-${route.label}`}>
+                <NavigationMenuLink
+                  active={pathname === route.href}
+                  href={route.href}
+                  className={navigationMenuTriggerStyle()}
+                >
+                  {route.label}
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            ))}
         </NavigationMenuList>
       </NavigationMenu>
 
