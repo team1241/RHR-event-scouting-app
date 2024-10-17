@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
-import { permanentRedirect } from "next/navigation";
+import CompleteProfileModal from "~/components/modals/complete-signup-modal";
 import { getUserByClerkId } from "~/db/queries/user";
 
 export default async function Landing() {
@@ -10,7 +10,12 @@ export default async function Landing() {
     user = await getUserByClerkId(userId);
   }
 
-  if (user) permanentRedirect("/dashboard");
-
-  return <div>This is a sample landing page</div>;
+  return (
+    <div className="font-[family-name:var(--font-geist-sans)]">
+      This is a sample home page
+      {user && !user.isSignupComplete && (
+        <CompleteProfileModal clerkId={user.clerkId} />
+      )}
+    </div>
+  );
 }
