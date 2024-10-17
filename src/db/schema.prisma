@@ -34,10 +34,26 @@ model Users {
 }
 
 model Seasons {
-  id        Int    @id @default(autoincrement())
-  seasonKey String @unique
+  id        Int      @id @default(autoincrement())
   year      Int
   gameName  String
+  isActive  Boolean  @default(false)
+  events    Events[]
   createdAt String
   updatedAt String
+}
+
+model Events {
+  id          Int     @id @default(autoincrement())
+  season      Seasons @relation(fields: [seasonId], references: [id])
+  seasonId    Int
+  name        String
+  venue       String?
+  eventType   String
+  eventKey    String
+  districtKey String?
+  startDate   String
+  endDate     String
+  createdAt   String
+  updatedAt   String
 }

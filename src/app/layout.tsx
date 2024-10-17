@@ -6,6 +6,7 @@ import { Toaster } from "~/components/ui/sonner";
 import Navbar from "~/components/navbar";
 
 import "./globals.css";
+import QueryProvider from "~/components/providers/query-provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,13 +31,17 @@ export default function RootLayout({
         <body
           className={`${inter.variable} font-sans antialiased bg-slate-950`}
         >
-          <ThemeProvider attribute="class" defaultTheme="dark">
-            <main>
-              <Navbar />
-              <div className="relative flex flex-col gap-6 p-6">{children}</div>
-            </main>
-            <Toaster richColors position="top-right" />
-          </ThemeProvider>
+          <QueryProvider>
+            <ThemeProvider attribute="class" defaultTheme="dark">
+              <main>
+                <Navbar />
+                <div className="relative py-3 px-5 md:py-6 md:px-10">
+                  {children}
+                </div>
+              </main>
+              <Toaster richColors position="top-right" />
+            </ThemeProvider>
+          </QueryProvider>
         </body>
       </html>
     </ClerkProvider>
