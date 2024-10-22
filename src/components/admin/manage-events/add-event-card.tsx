@@ -127,9 +127,9 @@ export default function AddEventCard({
             />
             <Button type="submit" className="w-1/2 transition-all">
               {isSubmitting ? (
-                <Loader2 className="animate-spin" />
+                <Loader2 className="animate-spin size-4 mr-2 " />
               ) : (
-                <PlusCircle />
+                <PlusCircle className="size-4 mr-2" />
               )}
               Add
             </Button>

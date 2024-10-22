@@ -11,6 +11,7 @@ import { getAllUsers } from "~/db/queries/user";
 
 export default async function ManageUsers() {
   const users = await getAllUsers();
+
   return (
     <Card>
       <CardHeader>

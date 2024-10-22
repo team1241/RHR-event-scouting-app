@@ -17,7 +17,7 @@ export type SeasonWithEventsAndImages = Prisma.SeasonsGetPayload<
 export async function getSeasons() {
   return await prisma.seasons.findMany({
     orderBy: { year: "desc" },
-    include: { events: { orderBy: { startDate: "asc" } }, fieldImages: true },
+    include: { events: { orderBy: { startDate: "asc" } } },
   });
 }
 
