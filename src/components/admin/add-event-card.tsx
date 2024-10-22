@@ -89,7 +89,7 @@ export default function AddEventCard({
     >
       <PopoverTrigger asChild>
         <Card
-          className="border-dashed border-slate-500 w-full md:w-72 h-24 md:h-36 cursor-pointer"
+          className="border-dashed border-slate-500 w-full md:w-72 h-24 md:h-52 cursor-pointer"
           onClick={() => setIsPopoverOpen(true)}
         >
           <div className="flex flex-col h-full items-center justify-center text-slate-500">
@@ -125,11 +125,13 @@ export default function AddEventCard({
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-1/2">
-              {isSubmitting && (
+            <Button type="submit" className="w-1/2 transition-all">
+              {isSubmitting ? (
                 <Loader2 className="animate-spin size-4 mr-2 " />
+              ) : (
+                <PlusCircle className="size-4 mr-2" />
               )}
-              Add event
+              Add
             </Button>
           </form>
         </Form>
