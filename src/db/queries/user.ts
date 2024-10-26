@@ -1,7 +1,12 @@
 "use server";
-import { Team } from "@prisma/client";
+import { Prisma, Team } from "@prisma/client";
 import { formatISO } from "date-fns";
+import { revalidatePath } from "next/cache";
 import prisma from "~/db";
+
+export async function getAllUsers() {
+  return await prisma.users.findMany({ orderBy: { isActive: "desc" } });
+}
 
 export async function getUserByClerkId(clerkId: string) {
   return await prisma.users.findUnique({
@@ -11,17 +16,26 @@ export async function getUserByClerkId(clerkId: string) {
   });
 }
 
+export async function updateUser(
+  id: number,
+  updateData: Prisma.UsersUpdateInput
+) {
+  const result = await prisma.users.update({ where: { id }, data: updateData });
+  revalidatePath("/admin");
+  return result;
+}
+
 export async function completeUserRegistration(
   clerkId: string,
   grade: string,
-  teamNumber: string
+  team: string
 ) {
-  const team = teamNumber === "1241" ? Team.THEORY : Team.BANG;
+  const teamEnum = team === Team.THEORY ? Team.THEORY : Team.BANG;
   return await prisma.users.update({
     where: { clerkId },
     data: {
       grade,
-      team,
+      team: teamEnum,
       isSignupComplete: true,
       updatedAt: formatISO(new Date()),
     },

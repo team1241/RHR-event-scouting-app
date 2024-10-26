@@ -21,6 +21,10 @@ import {
 } from "~/components/ui/select";
 import { completeUserRegistration } from "~/db/queries/user";
 import { cn } from "~/lib/utils";
+import {
+  GRADE_OPTIONS,
+  TEAM_OPTIONS,
+} from "~/components/common/dropdown-values";
 
 export default function CompleteProfileModal({ clerkId }: { clerkId: string }) {
   const [isDialogOpen, setIsDialogOpen] = useState(true);
@@ -80,11 +84,11 @@ export default function CompleteProfileModal({ clerkId }: { clerkId: string }) {
                 <SelectValue placeholder="Select your grade..." />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="9">9</SelectItem>
-                <SelectItem value="10">10</SelectItem>
-                <SelectItem value="11">11</SelectItem>
-                <SelectItem value="12">12</SelectItem>
-                <SelectItem value="mentor">Mentor</SelectItem>
+                {GRADE_OPTIONS.map((grade) => (
+                  <SelectItem key={grade.value} value={grade.value}>
+                    {grade.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
               <p
                 className={cn(
@@ -108,8 +112,11 @@ export default function CompleteProfileModal({ clerkId }: { clerkId: string }) {
                 <SelectValue placeholder="Select your team..." />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1285">1285</SelectItem>
-                <SelectItem value="1241">1241</SelectItem>
+                {TEAM_OPTIONS.map((team) => (
+                  <SelectItem key={team.value} value={team.value}>
+                    {team.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             <p

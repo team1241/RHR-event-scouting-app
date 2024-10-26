@@ -14,13 +14,12 @@ import {
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
-import { Card, CardContent, CardTitle } from "~/components/ui/card";
 import {
-  HoverCard,
-  HoverCardArrow,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "~/components/ui/hover-card";
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "~/components/ui/card";
 import { deleteEvent } from "~/db/queries/event";
 
 export default function EventCard({ event }: { event: Events }) {
@@ -34,7 +33,7 @@ export default function EventCard({ event }: { event: Events }) {
   };
 
   return (
-    <Card className="w-full md:w-72 md:h-36">
+    <Card className="w-full md:w-72">
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant="ghost" size="icon" className="float-right mr-2 mt-5">
@@ -61,24 +60,21 @@ export default function EventCard({ event }: { event: Events }) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      <div className="space-y-1.5 p-6">
-        <HoverCard openDelay={300}>
-          <HoverCardTrigger asChild>
-            <CardTitle className="leading-normal overflow-hidden text-ellipsis text-nowrap cursor-pointer">
-              {`${event.eventKey.toUpperCase()} - ${event.venue}`}
-            </CardTitle>
-          </HoverCardTrigger>
-          <HoverCardContent
-            className="font-semibold text-lg text-center cursor-auto"
-            side="top"
-            sideOffset={16}
-          >
-            <HoverCardArrow />
-            {event.name}
-          </HoverCardContent>
-        </HoverCard>
+      <div className="p-6">
+        <CardTitle className="leading-normal overflow-hidden text-ellipsis text-nowrap">
+          {event.name}
+        </CardTitle>
+        <CardDescription className="font-semibold">
+          {event.eventKey.toUpperCase()}
+        </CardDescription>
       </div>
       <CardContent>
+        <div className="flex flex-row justify-between">
+          <p>
+            <span className="font-semibold">Location:</span>{" "}
+          </p>
+          <p>{event.venue}</p>
+        </div>
         <div className="flex flex-row justify-between">
           <p>
             <span className="font-semibold">Start date:</span>{" "}
