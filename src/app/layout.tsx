@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import ThemeProvider from "~/components/providers/theme-provider";
 import { Toaster } from "~/components/ui/sonner";
 import Navbar from "~/components/navbar";
 
 import "./globals.css";
 import QueryProvider from "~/components/providers/query-provider";
+import { extractRouterConfig } from "uploadthing/server";
+import { uploadRouter } from "~/app/api/uploadthing/core";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,6 +34,7 @@ export default function RootLayout({
         <body
           className={`${inter.variable} font-sans antialiased bg-slate-950`}
         >
+          <NextSSRPlugin routerConfig={extractRouterConfig(uploadRouter)} />
           <QueryProvider>
             <ThemeProvider attribute="class" defaultTheme="dark">
               <main>

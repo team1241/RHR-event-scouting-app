@@ -19,6 +19,12 @@ enum Team {
   BANG
 }
 
+enum FieldImageType {
+  FULL_FIELD
+  RED_HALF
+  BLUE_HALF
+}
+
 model Users {
   id               Int     @id @default(autoincrement())
   clerkId          String  @unique
@@ -34,13 +40,26 @@ model Users {
 }
 
 model Seasons {
-  id        Int      @id @default(autoincrement())
-  year      Int
-  gameName  String
-  isActive  Boolean  @default(false)
-  events    Events[]
+  id          Int           @id @default(autoincrement())
+  year        Int
+  gameName    String
+  isActive    Boolean       @default(false)
+  events      Events[]
+  createdAt   String
+  updatedAt   String
+  fieldImages FieldImages[]
+}
+
+model FieldImages {
+  id        Int            @id @default(autoincrement())
+  season    Seasons        @relation(fields: [seasonId], references: [id])
+  seasonId  Int
+  type      FieldImageType
+  imageUrl  String
   createdAt String
   updatedAt String
+
+  @@unique([seasonId, type])
 }
 
 model Events {

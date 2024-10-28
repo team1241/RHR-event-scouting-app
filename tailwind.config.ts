@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { withUt } from "uploadthing/tw";
 
 const config: Config = {
   darkMode: ["class"],
@@ -27,8 +28,11 @@ const config: Config = {
       animation: {
         "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
+      transitionProperty: {
+        width: "width",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
 };
-export default config;
+export default withUt(config);
