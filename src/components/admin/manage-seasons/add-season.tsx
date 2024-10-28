@@ -56,10 +56,10 @@ export default function AddSeason() {
           onClick={() => setIsModalOpen(true)}
           className="self-end"
         >
-          Add season <CirclePlus className="size-4 ml-2" />
+          Add season <CirclePlus />
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="start">
+      <PopoverContent align="end" alignOffset={100}>
         <div className="mb-4 flex flex-col gap-1">
           <h2 className="font-semibold leading-none tracking-tight">
             Add new season
@@ -99,7 +99,7 @@ export default function AddSeason() {
             disabled={!seasonInfo || isLoading || isSubmitting}
             onClick={onSubmit}
           >
-            {isSubmitting && <Loader2 className="animate-spin size-4 mr-2 " />}
+            {isSubmitting && <Loader2 className="animate-spin" />}
             Add season
           </Button>
         </div>

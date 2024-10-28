@@ -4,18 +4,20 @@ import { revalidatePath } from "next/cache";
 import { formatISO } from "date-fns";
 import prisma from "~/db";
 
-const seasonWithEvents = Prisma.validator<Prisma.SeasonsDefaultArgs>()({
-  include: { events: true },
-});
+const seasonWithEventsAndImages = Prisma.validator<Prisma.SeasonsDefaultArgs>()(
+  {
+    include: { events: true, fieldImages: true },
+  }
+);
 
-export type SeasonWithEvents = Prisma.SeasonsGetPayload<
-  typeof seasonWithEvents
+export type SeasonWithEventsAndImages = Prisma.SeasonsGetPayload<
+  typeof seasonWithEventsAndImages
 >;
 
 export async function getSeasons() {
   return await prisma.seasons.findMany({
     orderBy: { year: "desc" },
-    include: { events: { orderBy: { startDate: "asc" } } },
+    include: { events: { orderBy: { startDate: "asc" } }, fieldImages: true },
   });
 }
 

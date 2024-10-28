@@ -1,8 +1,6 @@
-"use client";
-
-import { SeasonWithEvents } from "~/db/queries/season";
+import { getSeasons, SeasonWithEventsAndImages } from "~/db/queries/season";
 import { TriangleAlert } from "lucide-react";
-import AddEventCard from "~/components/admin/add-event-card";
+import AddEventCard from "~/components/admin/manage-events/add-event-card";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import {
   Card,
@@ -11,13 +9,15 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import EventCard from "~/components/admin/event-card";
+import EventCard from "~/components/admin/manage-events/event-card";
 
-export default function EventSelector({
-  activeSeason,
-}: {
-  activeSeason: SeasonWithEvents | undefined;
-}) {
+export default async function ManageEvents() {
+  const seasons = await getSeasons();
+
+  const activeSeason: SeasonWithEventsAndImages | undefined = seasons.find(
+    (season) => season.isActive
+  );
+
   return (
     <Card>
       <CardHeader>
