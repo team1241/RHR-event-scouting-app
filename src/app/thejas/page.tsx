@@ -12,7 +12,7 @@ export default function thejasPage() {
         </div>
       </div>
 
-      {/* Right Section: Labels and Checkboxes */}
+  {/* Right Section: Labels and Checkboxes */}
       <div className="bg-gray-800 p-4 rounded-lg">
         <h2 className="text-xl font-bold mb-4">Match Info</h2>
         <div className="space-y-4">
