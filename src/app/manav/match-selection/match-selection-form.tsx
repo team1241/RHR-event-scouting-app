@@ -1,9 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown, ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
 import {
@@ -19,10 +19,8 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
 import {
   Popover,
   PopoverContent,
@@ -59,7 +57,7 @@ export default function MatchSelectionForm({
     },
   });
 
-  const onFormSubmit = (values) => {
+  const onFormSubmit = (values: z.infer<typeof matchSelectionSchema>) => {
     console.log(values);
   };
 

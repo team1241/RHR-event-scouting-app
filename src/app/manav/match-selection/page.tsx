@@ -2,9 +2,7 @@
 
 import PageHeading from "~/components/common/page-heading";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
 import MatchSelectionForm from "./match-selection-form";
-import TeamScoutedForm from "./team-scouted-form";
 import { useState } from "react";
 
 export default function ManavPage() {
