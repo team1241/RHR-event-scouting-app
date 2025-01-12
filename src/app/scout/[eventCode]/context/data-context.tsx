@@ -12,7 +12,15 @@ export type ScoutAction = {
   timestamp: string;
 };
 
+export type StartingPositionDataType = {
+  position: string;
+  showedUp: boolean;
+  hasPreload: boolean;
+};
+
 interface ScoutDataContextType {
+  isAlternateScout: boolean;
+  setIsAlternateScout: (isAlternateScout: boolean) => void;
   matchSchedule: MatchScheduleType[];
   setMatchSchedule: (matchSchedule: MatchScheduleType[]) => void;
   matchNumber: string;
@@ -33,6 +41,8 @@ interface ScoutDataContextType {
     clerkId: string;
     id: string;
   }) => void;
+  startingPositions: StartingPositionDataType;
+  setStartingPositions: (startingPositions: StartingPositionDataType) => void;
   gamePieceState: { type: string; count: number }[];
   setGamePieceState: (
     gamePieceState: { type: string; count: number }[]

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "./context";
-import { ScoutAction } from "./context/data-context";
+import { ScoutAction, StartingPositionDataType } from "./context/data-context";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
 import { getUserByClerkId } from "~/db/queries/user";
@@ -60,6 +60,7 @@ const ScoutPage = () => {
     },
   ];
 
+  const [isAlternateScout, setIsAlternateScout] = useState(false);
   const [matchSchedule, setMatchSchedule] = useState<MatchScheduleType[]>([]);
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const [matchNumber, setMatchNumber] = useState("");
@@ -71,6 +72,12 @@ const ScoutPage = () => {
     clerkId: "",
     id: "",
   });
+  const [startingPositions, setStartingPositions] =
+    useState<StartingPositionDataType>({
+      position: "",
+      showedUp: false,
+      hasPreload: false,
+    });
   const [gamePieceState, setGamePieceState] = useState<
     { type: string; count: number }[]
   >([]);
@@ -144,6 +151,8 @@ const ScoutPage = () => {
     >
       <ScoutDataContext.Provider
         value={{
+          isAlternateScout,
+          setIsAlternateScout,
           matchSchedule,
           setMatchSchedule,
           matchNumber,
@@ -156,6 +165,8 @@ const ScoutPage = () => {
           setUiOrientation,
           scouterDetails,
           setScouterDetails,
+          startingPositions,
+          setStartingPositions,
           gamePieceState,
           setGamePieceState,
           actions,

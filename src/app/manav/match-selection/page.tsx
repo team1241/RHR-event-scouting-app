@@ -16,7 +16,7 @@ export default function ManavPage() {
       <div className="flex justify-between items-center gap-4">
         <MatchSelectionForm setTeamSelectedEnabled={setTeamSelectedEnabled} />
 
-        <div className="flex flex-col items-center justify-end">
+        <div className="flex flex-col items-center justify-end gap-2">
           <p className="text-2xl font-bold self-start">Select Position</p>
           <div className="flex flex-row justify-end gap-2">
             <div className="flex flex-col space-y-3">
@@ -77,6 +77,14 @@ export default function ManavPage() {
                 Red 3
               </Button>
             </div>
+          </div>
+          <div className="w-full">
+            <Button
+              className="w-full h-16 mt-1 !bg-teal-500 font-bold"
+              disabled={!isTeamSelectedEnabled}
+            >
+              Ball Scout
+            </Button>
           </div>
         </div>
       </div>
