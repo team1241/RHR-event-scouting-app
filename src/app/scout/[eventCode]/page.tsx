@@ -17,37 +17,46 @@ const ScoutPage = () => {
   const eventYear = eventCode.substring(0, 4);
   const eventName = eventCode.substring(4);
 
+  const SCREEN_NAMES = {
+    MATCH_SELECTION: "match-selection",
+    STARTING_POSITIONS: "starting-positions",
+    AUTO: "auto",
+    TELEOP: "teleop",
+    ENDGAME: "endgame",
+    FINALIZE: "finalize",
+  };
+
   // TODO: Update the components of each screen to be the actual screen once the dev for it is completed
   const screens = [
     {
-      component: <div>match selection</div>,
+      component: <div>Match selection</div>,
+      name: SCREEN_NAMES.MATCH_SELECTION,
       canGoBack: false,
-      canGoForward: true,
     },
     {
-      component: <div>Match setup</div>,
+      component: <div>Starting positions</div>,
+      name: SCREEN_NAMES.STARTING_POSITIONS,
       canGoBack: true,
-      canGoForward: true,
     },
     {
       component: <div>Auto</div>,
+      name: SCREEN_NAMES.AUTO,
       canGoBack: false,
-      canGoForward: true,
     },
     {
       component: <div>Teleop</div>,
+      name: SCREEN_NAMES.TELEOP,
       canGoBack: false,
-      canGoForward: true,
     },
     {
       component: <div>Endgame</div>,
+      name: SCREEN_NAMES.ENDGAME,
       canGoBack: true,
-      canGoForward: true,
     },
     {
-      component: <div>Finalization</div>,
+      component: <div>Finalize</div>,
+      name: SCREEN_NAMES.FINALIZE,
       canGoBack: true,
-      canGoForward: false,
     },
   ];
 
@@ -78,12 +87,16 @@ const ScoutPage = () => {
 
   const prevScreen = () => {
     window.scrollTo(0, 0);
+    if (!screens[currentScreenIndex].canGoBack) return;
     setCurrentScreenIndex(
       currentScreenIndex > 0 ? currentScreenIndex - 1 : currentScreenIndex
     );
   };
 
-  const goToScreen = (screenIndex: number) => {
+  const goToScreen = (screenName: string) => {
+    const screenIndex = screens.findIndex(
+      (screen) => screen.name === screenName
+    );
     window.scrollTo(0, 0);
     setCurrentScreenIndex(screenIndex);
   };

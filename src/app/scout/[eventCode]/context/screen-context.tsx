@@ -6,11 +6,10 @@ interface ScoutScreenContextType {
   screens: {
     component: React.ReactNode;
     canGoBack: boolean;
-    canGoForward: boolean;
   }[];
   nextScreen: () => void;
   prevScreen: () => void;
-  goToScreen: (screenIndex: number) => void;
+  goToScreen: (screenName: string) => void;
   currentScreenIndex: number;
 }
 
