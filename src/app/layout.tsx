@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ThemeProvider from "~/components/providers/theme-provider";
 import { Toaster } from "~/components/ui/sonner";
 import Navbar from "~/components/navbar";
@@ -45,6 +46,7 @@ export default function RootLayout({
               </main>
               <Toaster richColors position="top-right" />
             </ThemeProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryProvider>
         </body>
       </html>

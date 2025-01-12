@@ -29,6 +29,7 @@ import {
   PUBLIC_NAVIGATION_ROUTES,
 } from "~/components/navbar/routes";
 import { getUserByClerkId } from "~/db/queries/user";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Navbar() {
   const [isUserAdmin, setIsUserAdmin] = useState(false);
@@ -68,16 +69,17 @@ export default function Navbar() {
     setIsMenuOpen(false);
   }, [pathname]);
 
-  useEffect(() => {
-    const fetchUserFromDb = async (clerkId: string) => {
-      const dbUser = await getUserByClerkId(clerkId);
-      setIsUserAdmin(dbUser?.isAdmin ?? false);
-    };
+  const { data: userData } = useQuery({
+    enabled: isLoaded && !!isSignedIn && !!user,
+    queryKey: ["user"],
+    queryFn: async () => getUserByClerkId(user!.id),
+  });
 
-    if (user) {
-      fetchUserFromDb(user.id);
+  useEffect(() => {
+    if (userData) {
+      setIsUserAdmin(userData?.isAdmin ?? false);
     }
-  }, [user]);
+  }, [userData]);
 
   if (pathname.includes("sign-in") || pathname.includes("sign-in")) return null;
 
