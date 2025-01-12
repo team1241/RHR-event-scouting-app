@@ -37,4 +37,30 @@ export async function fetchEventByYearAndCode(year: string, eventCode: string) {
   return eventData.Events[0];
 }
 
+export async function fetchMatchScheduleByYearAndEventCode(
+  year: string,
+  eventCode: string,
+  scheduleType: "Practice" | "Qualification" | "Playoff" = "Qualification"
+) {
+  const { data: matchScheduleData } = await FrcEventsInstance.get(
+    `/${year}/schedule/${eventCode}?tournamentLevel=${scheduleType}`
+  );
+  return matchScheduleData.Schedule;
+}
+
+export type MatchScheduleTeamType = {
+  station: string;
+  surrogate: boolean;
+  teamNumber: number;
+};
+
+export type MatchScheduleType = {
+  description: string;
+  matchNumber: number;
+  field: string;
+  startTime: string;
+  tournamentLevel: string;
+  teams: MatchScheduleTeamType[];
+};
+
 export default FrcEventsInstance;

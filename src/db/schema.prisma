@@ -26,17 +26,18 @@ enum FieldImageType {
 }
 
 model Users {
-  id               Int     @id @default(autoincrement())
-  clerkId          String  @unique
+  id               Int       @id @default(autoincrement())
+  clerkId          String    @unique
   firstName        String?
   lastName         String?
   grade            String?
   team             Team?
-  isActive         Boolean @default(true)
-  isAdmin          Boolean @default(false)
-  isSignupComplete Boolean @default(false)
+  isActive         Boolean   @default(true)
+  isAdmin          Boolean   @default(false)
+  isSignupComplete Boolean   @default(false)
   createdAt        String
   updatedAt        String
+  Actions          Actions[]
 }
 
 model Seasons {
@@ -63,16 +64,46 @@ model FieldImages {
 }
 
 model Events {
+  id                Int                 @id @default(autoincrement())
+  season            Seasons             @relation(fields: [seasonId], references: [id])
+  seasonId          Int
+  name              String
+  venue             String?
+  eventType         String
+  eventKey          String
+  districtKey       String?
+  startDate         String
+  endDate           String
+  createdAt         String
+  updatedAt         String
+  actions           Actions[]
+  startingPositions StartingPositions[]
+}
+
+model StartingPositions {
+  id               Int     @id @default(autoincrement())
+  event            Events  @relation(fields: [eventId], references: [id])
+  eventId          Int
+  scouterId        String
+  matchNumber      String
+  teamNumber       Int
+  startingPosition String
+  hasPreload       Boolean
+  showedUp         Boolean
+  timestamp        String
+}
+
+model Actions {
   id          Int     @id @default(autoincrement())
-  season      Seasons @relation(fields: [seasonId], references: [id])
-  seasonId    Int
-  name        String
-  venue       String?
-  eventType   String
-  eventKey    String
-  districtKey String?
-  startDate   String
-  endDate     String
-  createdAt   String
-  updatedAt   String
+  isAuto      Boolean @default(false)
+  event       Events  @relation(fields: [eventId], references: [id])
+  eventId     Int
+  scout       Users   @relation(fields: [scoutId], references: [id])
+  scoutId     Int
+  matchNumber String
+  teamNumber  Int
+  actionName  String
+  gamePiece   String
+  location    String
+  timestamp   String
 }
