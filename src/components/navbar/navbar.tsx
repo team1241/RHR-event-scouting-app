@@ -131,7 +131,7 @@ export default function Navbar() {
               ))}
           </SheetContent>
         </Sheet>
-        <Image src={logo} width={60} height={60} alt="Logo" />
+        <Image src={logo} width={50} height={50} alt="Logo" />
         <p className="font-semibold">Scouting</p>
       </div>
 
