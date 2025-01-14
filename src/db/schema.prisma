@@ -23,6 +23,9 @@ enum FieldImageType {
   FULL_FIELD
   RED_HALF
   BLUE_HALF
+  FULL_FIELD_FLIPPED
+  RED_HALF_FLIPPED
+  BLUE_HALF_FLIPPED
 }
 
 model Users {
