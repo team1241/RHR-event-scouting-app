@@ -37,7 +37,6 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import FieldImageUploader from "~/components/admin/manage-seasons/field-image-uploader";
-import { Label } from "~/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -45,7 +44,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { Separator } from "~/components/ui/separator";
 import {
   SeasonWithEventsAndImages,
   setActiveSeason,
@@ -96,131 +94,138 @@ export default function SeasonAndImageSelector({
       redHalf: activeSeason.fieldImages.find(
         (image) => image.type === FieldImageType.RED_HALF
       )?.imageUrl,
+      fullFieldFlipped: activeSeason.fieldImages.find(
+        (image) => image.type === FieldImageType.FULL_FIELD_FLIPPED
+      )?.imageUrl,
+      blueHalfFlipped: activeSeason.fieldImages.find(
+        (image) => image.type === FieldImageType.BLUE_HALF_FLIPPED
+      )?.imageUrl,
+      redHalfFlipped: activeSeason.fieldImages.find(
+        (image) => image.type === FieldImageType.RED_HALF_FLIPPED
+      )?.imageUrl,
     };
   }, [activeSeason]);
 
   return (
-    <Card className="flex flex-col md:flex-row">
-      <div className="w-full md:w-1/2">
+    <>
+      <Card className="flex flex-col md:flex-row">
+        <div className="w-full">
+          <CardHeader>
+            <CardTitle>Season selection</CardTitle>
+            <CardDescription>
+              Season not listed in the dropdown? Click the button to add one!
+            </CardDescription>
+          </CardHeader>
+          <Form {...seasonSelectionForm}>
+            <form
+              onSubmit={seasonSelectionForm.handleSubmit(
+                handleActiveSeasonSave
+              )}
+            >
+              <CardContent>
+                <FormField
+                  name="seasonId"
+                  control={seasonSelectionForm.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Current season</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value?.toString()}
+                        >
+                          <SelectTrigger disabled={seasons.length === 0}>
+                            <SelectValue
+                              placeholder={
+                                seasons.length > 0
+                                  ? "Select a season"
+                                  : "No seasons"
+                              }
+                            />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {seasons.map((season) => (
+                              <SelectItem
+                                key={season.id}
+                                value={season.id.toString()}
+                              >
+                                {`${season.year}: ${season.gameName}`}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+              <CardFooter className="justify-between">
+                <AlertDialog
+                  open={isConfirmationModalOpen}
+                  onOpenChange={setIsConfirmationModalOpen}
+                >
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsConfirmationModalOpen(true);
+                      }}
+                    >
+                      Save
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Changing seasons might cause unwanted behaviour. Please
+                        proceed with caution.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleActiveSeasonSave}>
+                        {isSubmitting && (
+                          <Loader2 className="animate-spin size-4 mr-2 " />
+                        )}
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+                {/* ADD SEASON CTA */}
+                <AddSeason />
+              </CardFooter>
+            </form>
+          </Form>
+          {(!fieldImages.fullField ||
+            !fieldImages.blueHalf ||
+            !fieldImages.redHalf ||
+            !fieldImages.fullFieldFlipped ||
+            !fieldImages.blueHalfFlipped ||
+            !fieldImages.redHalfFlipped) && (
+            <Alert variant="warning" className="m-4 w-auto">
+              <TriangleAlert className="size-6" />
+              <AlertTitle className="font-semibold">Warning!</AlertTitle>
+              <AlertDescription>
+                {`Looks like have all of the field images have not been uploaded for this season. Not doing so might cause the app to function poorly.`}
+              </AlertDescription>
+            </Alert>
+          )}
+        </div>
+      </Card>
+      <Card>
+        {/* SEASON FIELD IMAGES */}
         <CardHeader>
-          <CardTitle>Season selection</CardTitle>
-          <CardDescription>
-            Season not listed in the dropdown? Click the button to add one!
-          </CardDescription>
-        </CardHeader>
-        <Form {...seasonSelectionForm}>
-          <form
-            onSubmit={seasonSelectionForm.handleSubmit(handleActiveSeasonSave)}
-          >
-            <CardContent>
-              <FormField
-                name="seasonId"
-                control={seasonSelectionForm.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Current season</FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value?.toString()}
-                      >
-                        <SelectTrigger disabled={seasons.length === 0}>
-                          <SelectValue
-                            placeholder={
-                              seasons.length > 0
-                                ? "Select a season"
-                                : "No seasons"
-                            }
-                          />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {seasons.map((season) => (
-                            <SelectItem
-                              key={season.id}
-                              value={season.id.toString()}
-                            >
-                              {`${season.year}: ${season.gameName}`}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-            <CardFooter className="justify-between">
-              <AlertDialog
-                open={isConfirmationModalOpen}
-                onOpenChange={setIsConfirmationModalOpen}
-              >
-                <AlertDialogTrigger asChild>
-                  <Button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsConfirmationModalOpen(true);
-                    }}
-                  >
-                    Save
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Changing seasons might cause unwanted behaviour. Please
-                      proceed with caution.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleActiveSeasonSave}>
-                      {isSubmitting && (
-                        <Loader2 className="animate-spin size-4 mr-2 " />
-                      )}
-                      Continue
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-              {/* ADD SEASON CTA */}
-              <AddSeason />
-            </CardFooter>
-          </form>
-        </Form>
-        {(!fieldImages.fullField ||
-          !fieldImages.blueHalf ||
-          !fieldImages.redHalf) && (
-          <Alert variant="warning" className="m-4 w-auto">
-            <TriangleAlert className="size-6" />
-            <AlertTitle className="font-semibold">Warning!</AlertTitle>
-            <AlertDescription>
-              {`Looks like have all of the field images have not been uploaded for this season. Not doing so might cause the app to function poorly.`}
-            </AlertDescription>
-          </Alert>
-        )}
-      </div>
-      <div className="min-h-full flex flex-row md:flex-col justify-center">
-        <Separator
-          orientation="vertical"
-          className="h-[1px] w-11/12 md:w-[1px] md:h-5/6"
-        />
-      </div>
-      {/* SEASON FIELD IMAGES */}
-      <div className="w-full md:w-1/2">
-        <CardHeader>
-          <CardTitle>Field images</CardTitle>
+          <CardTitle className="font-semibold">{`Upload ${activeSeason?.gameName} field images`}</CardTitle>
           <CardDescription>
             Upload field images to be used throughout the app.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
-          <Label className="text-lg font-semibold leading-none tracking-tight">
-            {`Images for ${activeSeason?.gameName}:`}
-          </Label>
           <div className="flex flex-col gap-4">
             {/* FULL FIELD */}
             <FieldImageUploader
@@ -232,6 +237,16 @@ export default function SeasonAndImageSelector({
               successMessage={`${activeSeason?.year} FULL FIELD image successfully uploaded!`}
               imageUrl={fieldImages.fullField}
             />
+            {/* FULL FIELD - FLIPPED */}
+            <FieldImageUploader
+              label="Full field - FLIPPED"
+              className="mt-2"
+              seasonId={activeSeason?.id}
+              fieldImageType={FieldImageType.FULL_FIELD_FLIPPED}
+              filePrefix={`${activeSeason?.year}_FULL_FIELD_FLIPPED`}
+              successMessage={`${activeSeason?.year} FULL FIELD FLIPPED image successfully uploaded!`}
+              imageUrl={fieldImages.fullFieldFlipped}
+            />
             {/* BLUE HALF FIELD */}
             <FieldImageUploader
               label="Blue half field"
@@ -241,6 +256,16 @@ export default function SeasonAndImageSelector({
               filePrefix={`${activeSeason?.year}_BLUE_HALF_FIELD`}
               successMessage={`${activeSeason?.year} BLUE HALF FIELD image successfully uploaded!`}
               imageUrl={fieldImages.blueHalf}
+            />
+            {/* BLUE HALF FIELD - FLIPPED */}
+            <FieldImageUploader
+              label="Blue half field - FLIPPED"
+              className="mt-2"
+              seasonId={activeSeason?.id}
+              fieldImageType={FieldImageType.BLUE_HALF_FLIPPED}
+              filePrefix={`${activeSeason?.year}_BLUE_HALF_FIELD_FLIPPED`}
+              successMessage={`${activeSeason?.year} BLUE HALF FIELD FLIPPED image successfully uploaded!`}
+              imageUrl={fieldImages.blueHalfFlipped}
             />
             {/* RED HALF FIELD */}
             <FieldImageUploader
@@ -252,9 +277,19 @@ export default function SeasonAndImageSelector({
               successMessage={`${activeSeason?.year} RED HALF FIELD image successfully uploaded!`}
               imageUrl={fieldImages.redHalf}
             />
+            {/* RED HALF FIELD - FLIPPED */}
+            <FieldImageUploader
+              label="Red half field - FLIPPED"
+              className="mt-2"
+              seasonId={activeSeason?.id}
+              fieldImageType={FieldImageType.RED_HALF_FLIPPED}
+              filePrefix={`${activeSeason?.year}_RED_HALF_FIELD_FLIPPED`}
+              successMessage={`${activeSeason?.year} RED HALF FIELD FLIPPED image successfully uploaded!`}
+              imageUrl={fieldImages.redHalfFlipped}
+            />
           </div>
         </CardContent>
-      </div>
-    </Card>
+      </Card>
+    </>
   );
 }

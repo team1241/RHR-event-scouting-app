@@ -115,7 +115,10 @@ export default function FieldImageUploader({
           type="file"
           accept="image/*"
           max={1}
-          className={cn("cursor-pointer", imageUrl ? "md:w-3/4" : "")}
+          className={cn(
+            "cursor-pointer min-[425px]:grow",
+            imageUrl ? "md:w-3/4" : ""
+          )}
           onChange={(e) => {
             if (!e.target.files || !e.target.files.length) {
               setFiles([]);
