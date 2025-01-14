@@ -11,6 +11,13 @@ import {
   MatchScheduleType,
 } from "~/server/http/frc-events";
 import { useParams } from "next/navigation";
+// import ScoutActionButton from "~/app/scout/[eventCode]/components/scout-action-button";
+// import {
+//   ACTION_NAMES,
+//   GAME_PIECES,
+//   LOCATIONS,
+// } from "~/app/scout/[eventCode]/constants";
+// import UndoActionButton from "~/app/scout/[eventCode]/components/undo-action-button";
 
 const ScoutPage = () => {
   const { eventCode } = useParams<{ eventCode: string }>();
@@ -61,6 +68,8 @@ const ScoutPage = () => {
   ];
 
   const [isAlternateScout, setIsAlternateScout] = useState(false);
+  const [undoOccurred, setUndoOccurred] = useState(false);
+  const [wasDefended, setWasDefended] = useState(false);
   const [matchSchedule, setMatchSchedule] = useState<MatchScheduleType[]>([]);
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const [matchNumber, setMatchNumber] = useState("");
@@ -72,7 +81,7 @@ const ScoutPage = () => {
     clerkId: "",
     id: "",
   });
-  const [startingPositions, setStartingPositions] =
+  const [startingPosition, setStartingPosition] =
     useState<StartingPositionDataType>({
       position: "",
       showedUp: false,
@@ -128,7 +137,7 @@ const ScoutPage = () => {
       setScouterDetails({
         name: `${userData.firstName!} ${userData.lastName!}`,
         clerkId: userData.clerkId,
-        id: userData.clerkId,
+        id: userData.id.toString(),
       });
     }
   }, [userData]);
@@ -138,6 +147,8 @@ const ScoutPage = () => {
       setMatchSchedule(matchScheduleData);
     }
   }, [matchScheduleData]);
+
+  if (!userData) return <div>Loading...</div>;
 
   return (
     <ScoutScreenContext.Provider
@@ -165,15 +176,25 @@ const ScoutPage = () => {
           setUiOrientation,
           scouterDetails,
           setScouterDetails,
-          startingPositions,
-          setStartingPositions,
+          startingPosition,
+          setStartingPosition,
           gamePieceState,
           setGamePieceState,
           actions,
           setActions,
+          undoOccurred,
+          setUndoOccurred,
+          wasDefended,
+          setWasDefended,
         }}
       >
         {screens[currentScreenIndex].component}
+        {/* <ScoutActionButton
+          actionName={ACTION_NAMES.INTAKE}
+          gamePiece={GAME_PIECES.CORAL}
+          location={LOCATIONS.OPPONENT_HALF}
+        />
+        <UndoActionButton /> */}
       </ScoutDataContext.Provider>
     </ScoutScreenContext.Provider>
   );
