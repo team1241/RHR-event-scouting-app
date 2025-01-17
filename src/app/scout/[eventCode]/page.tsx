@@ -11,6 +11,7 @@ import {
   MatchScheduleType,
 } from "~/server/http/frc-events";
 import { useParams } from "next/navigation";
+import ScoutingInfoHeader from "~/app/scout/[eventCode]/components/scouting-info-header";
 // import ScoutActionButton from "~/app/scout/[eventCode]/components/scout-action-button";
 // import {
 //   ACTION_NAMES,
@@ -36,7 +37,7 @@ const ScoutPage = () => {
   // TODO: Update the components of each screen to be the actual screen once the dev for it is completed
   const screens = [
     {
-      component: <div>Match selection</div>,
+      component: <div>Match selection screen</div>,
       name: SCREEN_NAMES.MATCH_SELECTION,
       canGoBack: false,
     },
@@ -188,6 +189,7 @@ const ScoutPage = () => {
           setWasDefended,
         }}
       >
+        <ScoutingInfoHeader />
         {screens[currentScreenIndex].component}
         {/* <ScoutActionButton
           actionName={ACTION_NAMES.INTAKE}

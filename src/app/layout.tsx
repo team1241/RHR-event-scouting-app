@@ -40,7 +40,7 @@ export default function RootLayout({
             <ThemeProvider attribute="class" defaultTheme="dark">
               <main>
                 <Navbar />
-                <div className="relative py-3 px-5 md:py-6 md:px-10">
+                <div className="relative py-2 px-5 md:py-2 md:px-10">
                   {children}
                 </div>
               </main>
