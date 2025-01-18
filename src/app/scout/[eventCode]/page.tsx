@@ -10,7 +10,7 @@ import {
   fetchMatchScheduleByYearAndEventCode,
   MatchScheduleType,
 } from "~/server/http/frc-events";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import ScoutingInfoHeader from "~/app/scout/[eventCode]/components/scouting-info-header";
 import { FieldImages } from "@prisma/client";
 import { getFieldImagesForActiveSeason } from "~/db/queries/field-images";
@@ -27,6 +27,7 @@ import { MATCH_STATES } from "~/app/scout/[eventCode]/constants";
 
 const ScoutPage = () => {
   const { eventCode } = useParams<{ eventCode: string }>();
+  const eventType = useSearchParams().get("type");
   const eventYear = eventCode.substring(0, 4);
   const eventName = eventCode.substring(4);
 
@@ -137,7 +138,11 @@ const ScoutPage = () => {
     enabled: !!eventCode,
     queryKey: ["matchSchedule", eventCode],
     queryFn: async (): Promise<MatchScheduleType[]> =>
-      fetchMatchScheduleByYearAndEventCode(eventYear, eventName),
+      fetchMatchScheduleByYearAndEventCode(
+        eventYear,
+        eventName,
+        !!eventType ? "Practice" : "Qualification"
+      ),
   });
 
   const { data: fieldImages } = useQuery({
