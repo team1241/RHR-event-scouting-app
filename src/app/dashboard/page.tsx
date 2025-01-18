@@ -31,7 +31,7 @@ export default async function Dashboard() {
       <PageHeading>Events</PageHeading>
       <div className="grid grid-cols-2 grid-flow-row gap-4 mt-2">
         {events.map((event) => (
-          <Card className="border-2">
+          <Card className="border-2" key={`dashbaord-card-${event.eventKey}`}>
             <CardHeader>
               <CardTitle className="line-clamp-1">{event.name}</CardTitle>
               <CardDescription>{event.eventKey.toUpperCase()}</CardDescription>
