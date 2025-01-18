@@ -14,7 +14,10 @@ import { useParams } from "next/navigation";
 import ScoutingInfoHeader from "~/app/scout/[eventCode]/components/scouting-info-header";
 import { FieldImages } from "@prisma/client";
 import { getFieldImagesForActiveSeason } from "~/db/queries/field-images";
-import { MATCH_STATES } from "~/app/scout/[eventCode]/constants";
+import {
+  FIELD_ORIENTATIONS,
+  MATCH_STATES,
+} from "~/app/scout/[eventCode]/constants";
 // import FieldImage from "~/app/scout/[eventCode]/components/field-image";
 // import { Button } from "~/components/ui/button";
 import StartingPositionScreen from "./components/starting-position-screen";
@@ -83,8 +86,10 @@ const ScoutPage = () => {
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const [matchNumber, setMatchNumber] = useState("");
   const [teamToScout, setTeamToScout] = useState<number | undefined>();
-  const [allianceColour, setAllianceColour] = useState("");
-  const [uiOrientation, setUiOrientation] = useState("default");
+  const [allianceColour, setAllianceColour] = useState("blue");
+  const [uiOrientation, setUiOrientation] = useState(
+    FIELD_ORIENTATIONS.DEFAULT
+  );
   const [scouterDetails, setScouterDetails] = useState({
     name: "",
     clerkId: "",
@@ -93,7 +98,7 @@ const ScoutPage = () => {
   const [startingPosition, setStartingPosition] =
     useState<StartingPositionDataType>({
       position: "",
-      showedUp: false,
+      showedUp: true,
       hasPreload: false,
     });
   const [gamePieceState, setGamePieceState] = useState<
@@ -210,7 +215,7 @@ const ScoutPage = () => {
         }}
       >
         <ScoutingInfoHeader />
-        <StartingPositionScreen/>
+        <StartingPositionScreen />
         {/* <FieldImage>
           <div className="flex flex-row justify-start gap-10">
             <Button onClick={() => console.log("clicked 1")}>Test 1</Button>

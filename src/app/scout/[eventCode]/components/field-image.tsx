@@ -52,7 +52,7 @@ const FieldImage = ({
   return (
     <div
       className={cn(
-        "relative grid [grid-template-areas:'stack'] place-content-center mt-5",
+        "relative grid [grid-template-areas:'stack'] place-content-stretch my-3",
         height,
         getImageSize()
       )}
@@ -60,7 +60,7 @@ const FieldImage = ({
       <div className="[grid-area:stack]">
         {fieldImages && <Image src={getImageUrl()} alt="Field Image" fill />}
       </div>
-      <div className={cn("z-50 [grid-area:stack]")}>{children}</div>
+      <div className={cn("z-50 [grid-area:stack]", getImageSize())}>{children}</div>
     </div>
   );
 };
