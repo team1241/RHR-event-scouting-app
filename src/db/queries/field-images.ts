@@ -4,6 +4,18 @@ import { formatISO } from "date-fns";
 import prisma from "~/db";
 import { FieldImageType } from "@prisma/client";
 
+export async function getFieldImagesForActiveSeason() {
+  const images = await prisma.fieldImages.findMany({
+    where: {
+      season: {
+        isActive: true,
+      },
+    },
+  });
+
+  return images;
+}
+
 export async function upsertFieldImage({
   fieldImageType,
   seasonId,

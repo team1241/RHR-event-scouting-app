@@ -12,6 +12,10 @@ import {
 } from "~/server/http/frc-events";
 import { useParams } from "next/navigation";
 import ScoutingInfoHeader from "~/app/scout/[eventCode]/components/scouting-info-header";
+import { FieldImages } from "@prisma/client";
+import { getFieldImagesForActiveSeason } from "~/db/queries/field-images";
+// import FieldImage from "~/app/scout/[eventCode]/components/field-image";
+// import { Button } from "~/components/ui/button";
 // import ScoutActionButton from "~/app/scout/[eventCode]/components/scout-action-button";
 // import {
 //   ACTION_NAMES,
@@ -133,6 +137,13 @@ const ScoutPage = () => {
       fetchMatchScheduleByYearAndEventCode(eventYear, eventName),
   });
 
+  const { data: fieldImages } = useQuery({
+    queryKey: ["fieldImages"],
+    queryFn: async (): Promise<FieldImages[]> =>
+      getFieldImagesForActiveSeason(),
+    staleTime: Infinity,
+  });
+
   useEffect(() => {
     if (userData) {
       setScouterDetails({
@@ -187,9 +198,17 @@ const ScoutPage = () => {
           setUndoOccurred,
           wasDefended,
           setWasDefended,
+          fieldImages,
         }}
       >
         <ScoutingInfoHeader />
+        {/* <FieldImage>
+          <div className="flex flex-row justify-start gap-10">
+            <Button onClick={() => console.log("clicked 1")}>Test 1</Button>
+            <Button onClick={() => console.log("clicked 2")}>Test 2</Button>
+            <Button onClick={() => console.log("clicked 3")}>Test 3</Button>
+          </div>
+        </FieldImage> */}
         {screens[currentScreenIndex].component}
         {/* <ScoutActionButton
           actionName={ACTION_NAMES.INTAKE}
