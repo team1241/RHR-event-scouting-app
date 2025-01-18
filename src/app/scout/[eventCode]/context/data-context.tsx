@@ -1,5 +1,6 @@
 "use client";
 
+import { FieldImages } from "@prisma/client";
 import { createContext } from "react";
 import { MatchScheduleType } from "~/server/http/frc-events";
 
@@ -28,6 +29,7 @@ interface ScoutDataContextType {
   setIsAlternateScout: (isAlternateScout: boolean) => void;
   matchSchedule: MatchScheduleType[];
   setMatchSchedule: (matchSchedule: MatchScheduleType[]) => void;
+  fieldImages: FieldImages[] | undefined;
   matchNumber: string;
   setMatchNumber: (matchNumber: string) => void;
   teamToScout: number | undefined;
