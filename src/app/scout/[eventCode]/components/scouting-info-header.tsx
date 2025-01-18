@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useContext } from "react";
+import CountdownTimer from "~/app/scout/[eventCode]/components/countdown-timer";
 import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
 import { cn } from "~/lib/utils";
 
@@ -15,9 +16,9 @@ const ScoutingInfoHeader = () => {
   };
 
   return (
-    <div className="w-full h-8 flex justify-between items-center">
+    <div className="w-full h-9 flex justify-between items-center">
       <p className="font-semibold">
-        Match number:{" "}
+        Match:{" "}
         <span
           className={cn(
             "text-white rounded-sm bg-green-700 py-1 px-2",
@@ -27,9 +28,10 @@ const ScoutingInfoHeader = () => {
           {matchNumber || "Not set"}
         </span>
       </p>
+      <CountdownTimer />
       {!isAlternateScout ? (
         <p className="font-semibold">
-          Team to scout:{" "}
+          Team:{" "}
           <span
             className={cn(
               "rounded-sm py-1 px-2",

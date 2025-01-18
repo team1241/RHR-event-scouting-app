@@ -2,6 +2,7 @@
 
 import { FieldImages } from "@prisma/client";
 import { createContext } from "react";
+import { MATCH_STATES } from "~/app/scout/[eventCode]/constants";
 import { MatchScheduleType } from "~/server/http/frc-events";
 
 export type ScoutAction = {
@@ -60,6 +61,10 @@ interface ScoutDataContextType {
   setUndoOccurred: (undoOccurred: boolean) => void;
   wasDefended: boolean;
   setWasDefended: (wasDefended: boolean) => void;
+  matchState: MATCH_STATES;
+  setMatchState: (matchState: MATCH_STATES) => void;
+  isTimerRunning: boolean;
+  setIsTimerRunning: (isTimerRunning: boolean) => void;
 }
 
 export const ScoutDataContext = createContext<ScoutDataContextType>(
