@@ -84,7 +84,7 @@ export default function Navbar() {
   if (pathname.includes("sign-in") || pathname.includes("sign-in")) return null;
 
   return (
-    <div className="sticky top-0 z-10 left-0 w-screen h-20 px-4 grid grid-cols-3 gap-4 shadow-md border-b bg-slate-950 border-slate-900">
+    <div className="sticky top-0 z-10 left-0 w-screen h-12 lg:h-16 px-4 grid grid-cols-3 gap-4 shadow-md border-b bg-slate-950 border-slate-900">
       <div className="flex flex-row gap-2 items-center justify-self-start col-span-2 md:col-span-1">
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
@@ -131,7 +131,7 @@ export default function Navbar() {
               ))}
           </SheetContent>
         </Sheet>
-        <Image src={logo} width={50} height={50} alt="Logo" />
+        <Image src={logo} width={40} height={40} alt="Logo" />
         <p className="font-semibold">Scouting</p>
       </div>
 

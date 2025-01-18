@@ -3,6 +3,13 @@ export const ALLIANCE_COLOURS = {
   RED: "red",
 };
 
+export enum MATCH_STATES {
+  PRE_START = "prestart",
+  TELEOP = "teleop",
+  AUTO = "auto",
+  FINISHED = "finished",
+}
+
 export const ACTION_NAMES = {
   A_STOP: "a-stop",
   UNDO: "undo",

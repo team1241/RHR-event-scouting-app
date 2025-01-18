@@ -14,6 +14,7 @@ import { useParams } from "next/navigation";
 import ScoutingInfoHeader from "~/app/scout/[eventCode]/components/scouting-info-header";
 import { FieldImages } from "@prisma/client";
 import { getFieldImagesForActiveSeason } from "~/db/queries/field-images";
+import { MATCH_STATES } from "~/app/scout/[eventCode]/constants";
 // import FieldImage from "~/app/scout/[eventCode]/components/field-image";
 // import { Button } from "~/components/ui/button";
 // import ScoutActionButton from "~/app/scout/[eventCode]/components/scout-action-button";
@@ -72,6 +73,8 @@ const ScoutPage = () => {
     },
   ];
 
+  const [matchState, setMatchState] = useState<MATCH_STATES>(MATCH_STATES.AUTO);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isAlternateScout, setIsAlternateScout] = useState(false);
   const [undoOccurred, setUndoOccurred] = useState(false);
   const [wasDefended, setWasDefended] = useState(false);
@@ -199,6 +202,10 @@ const ScoutPage = () => {
           wasDefended,
           setWasDefended,
           fieldImages,
+          matchState,
+          setMatchState,
+          isTimerRunning,
+          setIsTimerRunning,
         }}
       >
         <ScoutingInfoHeader />
