@@ -1,6 +1,6 @@
 "use client";
 
-import { MoveLeft, MoveLeftIcon, MoveRightIcon, Save } from "lucide-react";
+import {Save } from "lucide-react";
 import PageHeading from "~/components/common/page-heading";
 import { Button } from "~/components/ui/button";
 import BackButton from "./common/back-button";
@@ -10,7 +10,6 @@ import FieldImage from "./field-image";
 import { useContext, useState } from "react";
 import { ScoutDataContext } from "../context";
 import {
-  ALLIANCE_COLOURS,
   FIELD_ORIENTATIONS,
   STARTING_POSITIONS,
 } from "../constants";
@@ -88,7 +87,7 @@ export default function StartingPositionScreen() {
                 htmlFor="noshow"
                 className="text-4xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                Didn't show up?
+                {"Didn't show up?"}
               </label>
             </div>
 

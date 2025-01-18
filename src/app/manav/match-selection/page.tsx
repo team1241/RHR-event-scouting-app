@@ -4,7 +4,7 @@ import PageHeading from "~/components/common/page-heading";
 import { Button } from "~/components/ui/button";
 import MatchSelectionForm from "./match-selection-form";
 import { useState } from "react";
-import { MoveRight, MoveRightIcon } from "lucide-react";
+import {MoveRightIcon } from "lucide-react";
 
 export default function ManavPage() {
   const [teamSelected, setTeamSelected] = useState("");
