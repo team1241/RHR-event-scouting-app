@@ -24,7 +24,8 @@ const buttonVariants = cva(
         redTeam: "dark:bg-red-600 p-3 text-center text-white font-bold",
         proceed:
           "bg-green-500 flex items-center justify-center text-black font-bold  text-xl",
-
+        goBack:
+          "border border-green-500 flex items-center justify-center text-white font-bold  text-xl",
         custom: "",
       },
       size: {

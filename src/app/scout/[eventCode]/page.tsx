@@ -17,6 +17,7 @@ import { getFieldImagesForActiveSeason } from "~/db/queries/field-images";
 import { MATCH_STATES } from "~/app/scout/[eventCode]/constants";
 // import FieldImage from "~/app/scout/[eventCode]/components/field-image";
 // import { Button } from "~/components/ui/button";
+import StartingPositionScreen from "./components/starting-position-screen";
 // import ScoutActionButton from "~/app/scout/[eventCode]/components/scout-action-button";
 // import {
 //   ACTION_NAMES,
@@ -209,6 +210,7 @@ const ScoutPage = () => {
         }}
       >
         <ScoutingInfoHeader />
+        <StartingPositionScreen/>
         {/* <FieldImage>
           <div className="flex flex-row justify-start gap-10">
             <Button onClick={() => console.log("clicked 1")}>Test 1</Button>
