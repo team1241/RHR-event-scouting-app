@@ -113,7 +113,9 @@ export default function StartingPositionScreen() {
             )}
           >
             <Button
-              className="h-full dark:bg-red-500/50 font-bold text-lg dark:text-white"
+              className={cn("h-full dark:bg-red-500/50 font-bold text-lg dark:text-white dark:hover:bg-red-500/70",
+                context.startingPosition.position === STARTING_POSITIONS.ZONE_1 && "dark:ring-2 ring-white"
+              )}
               onClick={() => {
                 setSaved(false);
                 setPosition(STARTING_POSITIONS.ZONE_1);
@@ -122,7 +124,9 @@ export default function StartingPositionScreen() {
               Zone 1
             </Button>
             <Button
-              className="h-full dark:bg-green-500/50 font-bold text-lg dark:text-white"
+              className={cn("h-full dark:bg-green-500/50 font-bold text-lg dark:text-white dark:hover:bg-green-500/70",
+                context.startingPosition.position === STARTING_POSITIONS.ZONE_2 && "dark:ring-2 ring-white"
+              )}
               onClick={() => {
                 setSaved(false);
                 setPosition(STARTING_POSITIONS.ZONE_2);
@@ -131,7 +135,9 @@ export default function StartingPositionScreen() {
               Zone 2
             </Button>
             <Button
-              className="h-full dark:bg-blue-500/50 font-bold text-lg dark:text-white"
+              className={cn("h-full dark:bg-blue-500/50 font-bold text-lg dark:text-white dark:hover:bg-blue-500/70",
+                context.startingPosition.position === STARTING_POSITIONS.ZONE_3 && "dark:ring-2 ring-white"
+              )}
               onClick={() => {
                 setSaved(false);
                 setPosition(STARTING_POSITIONS.ZONE_3);
