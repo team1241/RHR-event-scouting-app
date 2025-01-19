@@ -3,6 +3,11 @@ export const ALLIANCE_COLOURS = {
   RED: "red",
 };
 
+export const FIELD_ORIENTATIONS = {
+  DEFAULT: 'default',
+  FLIPPED: 'flipped'
+}
+
 export enum MATCH_STATES {
   PRE_START = "prestart",
   TELEOP = "teleop",
@@ -58,4 +63,8 @@ export const LOCATIONS = {
   },
 };
 
-export const STARTING_POSITIONS = {};
+export const STARTING_POSITIONS = {
+  ZONE_1: "opposite-processor",
+  ZONE_2: "middle",
+  ZONE_3: "near-processor",
+};
