@@ -1,6 +1,6 @@
 "use client";
 
-import {Save } from "lucide-react";
+import { Save } from "lucide-react";
 import PageHeading from "~/components/common/page-heading";
 import { Button } from "~/components/ui/button";
 import BackButton from "./common/back-button";
@@ -9,10 +9,7 @@ import { Checkbox } from "~/components/ui/checkbox";
 import FieldImage from "./field-image";
 import { useContext, useState } from "react";
 import { ScoutDataContext } from "../context";
-import {
-  FIELD_ORIENTATIONS,
-  STARTING_POSITIONS,
-} from "../constants";
+import { FIELD_ORIENTATIONS, STARTING_POSITIONS } from "../constants";
 import { cn } from "~/lib/utils";
 import { getFlexDirection } from "../utils";
 
@@ -45,25 +42,22 @@ export default function StartingPositionScreen() {
 
   const [isSaved, setSaved] = useState(false);
 
-  console.log(context.uiOrientation);
-  console.log(context.startingPosition);
   return (
     <div>
       <PageHeading>Starting Position</PageHeading>
       <div className="flex flex-row justify-between mt-2">
         <Button
-          className="font-bold text-2xl tracking-wide w-64 h-16"
+          className="font-bold text-2xl tracking-wide w-64 h-20"
           onClick={toggleFieldOrientation}
         >
           FLIP FIELD
         </Button>
 
         <Button
-          className="font-bold text-2xl tracking-wide w-64 h-16 dark:bg-sky-400 dark:text-white"
+          className="font-bold text-2xl tracking-wide w-64 h-20 dark:bg-sky-400 dark:text-white"
           onClick={() => {
             setSaved(true);
           }}
-          disabled={context.startingPosition.position === ""}
         >
           SAVE
           <Save className="!size-5" />
@@ -81,7 +75,10 @@ export default function StartingPositionScreen() {
               <Checkbox
                 id="noshow"
                 className="size-7"
-                onCheckedChange={updateShowedUp}
+                onCheckedChange={() => {
+                  setSaved(false);
+                  updateShowedUp;
+                }}
               />
               <label
                 htmlFor="noshow"
@@ -95,7 +92,10 @@ export default function StartingPositionScreen() {
               <Checkbox
                 id="preload"
                 className="size-7"
-                onCheckedChange={updatePreload}
+                onCheckedChange={() => {
+                  setSaved(false);
+                  updatePreload;
+                }}
               />
               <label
                 htmlFor="preload"
@@ -114,19 +114,28 @@ export default function StartingPositionScreen() {
           >
             <Button
               className="h-full dark:bg-red-500/50 font-bold text-lg dark:text-white"
-              onClick={() => setPosition(STARTING_POSITIONS.ZONE_1)}
+              onClick={() => {
+                setSaved(false);
+                setPosition(STARTING_POSITIONS.ZONE_1);
+              }}
             >
               Zone 1
             </Button>
             <Button
               className="h-full dark:bg-green-500/50 font-bold text-lg dark:text-white"
-              onClick={() => setPosition(STARTING_POSITIONS.ZONE_2)}
+              onClick={() => {
+                setSaved(false);
+                setPosition(STARTING_POSITIONS.ZONE_2);
+              }}
             >
               Zone 2
             </Button>
             <Button
               className="h-full dark:bg-blue-500/50 font-bold text-lg dark:text-white"
-              onClick={() => setPosition(STARTING_POSITIONS.ZONE_3)}
+              onClick={() => {
+                setSaved(false);
+                setPosition(STARTING_POSITIONS.ZONE_3);
+              }}
             >
               Zone 3
             </Button>

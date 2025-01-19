@@ -86,7 +86,7 @@ const ScoutPage = () => {
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const [matchNumber, setMatchNumber] = useState("");
   const [teamToScout, setTeamToScout] = useState<number | undefined>();
-  const [allianceColour, setAllianceColour] = useState("blue");
+  const [allianceColour, setAllianceColour] = useState("");
   const [uiOrientation, setUiOrientation] = useState(
     FIELD_ORIENTATIONS.DEFAULT
   );
