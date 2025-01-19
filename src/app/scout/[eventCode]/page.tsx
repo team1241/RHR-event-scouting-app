@@ -2,7 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "./context";
-import { ScoutAction, StartingPositionDataType } from "./context/data-context";
+import {
+  AlternateScoutData,
+  ScoutAction,
+  StartingPositionDataType,
+} from "./context/data-context";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
 import { getUserByClerkId } from "~/db/queries/user";
@@ -107,6 +111,11 @@ const ScoutPage = () => {
     { type: string; count: number }[]
   >([]);
   const [actions, setActions] = useState<ScoutAction[]>([]);
+  const [alternateScoutData, setAlternateScoutData] =
+    useState<AlternateScoutData>({
+      scoring: { redMiss: 0, blueMiss: 0, redScore: 0, blueScore: 0 },
+      setup: { redTeamNumber: 0, blueTeamNumber: 0 },
+    });
 
   const nextScreen = () => {
     window.scrollTo(0, 0);
@@ -191,6 +200,8 @@ const ScoutPage = () => {
         value={{
           isAlternateScout,
           setIsAlternateScout,
+          alternateScoutData,
+          setAlternateScoutData,
           matchSchedule,
           setMatchSchedule,
           matchNumber,
