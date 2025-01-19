@@ -83,7 +83,7 @@ export default function StartingPositionScreen() {
             getFlexDirection(context.uiOrientation, context.allianceColour).row
           )}
         >
-          <div className="flex flex-col space-y-20 items-start mx-4 justify-center">
+          <div className="flex flex-col space-y-20 items-start mx-4 justify-center w-full">
             <div className="flex items-center space-x-4 bg-black/90 font-bold p-3 rounded-lg">
               <Checkbox
                 id="noshow"
@@ -122,7 +122,7 @@ export default function StartingPositionScreen() {
           </div>
           <div
             className={cn(
-              "flex justify-stretch w-28 my-12 mx-16",
+              "flex justify-between w-28 my-10 mx-52",
               getFlexDirection(context.uiOrientation, context.allianceColour)
                 .col
             )}
