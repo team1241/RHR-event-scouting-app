@@ -1,9 +1,7 @@
 "use client";
 
-import { RadioGroup } from "@radix-ui/react-dropdown-menu";
 import PageHeading from "~/components/common/page-heading";
 import { Button } from "~/components/ui/button";
-import { Label } from "~/components/ui/label";
 import BackButton from "./common/back-button";
 import ContinueButton from "./common/continue-button";
 import { useContext, useState } from "react";
