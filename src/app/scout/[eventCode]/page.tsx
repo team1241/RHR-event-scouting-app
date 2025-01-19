@@ -18,6 +18,7 @@ import {
   FIELD_ORIENTATIONS,
   MATCH_STATES,
 } from "~/app/scout/[eventCode]/constants";
+import BallScoutSetup from "./components/ball-scout-setup";
 // import FieldImage from "~/app/scout/[eventCode]/components/field-image";
 // import { Button } from "~/components/ui/button";
 import StartingPositionScreen from "./components/starting-position-screen";
@@ -221,6 +222,7 @@ const ScoutPage = () => {
       >
         <ScoutingInfoHeader />
         <StartingPositionScreen />
+        <BallScoutSetup />
         {/* <FieldImage>
           <div className="flex flex-row justify-start gap-10">
             <Button onClick={() => console.log("clicked 1")}>Test 1</Button>
