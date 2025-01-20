@@ -6,9 +6,11 @@ import { Button } from "~/components/ui/button";
 export default function ContinueButton({
   disabled,
   onClick,
+  label,
 }: {
   disabled?: boolean;
   onClick?: () => void;
+  label?: string;
 }) {
   return (
     <Button
@@ -18,8 +20,8 @@ export default function ContinueButton({
       disabled={disabled}
       onClick={onClick}
     >
-      Continue
-      <MoveRightIcon className="!size-6"></MoveRightIcon>
+      {label ? label : "Continue"}
+      <MoveRightIcon className="!size-6" />
     </Button>
   );
 }

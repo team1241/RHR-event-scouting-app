@@ -107,7 +107,7 @@ const ScoutPage = () => {
   const [currentMatch, setCurrentMatch] = useState<MatchScheduleType>();
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const [matchNumber, setMatchNumber] = useState("");
-  const [teamToScout, setTeamToScout] = useState<number | undefined>();
+  const [teamToScout, setTeamToScout] = useState<number | string | undefined>();
   const [allianceColour, setAllianceColour] = useState("");
   const [uiOrientation, setUiOrientation] = useState(
     (typeof window !== "undefined" &&
@@ -274,6 +274,7 @@ const ScoutPage = () => {
           actionName={ACTION_NAMES.INTAKE}
           gamePiece={GAME_PIECES.CORAL}
           location={LOCATIONS.OPPONENT_HALF}
+          label="Scout Action"
         />
       </ScoutDataContext.Provider>
     </ScoutScreenContext.Provider>

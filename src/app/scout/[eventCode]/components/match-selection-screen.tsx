@@ -27,22 +27,21 @@ export default function MatchSelectionScreen() {
     return value;
   });
   const screenContext = useContext(ScoutScreenContext);
-  console.log(positionSelected);
   return (
     <>
       {/* Match selection */}
       <PageHeading>Match Selection</PageHeading>
 
-      <div className="flex justify-between items-center gap-4">
-        <MatchSelectionForm setTeamSelectedEnabled={setTeamSelectedEnabled} />
-        <div className="flex flex-row mt-16 justify-between items-center">
-          {context.teamToScout && (
-            <div className="flex flex-col justify-between">
-              <p className="text-4xl">{`Team Scouted `}</p>
-              <p className="text-4xl">{`${context.teamToScout}`}</p>
-            </div>
-          )}
+      <div className="flex justify-between gap-4">
+        <div className="place-self-center">
+          <MatchSelectionForm setTeamSelectedEnabled={setTeamSelectedEnabled} />
         </div>
+        {context.teamToScout && (
+          <div className="h-full flex flex-col !justify-start">
+            <p className="text-4xl">{`Team to scout:`}</p>
+            <p className="text-4xl font-bold">{`${context.teamToScout}`}</p>
+          </div>
+        )}
         <div className="flex flex-col items-center justify-end gap-2">
           <p className="text-2xl font-bold self-start">Select Position</p>
           <div className="flex flex-row justify-end gap-2">
@@ -62,6 +61,7 @@ export default function MatchSelectionScreen() {
                   context.setTeamToScout(team?.teamNumber);
                   context.setAllianceColour("blue");
                   setPositionSelected("Blue1");
+                  context.setIsAlternateScout(false);
                 }}
                 disabled={!isTeamSelectedEnabled}
               >
@@ -82,6 +82,7 @@ export default function MatchSelectionScreen() {
                   context.setTeamToScout(team?.teamNumber);
                   context.setAllianceColour("blue");
                   setPositionSelected("Blue2");
+                  context.setIsAlternateScout(false);
                 }}
                 disabled={!isTeamSelectedEnabled}
               >
@@ -102,6 +103,7 @@ export default function MatchSelectionScreen() {
                   context.setTeamToScout(team?.teamNumber);
                   context.setAllianceColour("blue");
                   setPositionSelected("Blue3");
+                  context.setIsAlternateScout(false);
                 }}
                 disabled={!isTeamSelectedEnabled}
               >
@@ -124,6 +126,7 @@ export default function MatchSelectionScreen() {
                   context.setTeamToScout(team?.teamNumber);
                   context.setAllianceColour("red");
                   setPositionSelected("Red1");
+                  context.setIsAlternateScout(false);
                 }}
                 disabled={!isTeamSelectedEnabled}
               >
@@ -145,6 +148,7 @@ export default function MatchSelectionScreen() {
                   context.setTeamToScout(team?.teamNumber);
                   context.setAllianceColour("red");
                   setPositionSelected("Red2");
+                  context.setIsAlternateScout(false);
                 }}
                 disabled={!isTeamSelectedEnabled}
               >
@@ -165,6 +169,7 @@ export default function MatchSelectionScreen() {
                   context.setTeamToScout(team?.teamNumber);
                   context.setAllianceColour("red");
                   setPositionSelected("Red3");
+                  context.setIsAlternateScout(false);
                 }}
                 disabled={!isTeamSelectedEnabled}
               >

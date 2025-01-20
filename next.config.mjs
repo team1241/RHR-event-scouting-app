@@ -7,6 +7,11 @@ const nextConfig = {
         hostname: "utfs.io",
         pathname: "/f/**",
       },
+      {
+        protocol: "https",
+        hostname: "rb4alqiu9a.ufs.sh",
+        pathname: "/f/**",
+      },
     ],
   },
   rewrites: async () => {

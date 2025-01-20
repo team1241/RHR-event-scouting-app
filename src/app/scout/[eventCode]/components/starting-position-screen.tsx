@@ -12,6 +12,7 @@ import { ScoutDataContext, ScoutScreenContext } from "../context";
 import {
   FIELD_ORIENTATIONS,
   LOCAL_STORAGE_KEYS,
+  MATCH_STATES,
   STARTING_POSITIONS,
 } from "../constants";
 import { cn } from "~/lib/utils";
@@ -172,7 +173,10 @@ export default function StartingPositionScreen() {
         <div className="flex justify-between w-full">
           <BackButton onClick={() => screenContext.prevScreen()} />
           <ContinueButton
-            onClick={() => screenContext.nextScreen()}
+            onClick={() => {
+              screenContext.nextScreen();
+              context.setMatchState(MATCH_STATES.AUTO);
+            }}
             disabled={
               isSaved === false || context.startingPosition.position === ""
             }

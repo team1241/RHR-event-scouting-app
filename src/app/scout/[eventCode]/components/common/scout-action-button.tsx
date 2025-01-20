@@ -14,12 +14,14 @@ const ScoutActionButton = ({
   location,
   isAuto = false,
   className,
+  label,
 }: {
   actionName: string;
   gamePiece: string;
   location: string;
   isAuto?: boolean;
   className?: string;
+  label: string;
 }) => {
   const scoutDataContext = useContext(ScoutDataContext);
   const isBlueAlliance =
@@ -58,11 +60,11 @@ const ScoutActionButton = ({
       variant={"custom"}
       className={cn(
         "text-white font-bold",
-        !isBlueAlliance ? "bg-blue-300/50" : "bg-red-300/50",
+        isBlueAlliance ? "bg-blue-300/50" : "bg-red-300/50",
         className
       )}
     >
-      ScoutActionButton
+      {label}
     </Button>
   );
 };
