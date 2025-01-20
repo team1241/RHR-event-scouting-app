@@ -2,7 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "./context";
-import { ScoutAction, StartingPositionDataType } from "./context/data-context";
+import {
+  AlternateScoutData,
+  ScoutAction,
+  StartingPositionDataType,
+} from "./context/data-context";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
 import { getUserByClerkId } from "~/db/queries/user";
@@ -18,6 +22,7 @@ import {
   FIELD_ORIENTATIONS,
   MATCH_STATES,
 } from "~/app/scout/[eventCode]/constants";
+import BallScoutSetup from "./components/ball-scout-setup";
 // import FieldImage from "~/app/scout/[eventCode]/components/field-image";
 // import { Button } from "~/components/ui/button";
 import StartingPositionScreen from "./components/starting-position-screen";
@@ -106,6 +111,11 @@ const ScoutPage = () => {
     { type: string; count: number }[]
   >([]);
   const [actions, setActions] = useState<ScoutAction[]>([]);
+  const [alternateScoutData, setAlternateScoutData] =
+    useState<AlternateScoutData>({
+      scoring: { redMiss: 0, blueMiss: 0, redScore: 0, blueScore: 0 },
+      setup: { redTeamNumber: 0, blueTeamNumber: 0 },
+    });
 
   const nextScreen = () => {
     window.scrollTo(0, 0);
@@ -190,6 +200,8 @@ const ScoutPage = () => {
         value={{
           isAlternateScout,
           setIsAlternateScout,
+          alternateScoutData,
+          setAlternateScoutData,
           matchSchedule,
           setMatchSchedule,
           matchNumber,
@@ -221,6 +233,7 @@ const ScoutPage = () => {
       >
         <ScoutingInfoHeader />
         <StartingPositionScreen />
+        <BallScoutSetup />
         {/* <FieldImage>
           <div className="flex flex-row justify-start gap-10">
             <Button onClick={() => console.log("clicked 1")}>Test 1</Button>

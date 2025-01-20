@@ -25,9 +25,20 @@ export type StartingPositionDataType = {
   hasPreload: boolean;
 };
 
+export type AlternateScoutData = {
+  scoring: {
+    [key: string]: string | number | object;
+  };
+  setup: {
+    [key: string]: string | number | object;
+  };
+};
+
 interface ScoutDataContextType {
   isAlternateScout: boolean;
   setIsAlternateScout: (isAlternateScout: boolean) => void;
+  alternateScoutData?: AlternateScoutData;
+  setAlternateScoutData?: (alternateScoutData: AlternateScoutData) => void;
   matchSchedule: MatchScheduleType[];
   setMatchSchedule: (matchSchedule: MatchScheduleType[]) => void;
   fieldImages: FieldImages[] | undefined;
