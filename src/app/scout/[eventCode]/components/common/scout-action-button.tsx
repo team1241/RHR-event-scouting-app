@@ -3,8 +3,8 @@
 import React, { useContext } from "react";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
-import { ScoutDataContext } from "../context";
-import { ALLIANCE_COLOURS } from "../constants";
+import { ScoutDataContext } from "../../context";
+import { ALLIANCE_COLOURS, LOCAL_STORAGE_KEYS } from "../../constants";
 import { formatISO } from "date-fns";
 import { ScoutAction } from "~/app/scout/[eventCode]/context/data-context";
 
@@ -44,6 +44,10 @@ const ScoutActionButton = ({
       } as ScoutAction,
     ];
     scoutDataContext.setActions(updatedActionsList);
+    localStorage.setItem(
+      LOCAL_STORAGE_KEYS.ACTIONS,
+      JSON.stringify(updatedActionsList)
+    );
     scoutDataContext.setUndoOccurred(false);
     scoutDataContext.setWasDefended(false);
   };

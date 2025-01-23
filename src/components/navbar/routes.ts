@@ -2,6 +2,7 @@ const PUBLIC_NAVIGATION_ROUTES = [
   {
     href: "/dashboard",
     label: "Dashboard",
+    activePathNames: ["/dashboard", "/"],
   },
 ];
 

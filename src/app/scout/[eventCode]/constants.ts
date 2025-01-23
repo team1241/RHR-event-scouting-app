@@ -4,9 +4,9 @@ export const ALLIANCE_COLOURS = {
 };
 
 export const FIELD_ORIENTATIONS = {
-  DEFAULT: 'default',
-  FLIPPED: 'flipped'
-}
+  DEFAULT: "default",
+  FLIPPED: "flipped",
+};
 
 export enum MATCH_STATES {
   PRE_START = "prestart",
@@ -67,4 +67,12 @@ export const STARTING_POSITIONS = {
   ZONE_1: "opposite-processor",
   ZONE_2: "middle",
   ZONE_3: "near-processor",
+};
+
+export const LOCAL_STORAGE_KEYS = {
+  UI_ORIENTATION: "rhr_scouting:ui_orientation",
+  STARTING_POSITION: "rhr_scouting:starting_position",
+  SCOUTER_DETAILS: "rhr_scouting:scouter_details",
+  ACTIONS: "rhr_scouting:scouted_actions",
+  CURRENT_SCREEN: "rhr_scouting:current_screen",
 };

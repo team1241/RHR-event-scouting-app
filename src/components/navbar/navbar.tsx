@@ -110,7 +110,9 @@ export default function Navbar() {
                 href={route.href}
                 className={cn(
                   "px-4 py-2 rounded-md mb-2 font-semibold",
-                  pathname === route.href && "text-blue-600 font-semibold"
+                  (pathname === route.href ||
+                    route?.activePathNames.includes(pathname)) &&
+                    "text-blue-600 font-semibold"
                 )}
               >
                 {route.label}
@@ -140,7 +142,10 @@ export default function Navbar() {
           {PUBLIC_NAVIGATION_ROUTES.map((route) => (
             <NavigationMenuItem key={`navbarMenuItem-${route.label}`}>
               <NavigationMenuLink
-                active={pathname === route.href}
+                active={
+                  pathname === route.href ||
+                  route?.activePathNames.includes(pathname)
+                }
                 href={route.href}
                 className={navigationMenuTriggerStyle()}
               >

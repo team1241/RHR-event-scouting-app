@@ -6,33 +6,40 @@ import { Button } from "~/components/ui/button";
 import BackButton from "./common/back-button";
 import ContinueButton from "./common/continue-button";
 import { Checkbox } from "~/components/ui/checkbox";
-import FieldImage from "./field-image";
+import FieldImage from "./common/field-image";
 import { useContext, useState } from "react";
 import { ScoutDataContext } from "../context";
-import { FIELD_ORIENTATIONS, STARTING_POSITIONS } from "../constants";
+import {
+  FIELD_ORIENTATIONS,
+  LOCAL_STORAGE_KEYS,
+  STARTING_POSITIONS,
+} from "../constants";
 import { cn } from "~/lib/utils";
 import { getFlexDirection } from "../utils";
 
 export default function StartingPositionScreen() {
   const context = useContext(ScoutDataContext);
   const toggleFieldOrientation = () => {
-    if (context.uiOrientation === FIELD_ORIENTATIONS.DEFAULT) {
-      context.setUiOrientation(FIELD_ORIENTATIONS.FLIPPED);
-    } else {
-      context.setUiOrientation(FIELD_ORIENTATIONS.DEFAULT);
-    }
+    const newOrientation =
+      context.uiOrientation === FIELD_ORIENTATIONS.DEFAULT
+        ? FIELD_ORIENTATIONS.FLIPPED
+        : FIELD_ORIENTATIONS.DEFAULT;
+
+    context.setUiOrientation(newOrientation);
+
+    localStorage.setItem(LOCAL_STORAGE_KEYS.UI_ORIENTATION, newOrientation);
   };
 
-  const updatePreload = (selected: boolean) => {
+  const updatePreload = () => {
     context.setStartingPosition({
       ...context.startingPosition,
-      hasPreload: selected,
+      hasPreload: !context.startingPosition.hasPreload,
     });
   };
-  const updateShowedUp = (selected: boolean) => {
+  const updateShowedUp = () => {
     context.setStartingPosition({
       ...context.startingPosition,
-      showedUp: !selected,
+      showedUp: !context.startingPosition.showedUp,
     });
   };
 
@@ -57,6 +64,10 @@ export default function StartingPositionScreen() {
           className="font-bold text-2xl tracking-wide w-64 h-20 dark:bg-sky-400 dark:text-white"
           onClick={() => {
             setSaved(true);
+            localStorage.setItem(
+              LOCAL_STORAGE_KEYS.STARTING_POSITION,
+              JSON.stringify(context.startingPosition)
+            );
           }}
         >
           SAVE
@@ -77,8 +88,9 @@ export default function StartingPositionScreen() {
                 className="size-7"
                 onCheckedChange={() => {
                   setSaved(false);
-                  updateShowedUp;
+                  updateShowedUp();
                 }}
+                checked={!context.startingPosition.showedUp}
               />
               <label
                 htmlFor="noshow"
@@ -94,8 +106,9 @@ export default function StartingPositionScreen() {
                 className="size-7"
                 onCheckedChange={() => {
                   setSaved(false);
-                  updatePreload;
+                  updatePreload();
                 }}
+                checked={context.startingPosition.hasPreload}
               />
               <label
                 htmlFor="preload"
@@ -113,8 +126,10 @@ export default function StartingPositionScreen() {
             )}
           >
             <Button
-              className={cn("h-full dark:bg-red-500/50 font-bold text-lg dark:text-white dark:hover:bg-red-500/70",
-                context.startingPosition.position === STARTING_POSITIONS.ZONE_1 && "dark:ring-2 ring-white"
+              className={cn(
+                "h-full dark:bg-red-500/50 font-bold text-lg dark:text-white dark:hover:bg-red-500/70",
+                context.startingPosition.position ===
+                  STARTING_POSITIONS.ZONE_1 && "dark:ring-2 ring-white"
               )}
               onClick={() => {
                 setSaved(false);
@@ -124,8 +139,10 @@ export default function StartingPositionScreen() {
               Zone 1
             </Button>
             <Button
-              className={cn("h-full dark:bg-green-500/50 font-bold text-lg dark:text-white dark:hover:bg-green-500/70",
-                context.startingPosition.position === STARTING_POSITIONS.ZONE_2 && "dark:ring-2 ring-white"
+              className={cn(
+                "h-full dark:bg-green-500/50 font-bold text-lg dark:text-white dark:hover:bg-green-500/70",
+                context.startingPosition.position ===
+                  STARTING_POSITIONS.ZONE_2 && "dark:ring-2 ring-white"
               )}
               onClick={() => {
                 setSaved(false);
@@ -135,8 +152,10 @@ export default function StartingPositionScreen() {
               Zone 2
             </Button>
             <Button
-              className={cn("h-full dark:bg-blue-500/50 font-bold text-lg dark:text-white dark:hover:bg-blue-500/70",
-                context.startingPosition.position === STARTING_POSITIONS.ZONE_3 && "dark:ring-2 ring-white"
+              className={cn(
+                "h-full dark:bg-blue-500/50 font-bold text-lg dark:text-white dark:hover:bg-blue-500/70",
+                context.startingPosition.position ===
+                  STARTING_POSITIONS.ZONE_3 && "dark:ring-2 ring-white"
               )}
               onClick={() => {
                 setSaved(false);
@@ -151,7 +170,11 @@ export default function StartingPositionScreen() {
       <div className="flex flex-row">
         <div className="flex justify-between w-full">
           <BackButton />
-          <ContinueButton disabled={isSaved === false} />
+          <ContinueButton
+            disabled={
+              isSaved === false || context.startingPosition.position === ""
+            }
+          />
         </div>
       </div>
     </div>
