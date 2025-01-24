@@ -122,7 +122,7 @@ export default function StartingPositionScreen() {
           </div>
           <div
             className={cn(
-              "flex justify-between w-28 my-10 mx-52",
+              "flex justify-between w-72 my-10 mx-52",
               getFlexDirection(context.uiOrientation, context.allianceColour)
                 .col
             )}
