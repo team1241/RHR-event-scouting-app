@@ -40,7 +40,7 @@ const UndoActionButton = ({
       className={cn("text-white font-bold", className)}
     >
       UNDO
-      <Undo className="!size-6"/>
+      <Undo className="!size-6" />
     </Button>
   );
 };
