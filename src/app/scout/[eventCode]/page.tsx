@@ -31,6 +31,7 @@ import {
   GAME_PIECES,
   LOCATIONS,
 } from "~/app/scout/[eventCode]/constants";
+import BallScoringScreen from "./components/ball-scoring-page";
 
 const ScoutPage = () => {
   const { eventCode } = useParams<{ eventCode: string }>();
@@ -263,6 +264,7 @@ const ScoutPage = () => {
         }}
       >
         <ScoutingInfoHeader />
+        <BallScoringScreen />
         {screens[currentScreenIndex].component}
         <ScoutActionButton
           actionName={ACTION_NAMES.INTAKE}
