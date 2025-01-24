@@ -3,6 +3,7 @@
 import { cn } from "~/lib/utils";
 import ContinueButton from "./common/continue-button";
 import FieldImage from "./common/field-image";
+// import { getFlexDirection } from "../utils";
 import { useContext } from "react";
 import { ScoutDataContext } from "../context/data-context";
 import { Button } from "~/components/ui/button";
