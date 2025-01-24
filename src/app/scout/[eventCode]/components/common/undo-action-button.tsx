@@ -38,7 +38,7 @@ const UndoActionButton = ({
       variant={"custom"}
       className={cn("text-white font-bold", className)}
     >
-      Undo
+      UNDO
     </Button>
   );
 };

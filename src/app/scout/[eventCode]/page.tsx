@@ -34,6 +34,7 @@ import {
 import BallScoringScreen from "./components/ball-scoring-page";
 import MatchSelectionScreen from "./components/match-selection-screen";
 import EndgameScreen from "./components/endgame-screen";
+import AutonomousScreen from "./components/autonomous-screen";
 
 const ScoutPage = () => {
   const { eventCode } = useParams<{ eventCode: string }>();
@@ -67,7 +68,7 @@ const ScoutPage = () => {
       canGoBack: true,
     },
     {
-      component: <EndgameScreen />,
+      component: <AutonomousScreen />,
       name: SCREEN_NAMES.AUTO,
       canGoBack: false,
     },
@@ -276,7 +277,7 @@ const ScoutPage = () => {
         }}
       >
         <ScoutingInfoHeader />
-        {screens[currentScreenIndex].component}
+        {screens[2].component}
         <ScoutActionButton
           actionName={ACTION_NAMES.INTAKE}
           gamePiece={GAME_PIECES.CORAL}
