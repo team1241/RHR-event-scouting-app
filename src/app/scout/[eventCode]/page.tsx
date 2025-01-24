@@ -15,24 +15,22 @@ import {
   MatchScheduleType,
 } from "~/server/http/frc-events";
 import { useParams, useSearchParams } from "next/navigation";
-import ScoutingInfoHeader from "~/app/scout/[eventCode]/components/scouting-info-header";
+import ScoutingInfoHeader from "~/app/scout/[eventCode]/components/common/scouting-info-header";
 import { FieldImages } from "@prisma/client";
 import { getFieldImagesForActiveSeason } from "~/db/queries/field-images";
 import {
   FIELD_ORIENTATIONS,
+  LOCAL_STORAGE_KEYS,
   MATCH_STATES,
 } from "~/app/scout/[eventCode]/constants";
 import BallScoutSetup from "./components/ball-scout-setup";
-// import FieldImage from "~/app/scout/[eventCode]/components/field-image";
-// import { Button } from "~/components/ui/button";
 import StartingPositionScreen from "./components/starting-position-screen";
-// import ScoutActionButton from "~/app/scout/[eventCode]/components/scout-action-button";
-// import {
-//   ACTION_NAMES,
-//   GAME_PIECES,
-//   LOCATIONS,
-// } from "~/app/scout/[eventCode]/constants";
-// import UndoActionButton from "~/app/scout/[eventCode]/components/undo-action-button";
+import ScoutActionButton from "~/app/scout/[eventCode]/components/common/scout-action-button";
+import {
+  ACTION_NAMES,
+  GAME_PIECES,
+  LOCATIONS,
+} from "~/app/scout/[eventCode]/constants";
 
 const ScoutPage = () => {
   const { eventCode } = useParams<{ eventCode: string }>();
@@ -47,6 +45,10 @@ const ScoutPage = () => {
     TELEOP: "teleop",
     ENDGAME: "endgame",
     FINALIZE: "finalize",
+    ALTERNATE_SCOUT: {
+      SETUP: "alternate-scout-setup",
+      SCORING: "alternate-scout-scoring",
+    },
   };
 
   // TODO: Update the components of each screen to be the actual screen once the dev for it is completed
@@ -57,7 +59,7 @@ const ScoutPage = () => {
       canGoBack: false,
     },
     {
-      component: <div>Starting positions</div>,
+      component: <StartingPositionScreen />,
       name: SCREEN_NAMES.STARTING_POSITIONS,
       canGoBack: true,
     },
@@ -81,9 +83,21 @@ const ScoutPage = () => {
       name: SCREEN_NAMES.FINALIZE,
       canGoBack: true,
     },
+    {
+      component: <BallScoutSetup />,
+      name: SCREEN_NAMES.ALTERNATE_SCOUT.SETUP,
+      canGoBack: true,
+    },
+    {
+      component: <div>Alternate scout scoring</div>,
+      name: SCREEN_NAMES.ALTERNATE_SCOUT.SCORING,
+      canGoBack: true,
+    },
   ];
 
-  const [matchState, setMatchState] = useState<MATCH_STATES>(MATCH_STATES.AUTO);
+  const [matchState, setMatchState] = useState<MATCH_STATES>(
+    MATCH_STATES.PRE_START
+  );
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isAlternateScout, setIsAlternateScout] = useState(false);
   const [undoOccurred, setUndoOccurred] = useState(false);
@@ -94,7 +108,8 @@ const ScoutPage = () => {
   const [teamToScout, setTeamToScout] = useState<number | undefined>();
   const [allianceColour, setAllianceColour] = useState("");
   const [uiOrientation, setUiOrientation] = useState(
-    FIELD_ORIENTATIONS.DEFAULT
+    localStorage.getItem(LOCAL_STORAGE_KEYS.UI_ORIENTATION) ||
+      FIELD_ORIENTATIONS.DEFAULT
   );
   const [scouterDetails, setScouterDetails] = useState({
     name: "",
@@ -170,11 +185,16 @@ const ScoutPage = () => {
 
   useEffect(() => {
     if (userData) {
-      setScouterDetails({
+      const scouterDetails = {
         name: `${userData.firstName!} ${userData.lastName!}`,
         clerkId: userData.clerkId,
         id: userData.id.toString(),
-      });
+      };
+      setScouterDetails(scouterDetails);
+      localStorage.setItem(
+        LOCAL_STORAGE_KEYS.SCOUTER_DETAILS,
+        JSON.stringify(scouterDetails)
+      );
     }
   }, [userData]);
 
@@ -183,6 +203,17 @@ const ScoutPage = () => {
       setMatchSchedule(matchScheduleData);
     }
   }, [matchScheduleData]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      LOCAL_STORAGE_KEYS.CURRENT_SCREEN,
+      JSON.stringify({
+        currentScreenIndex,
+        name: screens[currentScreenIndex].name,
+      })
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentScreenIndex]);
 
   if (!userData) return <div>Loading...</div>;
 
@@ -232,22 +263,12 @@ const ScoutPage = () => {
         }}
       >
         <ScoutingInfoHeader />
-        <StartingPositionScreen />
-        <BallScoutSetup />
-        {/* <FieldImage>
-          <div className="flex flex-row justify-start gap-10">
-            <Button onClick={() => console.log("clicked 1")}>Test 1</Button>
-            <Button onClick={() => console.log("clicked 2")}>Test 2</Button>
-            <Button onClick={() => console.log("clicked 3")}>Test 3</Button>
-          </div>
-        </FieldImage> */}
         {screens[currentScreenIndex].component}
-        {/* <ScoutActionButton
+        <ScoutActionButton
           actionName={ACTION_NAMES.INTAKE}
           gamePiece={GAME_PIECES.CORAL}
           location={LOCATIONS.OPPONENT_HALF}
         />
-        <UndoActionButton /> */}
       </ScoutDataContext.Provider>
     </ScoutScreenContext.Provider>
   );
