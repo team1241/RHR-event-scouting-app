@@ -270,7 +270,6 @@ const ScoutPage = () => {
         }}
       >
         <ScoutingInfoHeader />
-        <BallScoringScreen />
         {screens[currentScreenIndex].component}
         <ScoutActionButton
           actionName={ACTION_NAMES.INTAKE}
