@@ -5,6 +5,7 @@ import { Button } from "~/components/ui/button";
 import MatchSelectionForm from "./match-selection-form";
 import { useState } from "react";
 import {MoveRightIcon } from "lucide-react";
+import ContinueButton from "~/app/scout/[eventCode]/components/common/continue-button";
 
 export default function ManavPage() {
   const [teamSelected, setTeamSelected] = useState("");
@@ -92,15 +93,7 @@ export default function ManavPage() {
 
       <div className="flex flex-row mt-16 justify-between items-center">
         <p className="text-2xl">{`Team Scouted: ${teamSelected}`}</p>
-        <Button
-          className="!w-64"
-          variant={"proceed"}
-          size={"proceed"}
-          disabled={teamSelected === ""}
-        >
-          Continue
-          <MoveRightIcon> </MoveRightIcon>
-        </Button>
+        <ContinueButton disabled={teamSelected === ""} />
       </div>
     </>
   );
