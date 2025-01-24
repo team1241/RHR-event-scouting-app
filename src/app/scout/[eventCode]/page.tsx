@@ -31,6 +31,7 @@ import {
   GAME_PIECES,
   LOCATIONS,
 } from "~/app/scout/[eventCode]/constants";
+import AutonomousScreen from "./components/autonomous-screen";
 
 const ScoutPage = () => {
   const { eventCode } = useParams<{ eventCode: string }>();
@@ -64,7 +65,7 @@ const ScoutPage = () => {
       canGoBack: true,
     },
     {
-      component: <div>Auto</div>,
+      component: <AutonomousScreen></AutonomousScreen>,
       name: SCREEN_NAMES.AUTO,
       canGoBack: false,
     },
@@ -263,7 +264,7 @@ const ScoutPage = () => {
         }}
       >
         <ScoutingInfoHeader />
-        {screens[currentScreenIndex].component}
+        {screens[2].component}
         <ScoutActionButton
           actionName={ACTION_NAMES.INTAKE}
           gamePiece={GAME_PIECES.CORAL}
