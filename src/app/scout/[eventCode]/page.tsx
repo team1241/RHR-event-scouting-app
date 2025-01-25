@@ -31,6 +31,7 @@ import {
   GAME_PIECES,
   LOCATIONS,
 } from "~/app/scout/[eventCode]/constants";
+import MatchSelectionScreen from "./components/match-selection-screen";
 
 const ScoutPage = () => {
   const { eventCode } = useParams<{ eventCode: string }>();
@@ -54,7 +55,7 @@ const ScoutPage = () => {
   // TODO: Update the components of each screen to be the actual screen once the dev for it is completed
   const screens = [
     {
-      component: <div>Match selection screen</div>,
+      component: <MatchSelectionScreen />,
       name: SCREEN_NAMES.MATCH_SELECTION,
       canGoBack: false,
     },
@@ -103,12 +104,14 @@ const ScoutPage = () => {
   const [undoOccurred, setUndoOccurred] = useState(false);
   const [wasDefended, setWasDefended] = useState(false);
   const [matchSchedule, setMatchSchedule] = useState<MatchScheduleType[]>([]);
+  const [currentMatch, setCurrentMatch] = useState<MatchScheduleType>();
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const [matchNumber, setMatchNumber] = useState("");
   const [teamToScout, setTeamToScout] = useState<number | undefined>();
   const [allianceColour, setAllianceColour] = useState("");
   const [uiOrientation, setUiOrientation] = useState(
-    localStorage.getItem(LOCAL_STORAGE_KEYS.UI_ORIENTATION) ||
+    (typeof window !== "undefined" &&
+      localStorage.getItem(LOCAL_STORAGE_KEYS.UI_ORIENTATION)) ||
       FIELD_ORIENTATIONS.DEFAULT
   );
   const [scouterDetails, setScouterDetails] = useState({
@@ -167,6 +170,7 @@ const ScoutPage = () => {
 
   const { data: matchScheduleData } = useQuery({
     enabled: !!eventCode,
+    // enabled: false,
     queryKey: ["matchSchedule", eventCode],
     queryFn: async (): Promise<MatchScheduleType[]> =>
       fetchMatchScheduleByYearAndEventCode(
@@ -235,6 +239,8 @@ const ScoutPage = () => {
           setAlternateScoutData,
           matchSchedule,
           setMatchSchedule,
+          currentMatch,
+          setCurrentMatch,
           matchNumber,
           setMatchNumber,
           teamToScout,

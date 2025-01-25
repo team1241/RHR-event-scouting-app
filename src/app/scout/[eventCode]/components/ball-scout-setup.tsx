@@ -6,13 +6,13 @@ import BackButton from "./common/back-button";
 import ContinueButton from "./common/continue-button";
 import { useContext, useState } from "react";
 import { cn } from "~/lib/utils";
-import { ScoutDataContext } from "../context";
+import { ScoutDataContext, ScoutScreenContext } from "../context";
 
 export default function BallScoutSetup() {
   const [redHumanPlayerSelected, setRedHumanPlayerSelected] = useState("");
   const [blueHumanPlayerSelected, setBlueHumanPlayerSelected] = useState("");
   const context = useContext(ScoutDataContext);
-
+  const screenContext = useContext(ScoutScreenContext);
   const updateTeamNumber = (teamNumber: number, allianceColour: string) => {
     if (context.alternateScoutData && context.setAlternateScoutData) {
       context.setAlternateScoutData({
@@ -133,11 +133,14 @@ export default function BallScoutSetup() {
       </div>
 
       <div className="flex flex-row justify-between my-20">
-        <BackButton />
+        <BackButton
+          onClick={() => screenContext.goToScreen("match-selection")}
+        />
         <ContinueButton
           disabled={
             redHumanPlayerSelected === "" || blueHumanPlayerSelected === ""
           }
+          onClick={() => screenContext.nextScreen()}
         />
       </div>
     </>

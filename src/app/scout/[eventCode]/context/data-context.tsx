@@ -41,11 +41,13 @@ interface ScoutDataContextType {
   setAlternateScoutData?: (alternateScoutData: AlternateScoutData) => void;
   matchSchedule: MatchScheduleType[];
   setMatchSchedule: (matchSchedule: MatchScheduleType[]) => void;
+  currentMatch: MatchScheduleType | undefined;
+  setCurrentMatch: (match: MatchScheduleType) => void;
   fieldImages: FieldImages[] | undefined;
   matchNumber: string;
   setMatchNumber: (matchNumber: string) => void;
-  teamToScout: number | undefined;
-  setTeamToScout: (teamToScout: number | undefined) => void;
+  teamToScout: number | string | undefined;
+  setTeamToScout: (teamToScout: number | string | undefined) => void;
   allianceColour: string;
   setAllianceColour: (allianceColour: string) => void;
   uiOrientation: string;

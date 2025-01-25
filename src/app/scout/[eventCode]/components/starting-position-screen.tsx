@@ -8,7 +8,7 @@ import ContinueButton from "./common/continue-button";
 import { Checkbox } from "~/components/ui/checkbox";
 import FieldImage from "./common/field-image";
 import { useContext, useState } from "react";
-import { ScoutDataContext } from "../context";
+import { ScoutDataContext, ScoutScreenContext } from "../context";
 import {
   FIELD_ORIENTATIONS,
   LOCAL_STORAGE_KEYS,
@@ -19,6 +19,7 @@ import { getFlexDirection } from "../utils";
 
 export default function StartingPositionScreen() {
   const context = useContext(ScoutDataContext);
+  const screenContext = useContext(ScoutScreenContext);
   const toggleFieldOrientation = () => {
     const newOrientation =
       context.uiOrientation === FIELD_ORIENTATIONS.DEFAULT
@@ -169,8 +170,9 @@ export default function StartingPositionScreen() {
       </FieldImage>
       <div className="flex flex-row">
         <div className="flex justify-between w-full">
-          <BackButton />
+          <BackButton onClick={() => screenContext.prevScreen()} />
           <ContinueButton
+            onClick={() => screenContext.nextScreen()}
             disabled={
               isSaved === false || context.startingPosition.position === ""
             }

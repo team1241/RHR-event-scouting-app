@@ -8,7 +8,7 @@ const authorizationCredential = btoa(
 
 const FrcEventsInstance = axios.create({
   baseURL: "https://frc-api.firstinspires.org/v3.0",
-  timeout: 5000,
+  // timeout: 5000,
   headers: {
     Authorization: `Basic ${authorizationCredential}`,
   },
