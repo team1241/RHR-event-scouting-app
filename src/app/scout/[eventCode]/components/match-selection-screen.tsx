@@ -193,7 +193,7 @@ export default function MatchSelectionScreen() {
       </div>
       <div className="flex flex-row-reverse mt-16 justify-between items-center">
         <ContinueButton
-          disabled={context.teamToScout === ""}
+          disabled={!context.teamToScout}
           onClick={() => {
             if (context.teamToScout === "Human Players") {
               screenContext.goToScreen("alternate-scout-setup");
