@@ -36,9 +36,18 @@ export default function MatchSelectionForm({
 }: {
   setTeamSelectedEnabled: (value: boolean) => void;
 }) {
-  const [isMatchSelectionOpen, setIsMatchSelectionOpen] = useState(false);
-  const [isReplayChecked, setIsReplayChecked] = useState(false);
   const context = useContext(ScoutDataContext);
+  const [isMatchSelectionOpen, setIsMatchSelectionOpen] = useState(false);
+  const [isReplayChecked, setIsReplayChecked] = useState(
+    context.matchNumber.includes(`R`)
+  );
+  const [matchDropdownValue, setMatchDropdownValue] = useState(() => {
+    const matches = context.matchNumber.match(/\d+/g);
+    if (matches && matches.length > 0) {
+      return `Qualification ${matches[0]}`;
+    }
+    return "";
+  });
 
   const matchSelectionSchema = z.object({
     matchNumber: z
@@ -88,12 +97,18 @@ export default function MatchSelectionForm({
                       variant={"outline"}
                       className="flex flex-row justify-between h-16 text-xl"
                     >
-                      {field.value ? `Match ${field.value}` : "Select Match"}
+                      {matchDropdownValue !== ""
+                        ? matchDropdownValue
+                        : "Select Match"}
                       <ChevronDownIcon className="!size-6" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent sideOffset={-64}>
-                    <Command className="w-94">
+                    <Command
+                      className="w-94"
+                      value={matchDropdownValue}
+                      onValueChange={setMatchDropdownValue}
+                    >
                       <CommandInput
                         placeholder="Search Match"
                         className="h-16 text-xl"
@@ -115,6 +130,7 @@ export default function MatchSelectionForm({
                                 setIsReplayChecked(false);
 
                                 context.setCurrentMatch(match);
+                                context.setTeamToScout("");
                               }}
                             >
                               {`Qualification ${match.matchNumber}`}
@@ -126,7 +142,7 @@ export default function MatchSelectionForm({
                   </PopoverContent>
                 </Popover>
               </FormControl>
-              <div className="flex flex-row items-center">
+              <div className="flex flex-row items-center pt-8">
                 <Checkbox
                   className="size-12 "
                   id="replay"
