@@ -2,13 +2,15 @@
 
 import PageHeading from "~/components/common/page-heading";
 import { Button } from "~/components/ui/button";
-import MatchSelectionForm from "./match-selection-form";
-import { useState } from "react";
-import {MoveRightIcon } from "lucide-react";
+import MatchSelectionForm from "./common/match-selection-form";
+import { useContext, useState } from "react";
+import { MoveRightIcon } from "lucide-react";
+import { ScoutDataContext } from "../context";
 
-export default function ManavPage() {
-  const [teamSelected, setTeamSelected] = useState("");
+export default function MatchSelectionScreen() {
   const [isTeamSelectedEnabled, setTeamSelectedEnabled] = useState(false);
+  const context = useContext(ScoutDataContext);
+  console.log(context.currentMatch);
   return (
     <>
       {/* Match selection */}
@@ -25,7 +27,12 @@ export default function ManavPage() {
                 variant={"blueTeam"}
                 size={"team"}
                 id="blueOne"
-                onClick={() => setTeamSelected("1114 Simbotics")}
+                onClick={() => {
+                  const team = context?.currentMatch?.teams.find(
+                    (team) => team.station === "Blue1"
+                  );
+                  context.setTeamToScout(team?.teamNumber);
+                }}
                 disabled={!isTeamSelectedEnabled}
               >
                 Blue 1
@@ -34,7 +41,12 @@ export default function ManavPage() {
                 variant={"blueTeam"}
                 size={"team"}
                 id="blueTwo"
-                onClick={() => setTeamSelected("2056 Shazzy's team")}
+                onClick={() => {
+                  const team = context?.currentMatch?.teams.find(
+                    (team) => team.station === "Blue2"
+                  );
+                  context.setTeamToScout(team?.teamNumber);
+                }}
                 disabled={!isTeamSelectedEnabled}
               >
                 Blue 2
@@ -43,7 +55,12 @@ export default function ManavPage() {
                 variant={"blueTeam"}
                 size={"team"}
                 id="blueThree"
-                onClick={() => setTeamSelected("1285 The Biggest birds")}
+                onClick={() => {
+                  const team = context?.currentMatch?.teams.find(
+                    (team) => team.station === "Blue3"
+                  );
+                  context.setTeamToScout(team?.teamNumber);
+                }}
                 disabled={!isTeamSelectedEnabled}
               >
                 Blue 3
@@ -54,7 +71,12 @@ export default function ManavPage() {
                 variant={"redTeam"}
                 size={"team"}
                 id="redOne"
-                onClick={() => setTeamSelected("5406 Celt-X")}
+                onClick={() => {
+                  const team = context?.currentMatch?.teams.find(
+                    (team) => team.station === "Red1"
+                  );
+                  context.setTeamToScout(team?.teamNumber);
+                }}
                 disabled={!isTeamSelectedEnabled}
               >
                 Red 1
@@ -63,7 +85,12 @@ export default function ManavPage() {
                 variant={"redTeam"}
                 size={"team"}
                 id="redTwo"
-                onClick={() => setTeamSelected("1241 Theory6")}
+                onClick={() => {
+                  const team = context?.currentMatch?.teams.find(
+                    (team) => team.station === "Red2"
+                  );
+                  context.setTeamToScout(team?.teamNumber);
+                }}
                 disabled={!isTeamSelectedEnabled}
               >
                 Red 2
@@ -72,7 +99,12 @@ export default function ManavPage() {
                 variant={"redTeam"}
                 size={"team"}
                 id="redThree"
-                onClick={() => setTeamSelected("987 Highrollers")}
+                onClick={() => {
+                  const team = context?.currentMatch?.teams.find(
+                    (team) => team.station === "Red3"
+                  );
+                  context.setTeamToScout(team?.teamNumber);
+                }}
                 disabled={!isTeamSelectedEnabled}
               >
                 Red 3
@@ -91,12 +123,12 @@ export default function ManavPage() {
       </div>
 
       <div className="flex flex-row mt-16 justify-between items-center">
-        <p className="text-2xl">{`Team Scouted: ${teamSelected}`}</p>
+        <p className="text-2xl">{`Team Scouted: ${context.teamToScout}`}</p>
         <Button
           className="!w-64"
           variant={"proceed"}
           size={"proceed"}
-          disabled={teamSelected === ""}
+          disabled={context.teamToScout === undefined}
         >
           Continue
           <MoveRightIcon> </MoveRightIcon>

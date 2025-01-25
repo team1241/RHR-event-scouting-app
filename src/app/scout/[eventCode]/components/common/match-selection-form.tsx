@@ -19,6 +19,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "~/components/ui/form";
 import {
@@ -26,6 +27,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
+import { useContext } from "react";
+import { ScoutDataContext } from "../../context";
+import { Checkbox } from "~/components/ui/checkbox";
 
 export default function MatchSelectionForm({
   setTeamSelectedEnabled: setTeamSelectedEnabled,
@@ -33,6 +37,8 @@ export default function MatchSelectionForm({
   setTeamSelectedEnabled: (value: boolean) => void;
 }) {
   const [isMatchSelectionOpen, setIsMatchSelectionOpen] = useState(false);
+  const [isReplayChecked, setIsReplayChecked] = useState(false);
+  const context = useContext(ScoutDataContext);
 
   const matchSelectionSchema = z.object({
     matchNumber: z
@@ -95,50 +101,56 @@ export default function MatchSelectionForm({
                       <CommandList className="mb-4">
                         <CommandEmpty>Nothing found</CommandEmpty>
                         <CommandGroup>
-                          {/* <CommandItem
-                            onSelect={(value) => {
-                              field.onChange(value);
-                              setIsMatchSelectionOpen(false);
-                            }}
-                          >
-                            Match 1
-                          </CommandItem> */}
-                          {Array.of(
-                            [
-                              1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-                              15,
-                            ].map((value, index) => (
-                              <CommandItem
-                                className="h-16 text-lg"
-                                key={`match-dropdown-item-${index + 1}`}
-                                onSelect={(value) => {
-                                  const cleanVal = value.split(" ");
+                          {context.matchSchedule.map((match, index) => (
+                            <CommandItem
+                              className="h-16 text-lg"
+                              key={`match-dropdown-item-${index + 1}`}
+                              onSelect={(value) => {
+                                const cleanVal = value.split(" ");
 
-                                  field.onChange(cleanVal[1]);
-                                  setIsMatchSelectionOpen(false);
-                                  setTeamSelectedEnabled(true);
-                                }}
-                              >
-                                {`Match ${value}`}
-                              </CommandItem>
-                            ))
-                          )}
-                          {/* <CommandItem
-                            onSelect={(value) => {
-                              const cleanVal = value.split(" ");
+                                field.onChange(cleanVal[1]);
+                                context.setMatchNumber(`Q${cleanVal[1]}`);
+                                setIsMatchSelectionOpen(false);
+                                setTeamSelectedEnabled(true);
+                                setIsReplayChecked(false);
 
-                              field.onChange(cleanVal[1]);
-                              setIsMatchSelectionOpen(false);
-                            }}
-                          >
-                            Match 3
-                          </CommandItem> */}
+                                context.setCurrentMatch(match);
+                              }}
+                            >
+                              {`Qualification ${match.matchNumber}`}
+                            </CommandItem>
+                          ))}
                         </CommandGroup>
                       </CommandList>
                     </Command>
                   </PopoverContent>
                 </Popover>
               </FormControl>
+              <div className="flex flex-row items-center">
+                <Checkbox
+                  className="size-12 "
+                  id="replay"
+                  checked={isReplayChecked}
+                  disabled={context.matchNumber === ""}
+                  onCheckedChange={(newValue) => {
+                    setIsReplayChecked(!isReplayChecked);
+                    if (newValue) {
+                      context.setMatchNumber(`${context.matchNumber}R`);
+                    } else {
+                      context.setMatchNumber(
+                        `${context.matchNumber.substring(
+                          0,
+                          context.matchNumber.length - 1
+                        )}`
+                      );
+                    }
+                  }}
+                />
+                <FormLabel htmlFor="replay" className="pl-6 !text-3xl">
+                  {" "}
+                  Is Replay?
+                </FormLabel>
+              </div>
               <FormMessage />
             </FormItem>
           )}

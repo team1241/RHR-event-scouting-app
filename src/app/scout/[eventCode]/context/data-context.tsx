@@ -41,6 +41,8 @@ interface ScoutDataContextType {
   setAlternateScoutData?: (alternateScoutData: AlternateScoutData) => void;
   matchSchedule: MatchScheduleType[];
   setMatchSchedule: (matchSchedule: MatchScheduleType[]) => void;
+  currentMatch: MatchScheduleType | undefined;
+  setCurrentMatch: (match: MatchScheduleType) => void;
   fieldImages: FieldImages[] | undefined;
   matchNumber: string;
   setMatchNumber: (matchNumber: string) => void;
