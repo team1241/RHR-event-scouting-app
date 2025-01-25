@@ -3,6 +3,7 @@
 import { MoveLeftIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 export default function BackButton({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   disabled,
   onClick,
 }: {
