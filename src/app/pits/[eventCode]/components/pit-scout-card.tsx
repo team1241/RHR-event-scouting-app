@@ -1,6 +1,5 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
-import { Loader2Icon } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
 import {

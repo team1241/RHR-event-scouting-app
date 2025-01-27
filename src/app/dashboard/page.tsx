@@ -42,7 +42,7 @@ export default async function Dashboard() {
                 {parseISO(event.endDate).toDateString()}
               </p>
             </CardContent>
-            <CardFooter className="gap-8">
+            <CardFooter className="gap-8 justify-end">
               <Button variant="outline" asChild>
                 <Link
                   href={`/scout/${season.year}${event.eventKey}?type=practice`}

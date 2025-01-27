@@ -78,6 +78,7 @@ interface ScoutDataContextType {
   setMatchState: (matchState: MATCH_STATES) => void;
   isTimerRunning: boolean;
   setIsTimerRunning: (isTimerRunning: boolean) => void;
+  eventType: string;
 }
 
 export const ScoutDataContext = createContext<ScoutDataContextType>(

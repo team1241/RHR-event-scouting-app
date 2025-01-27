@@ -20,7 +20,7 @@ export default function ContinueButton({
       disabled={disabled}
       onClick={onClick}
     >
-      {label ? label : "Continue"}
+      {label ? label : "CONTINUE"}
       <MoveRightIcon className="!size-6" />
     </Button>
   );

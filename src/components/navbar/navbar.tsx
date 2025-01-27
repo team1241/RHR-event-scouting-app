@@ -8,13 +8,13 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "~/components/ui/navigation-menu";
+// import {
+//   NavigationMenu,
+//   NavigationMenuItem,
+//   NavigationMenuLink,
+//   NavigationMenuList,
+//   navigationMenuTriggerStyle,
+// } from "~/components/ui/navigation-menu";
 import {
   Sheet,
   SheetContent,
@@ -84,14 +84,14 @@ export default function Navbar() {
   if (pathname.includes("sign-in") || pathname.includes("sign-in")) return null;
 
   return (
-    <div className="sticky top-0 z-10 left-0 w-screen h-12 lg:h-16 px-4 grid grid-cols-3 gap-4 shadow-md border-b bg-slate-950 border-slate-900">
+    <div className="sticky top-0 z-10 left-0 w-screen h-10 px-4 grid grid-cols-2 gap-4 shadow-md border-b bg-slate-950 border-slate-900">
       <div className="flex flex-row gap-2 items-center justify-self-start col-span-2 md:col-span-1">
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden"
+              className="size-8"
               onClick={() => setIsMenuOpen(true)}
             >
               <Menu className={cn("size-6")} />
@@ -99,7 +99,7 @@ export default function Navbar() {
           </SheetTrigger>
           <SheetContent
             side="left"
-            className="flex flex-col gap-0 border-slate-950"
+            className="flex flex-col gap-0 border-slate-950 w-1/3"
           >
             <SheetHeader className="font-semibold text-xl text-left mb-4">
               Menu
@@ -133,11 +133,11 @@ export default function Navbar() {
               ))}
           </SheetContent>
         </Sheet>
-        <Image src={logo} width={40} height={40} alt="Logo" />
+        <Image src={logo} width={30} height={30} alt="Logo" />
         <p className="font-semibold">Scouting</p>
       </div>
 
-      <NavigationMenu className="justify-self-center hidden md:inline-grid">
+      {/* <NavigationMenu className="justify-self-center hidden md:inline-grid">
         <NavigationMenuList>
           {PUBLIC_NAVIGATION_ROUTES.map((route) => (
             <NavigationMenuItem key={`navbarMenuItem-${route.label}`}>
@@ -166,7 +166,7 @@ export default function Navbar() {
               </NavigationMenuItem>
             ))}
         </NavigationMenuList>
-      </NavigationMenu>
+      </NavigationMenu> */}
 
       <div className="flex flex-row gap-2 items-center justify-self-end">
         {renderUserSpecificContent()}
