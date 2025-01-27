@@ -47,7 +47,7 @@ const FieldImage = ({
     )!.imageUrl;
   };
 
-  const height = "h-96";
+  const height = "h-[28rem]";
 
   return (
     <div
@@ -60,7 +60,9 @@ const FieldImage = ({
       <div className="[grid-area:stack]">
         {fieldImages && <Image src={getImageUrl()} alt="Field Image" fill />}
       </div>
-      <div className={cn("z-50 [grid-area:stack]", getImageSize())}>{children}</div>
+      <div className={cn("z-50 [grid-area:stack]", getImageSize())}>
+        {children}
+      </div>
     </div>
   );
 };

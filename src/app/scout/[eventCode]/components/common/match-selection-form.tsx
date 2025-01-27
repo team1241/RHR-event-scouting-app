@@ -72,16 +72,9 @@ export default function MatchSelectionForm({
     },
   });
 
-  const onFormSubmit = (values: z.infer<typeof matchSelectionSchema>) => {
-    console.log(values);
-  };
-
   return (
     <Form {...matchSelectionForm}>
-      <form
-        onSubmit={matchSelectionForm.handleSubmit(onFormSubmit)}
-        className="flex flex-col gap-4 w-80"
-      >
+      <form className="flex flex-col gap-4 w-80">
         <FormField
           name="matchNumber"
           control={matchSelectionForm.control}
@@ -124,16 +117,25 @@ export default function MatchSelectionForm({
                                 const cleanVal = value.split(" ");
 
                                 field.onChange(cleanVal[1]);
-                                context.setMatchNumber(`Q${cleanVal[1]}`);
+                                context.setMatchNumber(
+                                  `${
+                                    context.eventType === "practice" ? "P" : "Q"
+                                  }${cleanVal[1]}`
+                                );
                                 setIsMatchSelectionOpen(false);
                                 setTeamSelectedEnabled(true);
                                 setIsReplayChecked(false);
 
+                                context.setAllianceColour("");
                                 context.setCurrentMatch(match);
                                 context.setTeamToScout("");
                               }}
                             >
-                              {`Qualification ${match.matchNumber}`}
+                              {`${
+                                context.eventType === "practice"
+                                  ? "Practice"
+                                  : "Qualification"
+                              } ${match.matchNumber}`}
                             </CommandItem>
                           ))}
                         </CommandGroup>

@@ -9,20 +9,21 @@ import { cn } from "~/lib/utils";
 const CountdownTimer = () => {
   const { matchState } = useContext(ScoutDataContext);
 
-  const [seconds, setSeconds] = useState(() => {
-    if (matchState === MATCH_STATES.TELEOP) return 135;
-    if (matchState === MATCH_STATES.AUTO) return 15;
-    return 0;
-  });
+  const [seconds, setSeconds] = useState(0);
   const minutesRemaining = Math.floor((seconds % 3600) / 60);
   const secondsRemaining = seconds % 60;
 
   useEffect(() => {
+    if (matchState === MATCH_STATES.PRE_START) return;
+    if (matchState === MATCH_STATES.FINISHED) return;
+    if (matchState === MATCH_STATES.AUTO) setSeconds(15);
+    if (matchState === MATCH_STATES.TELEOP) setSeconds(135);
+
     const countdownInterval = setInterval(() => {
       setSeconds((prevSeconds) => prevSeconds - 1);
     }, 1000);
     return () => clearInterval(countdownInterval);
-  }, []);
+  }, [matchState]);
 
   if (
     !seconds ||

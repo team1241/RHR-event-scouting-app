@@ -27,155 +27,87 @@ export default function MatchSelectionScreen() {
     return value;
   });
   const screenContext = useContext(ScoutScreenContext);
-  console.log(positionSelected);
   return (
     <>
       {/* Match selection */}
       <PageHeading>Match Selection</PageHeading>
-
-      <div className="flex justify-between items-center gap-4">
-        <MatchSelectionForm setTeamSelectedEnabled={setTeamSelectedEnabled} />
-        <div className="flex flex-row mt-16 justify-between items-center">
-          {context.teamToScout && (
-            <div className="flex flex-col justify-between">
-              <p className="text-4xl">{`Team Scouted `}</p>
-              <p className="text-4xl">{`${context.teamToScout}`}</p>
-            </div>
-          )}
+      <div className="flex justify-around gap-4">
+        <div className="place-self-center">
+          <MatchSelectionForm setTeamSelectedEnabled={setTeamSelectedEnabled} />
         </div>
         <div className="flex flex-col items-center justify-end gap-2">
-          <p className="text-2xl font-bold self-start">Select Position</p>
           <div className="flex flex-row justify-end gap-2">
             <div className="flex flex-col space-y-3">
-              <Button
-                variant={"blueTeam"}
-                className={cn(
-                  positionSelected === "Blue1" &&
-                    "dark:ring-2 ring-yellow-400  ring-offset-4"
-                )}
-                size={"team"}
-                id="blueOne"
-                onClick={() => {
-                  const team = context?.currentMatch?.teams.find(
-                    (team) => team.station === "Blue1"
-                  );
-                  context.setTeamToScout(team?.teamNumber);
-                  context.setAllianceColour("blue");
-                  setPositionSelected("Blue1");
-                }}
-                disabled={!isTeamSelectedEnabled}
-              >
-                Blue 1
-              </Button>
-              <Button
-                className={cn(
-                  positionSelected === "Blue2" &&
-                    "dark:ring-2 ring-yellow-400  ring-offset-4"
-                )}
-                variant={"blueTeam"}
-                size={"team"}
-                id="blueTwo"
-                onClick={() => {
-                  const team = context?.currentMatch?.teams.find(
-                    (team) => team.station === "Blue2"
-                  );
-                  context.setTeamToScout(team?.teamNumber);
-                  context.setAllianceColour("blue");
-                  setPositionSelected("Blue2");
-                }}
-                disabled={!isTeamSelectedEnabled}
-              >
-                Blue 2
-              </Button>
-              <Button
-                className={cn(
-                  positionSelected === "Blue3" &&
-                    "dark:ring-2 ring-yellow-400  ring-offset-4"
-                )}
-                variant={"blueTeam"}
-                size={"team"}
-                id="blueThree"
-                onClick={() => {
-                  const team = context?.currentMatch?.teams.find(
-                    (team) => team.station === "Blue3"
-                  );
-                  context.setTeamToScout(team?.teamNumber);
-                  context.setAllianceColour("blue");
-                  setPositionSelected("Blue3");
-                }}
-                disabled={!isTeamSelectedEnabled}
-              >
-                Blue 3
-              </Button>
+              {/* BLUE BUTTONS */}
+              {[1, 2, 3].map((position) => {
+                const team = context?.currentMatch?.teams.find(
+                  (team) => team.station === `Blue${position}`
+                );
+                return (
+                  <Button
+                    key={`blue-button-${position}`}
+                    variant={"blueTeam"}
+                    className={cn(
+                      "text-xl",
+                      positionSelected === `Blue${position}` &&
+                        "dark:ring-2 ring-yellow-400 ring-offset-4"
+                    )}
+                    size={"team"}
+                    id={`blue${position}`}
+                    onClick={() => {
+                      context.setTeamToScout(team?.teamNumber);
+                      context.setAllianceColour("blue");
+                      setPositionSelected(`Blue${position}`);
+                      context.setIsAlternateScout(false);
+                    }}
+                    disabled={!isTeamSelectedEnabled}
+                  >
+                    <div className="flex flex-col items-center justify-center">
+                      <p>{`Blue ${position}`}</p>
+                      <p>{team?.teamNumber && `(${team?.teamNumber})`}</p>
+                    </div>
+                  </Button>
+                );
+              })}
             </div>
             <div className="flex flex-col space-y-3">
-              <Button
-                className={cn(
-                  positionSelected === "Red1" &&
-                    "dark:ring-2 ring-yellow-400  ring-offset-4"
-                )}
-                variant={"redTeam"}
-                size={"team"}
-                id="redOne"
-                onClick={() => {
-                  const team = context?.currentMatch?.teams.find(
-                    (team) => team.station === "Red1"
-                  );
-                  context.setTeamToScout(team?.teamNumber);
-                  context.setAllianceColour("red");
-                  setPositionSelected("Red1");
-                }}
-                disabled={!isTeamSelectedEnabled}
-              >
-                Red 1
-              </Button>
-              <Button
-                className={cn(
-                  positionSelected === "Red2" &&
-                    "dark:ring-2 ring-yellow-400  ring-offset-4"
-                )}
-                variant={"redTeam"}
-                size={"team"}
-                id="redTwo"
-                onClick={() => {
-                  const team = context?.currentMatch?.teams.find(
-                    (team) => team.station === "Red2"
-                  );
-
-                  context.setTeamToScout(team?.teamNumber);
-                  context.setAllianceColour("red");
-                  setPositionSelected("Red2");
-                }}
-                disabled={!isTeamSelectedEnabled}
-              >
-                Red 2
-              </Button>
-              <Button
-                className={cn(
-                  positionSelected === "Red3" &&
-                    "dark:ring-2 ring-yellow-400  ring-offset-4"
-                )}
-                variant={"redTeam"}
-                size={"team"}
-                id="redThree"
-                onClick={() => {
-                  const team = context?.currentMatch?.teams.find(
-                    (team) => team.station === "Red3"
-                  );
-                  context.setTeamToScout(team?.teamNumber);
-                  context.setAllianceColour("red");
-                  setPositionSelected("Red3");
-                }}
-                disabled={!isTeamSelectedEnabled}
-              >
-                Red 3
-              </Button>
+              {/* RED BUTTONS */}
+              {[1, 2, 3].map((position) => {
+                const team = context?.currentMatch?.teams.find(
+                  (team) => team.station === `Red${position}`
+                );
+                return (
+                  <Button
+                    key={`red-button-${position}`}
+                    variant={"redTeam"}
+                    className={cn(
+                      "text-xl",
+                      positionSelected === `Red${position}` &&
+                        "dark:ring-2 ring-yellow-400 ring-offset-4"
+                    )}
+                    size={"team"}
+                    id={`red${position}`}
+                    onClick={() => {
+                      context.setTeamToScout(team?.teamNumber);
+                      context.setAllianceColour("red");
+                      setPositionSelected(`Red${position}`);
+                      context.setIsAlternateScout(false);
+                    }}
+                    disabled={!isTeamSelectedEnabled}
+                  >
+                    <div className="flex flex-col items-center justify-center">
+                      <p>{`Red ${position}`}</p>
+                      <p>{team?.teamNumber && `(${team?.teamNumber})`}</p>
+                    </div>
+                  </Button>
+                );
+              })}
             </div>
           </div>
           <div className="w-full">
             <Button
               className={cn(
-                "w-full h-16 mt-1 !bg-teal-500 font-bold",
+                "w-full h-20 mt-1 !bg-teal-500 font-bold text-xl",
                 positionSelected === "Human Players" &&
                   "dark:ring-2 ring-yellow-400  ring-offset-4"
               )}

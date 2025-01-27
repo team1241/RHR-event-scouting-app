@@ -14,6 +14,28 @@ const FrcEventsInstance = axios.create({
   },
 });
 
+const fetchFrcEvents = async (
+  url: string,
+  method: string,
+  cache?:
+    | "default"
+    | "no-store"
+    | "reload"
+    | "no-cache"
+    | "force-cache"
+    | "only-if-cached"
+) =>
+  fetch(`https://frc-api.firstinspires.org/v3.0${url}`, {
+    method,
+    headers: {
+      Authorization: `Basic ${authorizationCredential}`,
+    },
+    cache,
+    next: {
+      revalidate: 60 * 10, // 10 minutes
+    },
+  });
+
 export async function fetchSeasonInfoByYear(year: string) {
   const result = await FrcEventsInstance.get(`/${year}`);
   return result.data;
@@ -42,10 +64,26 @@ export async function fetchMatchScheduleByYearAndEventCode(
   eventCode: string,
   scheduleType: "Practice" | "Qualification" | "Playoff" = "Qualification"
 ) {
-  const { data: matchScheduleData } = await FrcEventsInstance.get(
-    `/${year}/schedule/${eventCode}?tournamentLevel=${scheduleType}`
+  const response = await fetchFrcEvents(
+    `/${year}/schedule/${eventCode}?tournamentLevel=${scheduleType}`,
+    "GET"
   );
+
+  const matchScheduleData = await response.json();
   return matchScheduleData.Schedule;
+}
+
+export async function fetchTeamsForEvent(
+  year: string,
+  eventCode: string
+): Promise<TeamType[]> {
+  const response = await fetchFrcEvents(
+    `/${year}/teams/?eventCode=${eventCode}`,
+    "GET"
+  );
+
+  const teamData = await response.json();
+  return teamData.teams;
 }
 
 export type MatchScheduleTeamType = {
@@ -61,6 +99,37 @@ export type MatchScheduleType = {
   startTime: string;
   tournamentLevel: string;
   teams: MatchScheduleTeamType[];
+};
+
+export type TeamType = {
+  schoolName: string;
+  website: string;
+  homeCMP: string;
+  teamNumber: number;
+  nameFull: string;
+  nameShort: string;
+  city: string;
+  stateProv: string;
+  country: string;
+  rookieYear: number;
+  robotName: string;
+  districtCode: string;
+};
+
+export type TeamTypeWithImages = {
+  schoolName: string;
+  website: string;
+  homeCMP: string;
+  teamNumber: number;
+  nameFull: string;
+  nameShort: string;
+  city: string;
+  stateProv: string;
+  country: string;
+  rookieYear: number;
+  robotName: string;
+  districtCode: string;
+  fieldImages?: string[];
 };
 
 export default FrcEventsInstance;

@@ -12,6 +12,7 @@ import { ScoutDataContext, ScoutScreenContext } from "../context";
 import {
   FIELD_ORIENTATIONS,
   LOCAL_STORAGE_KEYS,
+  MATCH_STATES,
   STARTING_POSITIONS,
 } from "../constants";
 import { cn } from "~/lib/utils";
@@ -78,7 +79,7 @@ export default function StartingPositionScreen() {
       <FieldImage imageSize="100%" fieldSize="half">
         <div
           className={cn(
-            "flex h-full w-full",
+            "flex h-full w-full gap-48",
             getFlexDirection(context.uiOrientation, context.allianceColour).row
           )}
         >
@@ -121,7 +122,7 @@ export default function StartingPositionScreen() {
           </div>
           <div
             className={cn(
-              "flex justify-stretch w-28 my-10 mx-16",
+              "flex justify-stretch w-28 my-12 mx-16",
               getFlexDirection(context.uiOrientation, context.allianceColour)
                 .col
             )}
@@ -130,7 +131,8 @@ export default function StartingPositionScreen() {
               className={cn(
                 "h-full dark:bg-red-500/50 font-bold text-lg dark:text-white dark:hover:bg-red-500/70",
                 context.startingPosition.position ===
-                  STARTING_POSITIONS.ZONE_1 && "dark:ring-2 ring-white"
+                  STARTING_POSITIONS.ZONE_1 &&
+                  "dark:ring-2 dark:bg-red-500/70 ring-white"
               )}
               onClick={() => {
                 setSaved(false);
@@ -143,7 +145,8 @@ export default function StartingPositionScreen() {
               className={cn(
                 "h-full dark:bg-green-500/50 font-bold text-lg dark:text-white dark:hover:bg-green-500/70",
                 context.startingPosition.position ===
-                  STARTING_POSITIONS.ZONE_2 && "dark:ring-2 ring-white"
+                  STARTING_POSITIONS.ZONE_2 &&
+                  "dark:ring-2 dark:bg-green-500/70 ring-white"
               )}
               onClick={() => {
                 setSaved(false);
@@ -156,7 +159,8 @@ export default function StartingPositionScreen() {
               className={cn(
                 "h-full dark:bg-blue-500/50 font-bold text-lg dark:text-white dark:hover:bg-blue-500/70",
                 context.startingPosition.position ===
-                  STARTING_POSITIONS.ZONE_3 && "dark:ring-2 ring-white"
+                  STARTING_POSITIONS.ZONE_3 &&
+                  "dark:ring-2 dark:bg-blue-500/70 ring-white"
               )}
               onClick={() => {
                 setSaved(false);
@@ -172,7 +176,10 @@ export default function StartingPositionScreen() {
         <div className="flex justify-between w-full">
           <BackButton onClick={() => screenContext.prevScreen()} />
           <ContinueButton
-            onClick={() => screenContext.nextScreen()}
+            onClick={() => {
+              screenContext.nextScreen();
+              context.setMatchState(MATCH_STATES.AUTO);
+            }}
             disabled={
               isSaved === false || context.startingPosition.position === ""
             }

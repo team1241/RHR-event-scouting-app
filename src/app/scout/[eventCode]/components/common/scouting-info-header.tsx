@@ -17,30 +17,24 @@ const ScoutingInfoHeader = () => {
 
   return (
     <div className="w-full h-9 flex justify-between items-center">
-      <p className="font-semibold">
-        Match:{" "}
-        <span
-          className={cn(
-            "text-white rounded-sm bg-green-700 py-1 px-2",
-            !matchNumber && "bg-yellow-500 text-black "
-          )}
-        >
-          {matchNumber || "Not set"}
-        </span>
+      <p
+        className={cn(
+          "text-white rounded-sm bg-green-700 py-1 px-2 font-semibold",
+          !matchNumber && "bg-yellow-500 text-black "
+        )}
+      >
+        {matchNumber || "Match not set"}
       </p>
       <CountdownTimer />
       {!isAlternateScout ? (
-        <p className="font-semibold">
-          Team:{" "}
-          <span
-            className={cn(
-              "rounded-sm py-1 px-2",
-              getTeamToScoutColour(),
-              !teamToScout ? "text-black" : "text-white"
-            )}
-          >
-            {teamToScout || "Not set"}
-          </span>
+        <p
+          className={cn(
+            "rounded-sm py-1 px-2 font-bold text-center",
+            getTeamToScoutColour(),
+            !teamToScout ? "text-black" : "text-white w-24"
+          )}
+        >
+          {teamToScout || "Team not set"}
         </p>
       ) : (
         <p className="font-semibold bg-teal-700 rounded-sm py-1 px-2">

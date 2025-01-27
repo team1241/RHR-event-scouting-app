@@ -52,6 +52,8 @@ model Seasons {
   createdAt   String
   updatedAt   String
   fieldImages FieldImages[]
+
+  PitScoutImages PitScoutImages[]
 }
 
 model FieldImages {
@@ -64,6 +66,16 @@ model FieldImages {
   updatedAt String
 
   @@unique([seasonId, type])
+}
+
+model PitScoutImages {
+  id         Int      @id @default(autoincrement())
+  season     Seasons  @relation(fields: [seasonId], references: [id])
+  seasonId   Int
+  imageUrls  String[]
+  teamNumber Int
+
+  @@unique([seasonId, teamNumber])
 }
 
 model Events {

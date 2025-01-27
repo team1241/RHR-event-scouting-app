@@ -107,7 +107,7 @@ const ScoutPage = () => {
   const [currentMatch, setCurrentMatch] = useState<MatchScheduleType>();
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const [matchNumber, setMatchNumber] = useState("");
-  const [teamToScout, setTeamToScout] = useState<number | undefined>();
+  const [teamToScout, setTeamToScout] = useState<number | string | undefined>();
   const [allianceColour, setAllianceColour] = useState("");
   const [uiOrientation, setUiOrientation] = useState(
     (typeof window !== "undefined" &&
@@ -136,7 +136,7 @@ const ScoutPage = () => {
     });
 
   const nextScreen = () => {
-    window.scrollTo(0, 0);
+    typeof window !== "undefined" && window.scrollTo(0, 0);
     setCurrentScreenIndex(
       currentScreenIndex < screens.length - 1
         ? currentScreenIndex + 1
@@ -145,7 +145,7 @@ const ScoutPage = () => {
   };
 
   const prevScreen = () => {
-    window.scrollTo(0, 0);
+    typeof window !== "undefined" && window.scrollTo(0, 0);
     if (!screens[currentScreenIndex].canGoBack) return;
     setCurrentScreenIndex(
       currentScreenIndex > 0 ? currentScreenIndex - 1 : currentScreenIndex
@@ -156,7 +156,7 @@ const ScoutPage = () => {
     const screenIndex = screens.findIndex(
       (screen) => screen.name === screenName
     );
-    window.scrollTo(0, 0);
+    typeof window !== "undefined" && window.scrollTo(0, 0);
     setCurrentScreenIndex(screenIndex);
   };
 
@@ -171,7 +171,11 @@ const ScoutPage = () => {
   const { data: matchScheduleData } = useQuery({
     enabled: !!eventCode,
     // enabled: false,
-    queryKey: ["matchSchedule", eventCode],
+    queryKey: [
+      "matchSchedule",
+      eventCode,
+      eventType === "practice" ? "P" : "Q",
+    ],
     queryFn: async (): Promise<MatchScheduleType[]> =>
       fetchMatchScheduleByYearAndEventCode(
         eventYear,
@@ -266,6 +270,7 @@ const ScoutPage = () => {
           setMatchState,
           isTimerRunning,
           setIsTimerRunning,
+          eventType: eventType || "Qualification",
         }}
       >
         <ScoutingInfoHeader />
@@ -274,6 +279,7 @@ const ScoutPage = () => {
           actionName={ACTION_NAMES.INTAKE}
           gamePiece={GAME_PIECES.CORAL}
           location={LOCATIONS.OPPONENT_HALF}
+          label="Scout Action"
         />
       </ScoutDataContext.Provider>
     </ScoutScreenContext.Provider>
