@@ -91,7 +91,7 @@ const ScoutPage = () => {
       canGoBack: true,
     },
     {
-      component: <div>Alternate scout scoring</div>,
+      component: <BallScoringScreen />,
       name: SCREEN_NAMES.ALTERNATE_SCOUT.SCORING,
       canGoBack: true,
     },
