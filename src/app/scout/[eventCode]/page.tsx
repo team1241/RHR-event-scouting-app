@@ -91,7 +91,7 @@ const ScoutPage = () => {
       canGoBack: true,
     },
     {
-      component: <div>Alternate scout scoring</div>,
+      component: <BallScoringScreen />,
       name: SCREEN_NAMES.ALTERNATE_SCOUT.SCORING,
       canGoBack: true,
     },
@@ -108,7 +108,7 @@ const ScoutPage = () => {
   const [currentMatch, setCurrentMatch] = useState<MatchScheduleType>();
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const [matchNumber, setMatchNumber] = useState("");
-  const [teamToScout, setTeamToScout] = useState<number | undefined>();
+  const [teamToScout, setTeamToScout] = useState<number | string | undefined>();
   const [allianceColour, setAllianceColour] = useState("");
   const [uiOrientation, setUiOrientation] = useState(
     (typeof window !== "undefined" &&
