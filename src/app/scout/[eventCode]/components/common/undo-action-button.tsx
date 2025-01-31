@@ -1,5 +1,6 @@
 "use client";
 
+import { Undo } from "lucide-react";
 import React, { useContext } from "react";
 import { toast } from "sonner";
 import { LOCAL_STORAGE_KEYS } from "~/app/scout/[eventCode]/constants";
@@ -39,6 +40,7 @@ const UndoActionButton = ({
       className={cn("text-white font-bold", className)}
     >
       UNDO
+      <Undo className="!size-6"/>
     </Button>
   );
 };
