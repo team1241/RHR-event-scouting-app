@@ -53,7 +53,7 @@ export default function BallScoutSetup() {
               console.log(teamsInCurrentMatch[0]);
             }}
           >
-            Red 1
+            {`${teamsInCurrentMatch[0]}`}
           </Button>
           <Button
             variant={"redTeam"}
@@ -68,7 +68,7 @@ export default function BallScoutSetup() {
               updateTeamNumber(teamsInCurrentMatch[1], "red");
             }}
           >
-            Red 2
+            {`${teamsInCurrentMatch[1]}`}
           </Button>
           <Button
             variant={"redTeam"}
@@ -83,7 +83,7 @@ export default function BallScoutSetup() {
               updateTeamNumber(teamsInCurrentMatch[2], "red");
             }}
           >
-            Red 3
+            {`${teamsInCurrentMatch[2]}`}
           </Button>
         </div>
         <div className="flex flex-col gap-y-3">
@@ -102,7 +102,7 @@ export default function BallScoutSetup() {
             }}
           >
             {" "}
-            Blue 1
+            {`${teamsInCurrentMatch[3]}`}
           </Button>
           <Button
             variant={"blueTeam"}
@@ -118,7 +118,7 @@ export default function BallScoutSetup() {
             }}
           >
             {" "}
-            Blue 2
+            {`${teamsInCurrentMatch[4]}`}
           </Button>
           <Button
             variant={"blueTeam"}
@@ -134,7 +134,7 @@ export default function BallScoutSetup() {
             }}
           >
             {" "}
-            Blue 3
+            {`${teamsInCurrentMatch[5]}`}
           </Button>
         </div>
       </div>

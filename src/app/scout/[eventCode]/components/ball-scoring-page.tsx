@@ -8,21 +8,43 @@ import { ScoutDataContext } from "../context/data-context";
 import { Button } from "~/components/ui/button";
 import PageHeading from "~/components/common/page-heading";
 import { PlusIcon, MinusIcon } from "lucide-react";
+import { getFlexDirection } from "../utils";
+import { FIELD_ORIENTATIONS, LOCAL_STORAGE_KEYS } from "../constants";
 export default function BallScoringScreen() {
   const context = useContext(ScoutDataContext);
-  console.log(context);
+  const toggleFieldOrientation = () => {
+    const newOrientation =
+      context.uiOrientation === FIELD_ORIENTATIONS.DEFAULT
+        ? FIELD_ORIENTATIONS.FLIPPED
+        : FIELD_ORIENTATIONS.DEFAULT;
+
+    context.setUiOrientation(newOrientation);
+
+    localStorage.setItem(LOCAL_STORAGE_KEYS.UI_ORIENTATION, newOrientation);
+  };
+
   return (
     <>
       <PageHeading>Human Player Balls Scored</PageHeading>
       <FieldImage imageSize="100%" fieldSize="full">
         <div
           className={cn(
-            "flex h-full w-full justify-center"
-            // getFlexDirection(context.uiOrientation, context.allianceColour).row
+            "flex h-full w-full justify-center",
+            getFlexDirection(context.uiOrientation, context.allianceColour).row
           )}
         >
-          <div className="flex flex-col pt-4 justify-center mr-5">
-            <div className="flex flex-col pb-2">
+          <div
+            className={cn(
+              "flex pt-4 justify-center mr-5",
+              getFlexDirection(context.uiOrientation, "blue").col
+            )}
+          >
+            <div
+              className={cn(
+                "flex pb-2",
+                getFlexDirection(context.uiOrientation, "blue").col
+              )}
+            >
               <Button
                 className="h-14 w-60"
                 onClick={() => {
@@ -75,7 +97,12 @@ export default function BallScoringScreen() {
                 <MinusIcon className="!size-8"></MinusIcon>
               </Button>
             </div>
-            <div className="flex flex-col pb-2">
+            <div
+              className={cn(
+                "flex pb-2",
+                getFlexDirection(context.uiOrientation, "blue").col
+              )}
+            >
               <Button
                 className="h-14 w-60"
                 onClick={() => {
@@ -128,7 +155,12 @@ export default function BallScoringScreen() {
               </Button>
             </div>
           </div>
-          <div className="flex flex-col pt-4 justify-center ml-5">
+          <div
+            className={cn(
+              "flex pt-4 justify-center mr-5",
+              getFlexDirection(context.uiOrientation, "blue").col
+            )}
+          >
             <div className="flex flex-col pb-2">
               <Button
                 className="h-14 w-60"
@@ -183,7 +215,13 @@ export default function BallScoringScreen() {
                 <MinusIcon className="!size-8"></MinusIcon>
               </Button>
             </div>
-            <div className="flex flex-col pb-2">
+            <div
+              className={cn(
+                "flex pb-2",
+                getFlexDirection(context.uiOrientation, context.allianceColour)
+                  .col
+              )}
+            >
               <Button
                 className="h-14 w-60"
                 onClick={() => {
@@ -207,7 +245,7 @@ export default function BallScoringScreen() {
                 <PlusIcon className="!size-8"></PlusIcon>
               </Button>
               <p className="dark:bg-red-600 p-3 text-center text-white font-bold text-2xl h-24 w-60">
-                Red Score<br></br>
+                Red Score <br></br>
                 <span className="text-4xl">
                   {`${context.alternateScoutData?.scoring.redScore}`}
                 </span>
@@ -238,6 +276,12 @@ export default function BallScoringScreen() {
           </div>
         </div>
       </FieldImage>
+      <Button
+        className="font-bold text-2xl tracking-wide w-64 h-20"
+        onClick={toggleFieldOrientation}
+      >
+        FLIP FIELD
+      </Button>
       <div className="flex flex-row justify-end">
         <ContinueButton />
       </div>
