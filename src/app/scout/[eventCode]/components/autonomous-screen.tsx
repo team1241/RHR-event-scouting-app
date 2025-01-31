@@ -28,8 +28,25 @@ export default function AutonomousScreen() {
       </div>
       <div>
         <FieldImage imageSize="100%" fieldSize="half">
-            <div className="w-full h-full">
-
+            <div className="flex flex-row w-full h-full">
+              <div className="flex flex-col justify-center h-full gap-10 mx-2">
+                <Button className="text-xl font-bold w-52 h-16">Coral Pickup</Button>
+                <Button className="text-xl font-bold w-52 h-16">Ground Intake Coral</Button>
+                <Button className="text-xl font-bold w-52 h-16">Ground Intake Algae</Button>
+                <Button className="text-xl font-bold w-52 h-16">Coral Pickup</Button>
+              </div>
+              <div className="flex flex-col h-full gap-3 mx-28">    
+                <Button className="text-xl font-bold w-44 h-16 my-20">Algae Dislodge</Button>
+                <Button className="text-xl font-bold w-44 h-16">Coral Score</Button> 
+                <Button className="text-xl font-bold w-44 h-16">Coral Miss</Button> 
+              </div>
+              <div className="flex flex-col h-full mx-16 items-center">
+                <div className="flex flex-col my-20 gap-5">
+              <Button className="text-xl font-bold w-36 h-16">Net Scored</Button>
+              <Button className="text-xl font-bold w-36 h-16">Net `Missed</Button>
+                </div>
+              <Button className="text-xl font-bold w-44 h-16">Processor Score</Button>
+              </div>
             </div>
         </FieldImage>
       </div>
