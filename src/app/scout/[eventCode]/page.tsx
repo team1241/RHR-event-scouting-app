@@ -15,6 +15,7 @@ import ScoutingInfoHeader from "~/app/scout/[eventCode]/components/scouting-info
 import { FieldImages } from "@prisma/client";
 import { getFieldImagesForActiveSeason } from "~/db/queries/field-images";
 import { MATCH_STATES } from "~/app/scout/[eventCode]/constants";
+import EndgameScreen from "./components/endgame-screen";
 // import FieldImage from "~/app/scout/[eventCode]/components/field-image";
 // import { Button } from "~/components/ui/button";
 // import ScoutActionButton from "~/app/scout/[eventCode]/components/scout-action-button";
@@ -214,6 +215,7 @@ const ScoutPage = () => {
         }}
       >
         <ScoutingInfoHeader />
+        <EndgameScreen />
         {/* <FieldImage>
           <div className="flex flex-row justify-start gap-10">
             <Button onClick={() => console.log("clicked 1")}>Test 1</Button>
