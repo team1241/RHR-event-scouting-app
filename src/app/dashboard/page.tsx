@@ -30,7 +30,12 @@ export default async function Dashboard() {
     <div>
       <PageHeading>Events</PageHeading>
       <div className="grid grid-cols-2 grid-flow-row gap-4 mt-2">
-        {events?.length &&
+        {!events && (
+          <h1 className="text-4xl font-bold">
+            Check back when events are added!
+          </h1>
+        )}
+        {events?.length > 0 &&
           events.map((event) => (
             <Card className="border-2" key={`dashbaord-card-${event.eventKey}`}>
               <CardHeader>

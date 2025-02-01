@@ -14,12 +14,6 @@ const nextConfig = {
       },
     ],
   },
-  rewrites: async () => {
-    return {
-      // afterFiles: [],
-      // beforeFiles: [{ source: "/", destination: "/dashboard" }],
-    };
-  },
 };
 
 export default nextConfig;
