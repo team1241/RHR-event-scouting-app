@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { ReactNode, useContext } from "react";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import { ScoutDataContext } from "../../context";
@@ -24,6 +24,7 @@ const ScoutActionButton = ({
   isAuto?: boolean;
   className?: string;
   label: string;
+  children: ReactNode;
   onClick?: () => void;
   disabled?: boolean;
 }) => {
@@ -39,7 +40,7 @@ const ScoutActionButton = ({
         scoutId: scoutDataContext.scouterDetails.id.toString(),
         matchNumber: scoutDataContext.matchNumber,
         teamNumber: scoutDataContext.teamToScout!,
-        eventCode: scoutDataContext.matchNumber, 
+        eventCode: scoutDataContext.matchNumber,
         hasUndo: scoutDataContext.undoOccurred,
         wasDefended: scoutDataContext.wasDefended,
         actionName,
