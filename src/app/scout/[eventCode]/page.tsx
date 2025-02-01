@@ -31,6 +31,7 @@ import {
   GAME_PIECES,
   LOCATIONS,
 } from "~/app/scout/[eventCode]/constants";
+import BallScoringScreen from "./components/ball-scoring-page";
 import MatchSelectionScreen from "./components/match-selection-screen";
 
 const ScoutPage = () => {
@@ -90,7 +91,7 @@ const ScoutPage = () => {
       canGoBack: true,
     },
     {
-      component: <div>Alternate scout scoring</div>,
+      component: <BallScoringScreen />,
       name: SCREEN_NAMES.ALTERNATE_SCOUT.SCORING,
       canGoBack: true,
     },
