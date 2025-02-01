@@ -53,9 +53,16 @@ export async function fetchDistrictsByYear(year: string) {
 }
 
 export async function fetchEventByYearAndCode(year: string, eventCode: string) {
-  const { data: eventData } = await FrcEventsInstance.get(
-    `/${year}/events?eventCode=${eventCode}`
+  // const { data: eventData } = await FrcEventsInstance.get(
+  //   `/${year}/events?eventCode=${eventCode}`
+  // );
+
+  const response = await fetchFrcEvents(
+    `/${year}/events?eventCode=${eventCode}`,
+    "GET"
   );
+
+  const eventData = await response.json();
   return eventData.Events[0];
 }
 

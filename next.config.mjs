@@ -16,7 +16,8 @@ const nextConfig = {
   },
   rewrites: async () => {
     return {
-      beforeFiles: [{ source: "/", destination: "/dashboard" }],
+      // afterFiles: [],
+      // beforeFiles: [{ source: "/", destination: "/dashboard" }],
     };
   },
 };
