@@ -10,7 +10,8 @@
     "db:migrate-dev": "prisma migrate dev",
     "db:generate": "prisma generate",
     "db:studio": "npx prisma studio",
-    "ngrok:setup": "ngrok http --domain=turtle-patient-bat.ngrok-free.app 4000"
+    "ngrok:setup": "ngrok http --domain=turtle-patient-bat.ngrok-free.app 4000",
+    "postinstall": "prisma generate && prisma migrate deploy"
   },
   "dependencies": {
     "@clerk/elements": "^0.15.4",
