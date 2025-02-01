@@ -85,22 +85,22 @@ export default function SeasonAndImageSelector({
 
   const fieldImages = useMemo(() => {
     return {
-      fullField: activeSeason.fieldImages.find(
+      fullField: activeSeason?.fieldImages.find(
         (image) => image.type === FieldImageType.FULL_FIELD
       )?.imageUrl,
-      blueHalf: activeSeason.fieldImages.find(
+      blueHalf: activeSeason?.fieldImages.find(
         (image) => image.type === FieldImageType.BLUE_HALF
       )?.imageUrl,
-      redHalf: activeSeason.fieldImages.find(
+      redHalf: activeSeason?.fieldImages.find(
         (image) => image.type === FieldImageType.RED_HALF
       )?.imageUrl,
-      fullFieldFlipped: activeSeason.fieldImages.find(
+      fullFieldFlipped: activeSeason?.fieldImages.find(
         (image) => image.type === FieldImageType.FULL_FIELD_FLIPPED
       )?.imageUrl,
-      blueHalfFlipped: activeSeason.fieldImages.find(
+      blueHalfFlipped: activeSeason?.fieldImages.find(
         (image) => image.type === FieldImageType.BLUE_HALF_FLIPPED
       )?.imageUrl,
-      redHalfFlipped: activeSeason.fieldImages.find(
+      redHalfFlipped: activeSeason?.fieldImages.find(
         (image) => image.type === FieldImageType.RED_HALF_FLIPPED
       )?.imageUrl,
     };
