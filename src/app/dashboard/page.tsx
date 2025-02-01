@@ -30,35 +30,38 @@ export default async function Dashboard() {
     <div>
       <PageHeading>Events</PageHeading>
       <div className="grid grid-cols-2 grid-flow-row gap-4 mt-2">
-        {events.map((event) => (
-          <Card className="border-2" key={`dashbaord-card-${event.eventKey}`}>
-            <CardHeader>
-              <CardTitle className="line-clamp-1">{event.name}</CardTitle>
-              <CardDescription>{event.eventKey.toUpperCase()}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>
-                {parseISO(event.startDate).toDateString()} -{" "}
-                {parseISO(event.endDate).toDateString()}
-              </p>
-            </CardContent>
-            <CardFooter className="gap-8 justify-end">
-              <Button variant="outline" asChild>
-                <Link
-                  href={`/scout/${season.year}${event.eventKey}?type=practice`}
-                >
-                  Scout Practice
-                </Link>
-              </Button>
-              <Button asChild>
-                <Link href={`/scout/${season.year}${event.eventKey}`}>
-                  {" "}
-                  Scout Quals
-                </Link>
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+        {events.length &&
+          events.map((event) => (
+            <Card className="border-2" key={`dashbaord-card-${event.eventKey}`}>
+              <CardHeader>
+                <CardTitle className="line-clamp-1">{event.name}</CardTitle>
+                <CardDescription>
+                  {event.eventKey.toUpperCase()}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p>
+                  {parseISO(event.startDate).toDateString()} -{" "}
+                  {parseISO(event.endDate).toDateString()}
+                </p>
+              </CardContent>
+              <CardFooter className="gap-8 justify-end">
+                <Button variant="outline" asChild>
+                  <Link
+                    href={`/scout/${season.year}${event.eventKey}?type=practice`}
+                  >
+                    Scout Practice
+                  </Link>
+                </Button>
+                <Button asChild>
+                  <Link href={`/scout/${season.year}${event.eventKey}`}>
+                    {" "}
+                    Scout Quals
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
       </div>
 
       {user && !user.isSignupComplete && (
