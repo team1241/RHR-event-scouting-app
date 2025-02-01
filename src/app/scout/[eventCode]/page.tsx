@@ -271,6 +271,8 @@ const ScoutPage = () => {
           setMatchState,
           isTimerRunning,
           setIsTimerRunning,
+          setPreviousEndgameAction,
+          previousEndgameAction,
           eventType: eventType || "Qualification",
         }}
       >

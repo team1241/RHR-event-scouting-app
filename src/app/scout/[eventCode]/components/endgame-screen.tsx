@@ -30,6 +30,9 @@ export default function EndgameScreen() {
   const [isMatchSelectionOpen, setIsMatchSelectionOpen] = useState(false);
   const [actionDone, setActionDone] = useState(false);
   const [positionSelected, setPositionSelected] = useState(false);
+  setCurrentAction(context.previousEndgameAction.actionMessage);
+  setPositionSelected(context.previousEndgameAction.wasPositionSelected);
+  setActionDone(context.previousEndgameAction.actionDone);
   function checkActionButtonDisabled() {
     let disability = false;
     if (!positionSelected || actionDone) {
@@ -48,12 +51,17 @@ export default function EndgameScreen() {
           </div>
           <UndoActionButton
             onClick={() => {
+<<<<<<< HEAD
+              setHangPositionSelected("");
+              setCurrentAction("");
+=======
               if (hangPositionSelected !== "") {
                 setHangPositionSelected("");
                 setActionDone(false);
                 setCurrentAction("");
                 setPositionSelected(false);
               }
+>>>>>>> cadf7f0 (╰(*°▽°*)╯╰(*°▽°*)╯FIXED IT!!!!! ╰(*°▽°*)╯╰(*°▽°*)╯)
             }}
             className="text-xl bg-red-600 h-16 w-40"
           />
@@ -70,14 +78,19 @@ export default function EndgameScreen() {
         >
           <div className="flex flex-col justify-stretch h-full mx-28 my-14">
             <ScoutActionButton
-              actionName={ACTION_NAMES.CLIMB.SUCCESS}
-              gamePiece={GAME_PIECES.CAGE.SHALLOW}
-              location={hangPositionSelected}
               className=" mb-1 h-16 w-40 font-bold text-xl bg-pink-600"
               onClick={() => {
                 setActionDone(true);
                 setCurrentAction("Successfully Climbed Shallow");
+                context.setPreviousEndgameAction({
+                  actionDone: actionDone,
+                  wasPositionSelected: true,
+                  actionMessage: currentAction,
+                });
               }}
+              actionName={ACTION_NAMES.CLIMB.SUCCESS}
+              gamePiece={GAME_PIECES.CAGE.SHALLOW}
+              location={hangPositionSelected}
               disabled={checkActionButtonDisabled()}
               label="Shallow Hang"
             />

@@ -81,8 +81,18 @@ interface ScoutDataContextType {
   isTimerRunning: boolean;
   setIsTimerRunning: (isTimerRunning: boolean) => void;
   eventType: string;
+  previousEndgameAction: {
+    actionDone: boolean;
+    wasPositionSelected: boolean;
+    actionMessage: string;
+  };
+  setPreviousEndgameAction: (previousEndgameAction: {
+    actionDone: boolean;
+    wasPositionSelected: boolean;
+    actionMessage: string;
+  }) => void;
+  setEndGameAction: string;
 }
-
 export const ScoutDataContext = createContext<ScoutDataContextType>(
   {} as ScoutDataContextType
 );
