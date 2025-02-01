@@ -32,6 +32,7 @@ import {
   LOCATIONS,
 } from "~/app/scout/[eventCode]/constants";
 import MatchSelectionScreen from "./components/match-selection-screen";
+import EndgameScreen from "./components/endgame-screen";
 
 const ScoutPage = () => {
   const { eventCode } = useParams<{ eventCode: string }>();
@@ -65,7 +66,7 @@ const ScoutPage = () => {
       canGoBack: true,
     },
     {
-      component: <div>Auto</div>,
+      component: <EndgameScreen />,
       name: SCREEN_NAMES.AUTO,
       canGoBack: false,
     },
@@ -107,7 +108,7 @@ const ScoutPage = () => {
   const [currentMatch, setCurrentMatch] = useState<MatchScheduleType>();
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const [matchNumber, setMatchNumber] = useState("");
-  const [teamToScout, setTeamToScout] = useState<number | undefined>();
+  const [teamToScout, setTeamToScout] = useState<number | string | undefined>();
   const [allianceColour, setAllianceColour] = useState("");
   const [uiOrientation, setUiOrientation] = useState(
     (typeof window !== "undefined" &&
