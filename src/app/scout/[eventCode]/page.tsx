@@ -23,6 +23,7 @@ import {
   GAME_PIECES,
   LOCAL_STORAGE_KEYS,
   MATCH_STATES,
+  SCREEN_NAMES,
 } from "~/app/scout/[eventCode]/constants";
 import BallScoutSetup from "./components/ball-scout-setup";
 import StartingPositionScreen from "./components/starting-position-screen";
@@ -31,25 +32,13 @@ import MatchSelectionScreen from "./components/match-selection-screen";
 import EndgameScreen from "./components/endgame-screen";
 import AutonomousScreen from "./components/autonomous-screen";
 import TeleopScoringScreen from "./components/teleop-scoring-screen";
+import FinalizationScreen from "~/app/scout/[eventCode]/components/common/finalization-screen";
 
 const ScoutPage = () => {
   const { eventCode } = useParams<{ eventCode: string }>();
   const eventType = useSearchParams().get("type");
   const eventYear = eventCode.substring(0, 4);
   const eventName = eventCode.substring(4);
-
-  const SCREEN_NAMES = {
-    MATCH_SELECTION: "match-selection",
-    STARTING_POSITIONS: "starting-positions",
-    AUTO: "auto",
-    TELEOP: "teleop",
-    ENDGAME: "endgame",
-    FINALIZE: "finalize",
-    ALTERNATE_SCOUT: {
-      SETUP: "alternate-scout-setup",
-      SCORING: "alternate-scout-scoring",
-    },
-  };
 
   // TODO: Update the components of each screen to be the actual screen once the dev for it is completed
   const screens = [
@@ -61,6 +50,11 @@ const ScoutPage = () => {
     {
       component: <StartingPositionScreen />,
       name: SCREEN_NAMES.STARTING_POSITIONS,
+      canGoBack: true,
+    },
+    {
+      component: <FinalizationScreen />,
+      name: SCREEN_NAMES.FINALIZE,
       canGoBack: true,
     },
     {
@@ -78,11 +72,7 @@ const ScoutPage = () => {
       name: SCREEN_NAMES.ENDGAME,
       canGoBack: true,
     },
-    {
-      component: <div>Finalize</div>,
-      name: SCREEN_NAMES.FINALIZE,
-      canGoBack: true,
-    },
+
     {
       component: <BallScoutSetup />,
       name: SCREEN_NAMES.ALTERNATE_SCOUT.SETUP,
@@ -178,21 +168,21 @@ const ScoutPage = () => {
     queryFn: async () => getUserByClerkId(user!.id),
   });
 
-  const { data: matchScheduleData } = useQuery({
-    enabled: !!eventCode,
-    // enabled: false,
-    queryKey: [
-      "matchSchedule",
-      eventCode,
-      eventType === "practice" ? "P" : "Q",
-    ],
-    queryFn: async (): Promise<MatchScheduleType[]> =>
-      fetchMatchScheduleByYearAndEventCode(
-        eventYear,
-        eventName,
-        !!eventType ? "Practice" : "Qualification"
-      ),
-  });
+  const { data: matchScheduleData, isLoading: isMatchScheduleLoading } =
+    useQuery({
+      enabled: !!eventCode,
+      queryKey: [
+        "matchSchedule",
+        eventCode,
+        eventType === "practice" ? "P" : "Q",
+      ],
+      queryFn: async (): Promise<MatchScheduleType[]> =>
+        fetchMatchScheduleByYearAndEventCode(
+          eventYear,
+          eventName,
+          !!eventType ? "Practice" : "Qualification"
+        ),
+    });
 
   const { data: fieldImages } = useQuery({
     queryKey: ["fieldImages"],
@@ -286,6 +276,8 @@ const ScoutPage = () => {
           previousEndgameAction,
           setEndGameAction: "", // Add this line
           eventType: eventType || "Qualification",
+          eventCode,
+          isMatchScheduleLoading,
         }}
       >
         <ScoutingInfoHeader />

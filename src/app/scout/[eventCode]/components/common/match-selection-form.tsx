@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, Loader2Icon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -107,37 +107,48 @@ export default function MatchSelectionForm({
                         className="h-16 text-xl"
                       />
                       <CommandList className="mb-4">
-                        <CommandEmpty>Nothing found</CommandEmpty>
+                        {!context.isMatchScheduleLoading && (
+                          <CommandEmpty>Nothing found</CommandEmpty>
+                        )}
                         <CommandGroup>
-                          {context.matchSchedule.map((match, index) => (
-                            <CommandItem
-                              className="h-16 text-lg"
-                              key={`match-dropdown-item-${index + 1}`}
-                              onSelect={(value) => {
-                                const cleanVal = value.split(" ");
+                          {context.isMatchScheduleLoading && (
+                            <div className="mt-4 flex flex-row justify-start items-center gap-4">
+                              <p>Loading match schedule...</p>
+                              <Loader2Icon className="animate-spin" />
+                            </div>
+                          )}
+                          {!context.isMatchScheduleLoading &&
+                            context.matchSchedule.map((match, index) => (
+                              <CommandItem
+                                className="h-16 text-lg"
+                                key={`match-dropdown-item-${index + 1}`}
+                                onSelect={(value) => {
+                                  const cleanVal = value.split(" ");
 
-                                field.onChange(cleanVal[1]);
-                                context.setMatchNumber(
-                                  `${
-                                    context.eventType === "practice" ? "P" : "Q"
-                                  }${cleanVal[1]}`
-                                );
-                                setIsMatchSelectionOpen(false);
-                                setTeamSelectedEnabled(true);
-                                setIsReplayChecked(false);
+                                  field.onChange(cleanVal[1]);
+                                  context.setMatchNumber(
+                                    `${
+                                      context.eventType === "practice"
+                                        ? "P"
+                                        : "Q"
+                                    }${cleanVal[1]}`
+                                  );
+                                  setIsMatchSelectionOpen(false);
+                                  setTeamSelectedEnabled(true);
+                                  setIsReplayChecked(false);
 
-                                context.setAllianceColour("");
-                                context.setCurrentMatch(match);
-                                context.setTeamToScout("");
-                              }}
-                            >
-                              {`${
-                                context.eventType === "practice"
-                                  ? "Practice"
-                                  : "Qualification"
-                              } ${match.matchNumber}`}
-                            </CommandItem>
-                          ))}
+                                  context.setAllianceColour("");
+                                  context.setCurrentMatch(match);
+                                  context.setTeamToScout("");
+                                }}
+                              >
+                                {`${
+                                  context.eventType === "practice"
+                                    ? "Practice"
+                                    : "Qualification"
+                                } ${match.matchNumber}`}
+                              </CommandItem>
+                            ))}
                         </CommandGroup>
                       </CommandList>
                     </Command>

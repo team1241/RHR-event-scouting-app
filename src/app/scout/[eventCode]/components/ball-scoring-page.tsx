@@ -3,26 +3,37 @@
 import { cn } from "~/lib/utils";
 import ContinueButton from "./common/continue-button";
 import FieldImage from "./common/field-image";
-// import { getFlexDirection } from "../utils";
 import { useContext } from "react";
 import { ScoutDataContext } from "../context/data-context";
 import { Button } from "~/components/ui/button";
 import PageHeading from "~/components/common/page-heading";
 import { PlusIcon, MinusIcon } from "lucide-react";
+import FlipFieldButton from "~/app/scout/[eventCode]/components/common/flip-field-button";
+import {
+  FIELD_ORIENTATIONS,
+  SCREEN_NAMES,
+} from "~/app/scout/[eventCode]/constants";
+import { ScoutScreenContext } from "~/app/scout/[eventCode]/context";
+
 export default function BallScoringScreen() {
   const context = useContext(ScoutDataContext);
-  console.log(context);
+  const screenContext = useContext(ScoutScreenContext);
   return (
     <>
       <PageHeading>Human Player Balls Scored</PageHeading>
+      <div className="flex flex-row justify-between mt-2">
+        <FlipFieldButton />
+      </div>
       <FieldImage imageSize="100%" fieldSize="full">
-        <div
-          className={cn(
-            "flex h-full w-full justify-center"
-            // getFlexDirection(context.uiOrientation, context.allianceColour).row
-          )}
-        >
-          <div className="flex flex-col pt-4 justify-center mr-5">
+        <div className={cn("flex h-full w-full justify-center")}>
+          <div
+            className={cn(
+              "flex pt-4 justify-center mr-5",
+              context.uiOrientation === FIELD_ORIENTATIONS.DEFAULT
+                ? "flex-col"
+                : "flex-col-reverse"
+            )}
+          >
             <div className="flex flex-col pb-2">
               <Button
                 className="h-14 w-60"
@@ -129,7 +140,14 @@ export default function BallScoringScreen() {
               </Button>
             </div>
           </div>
-          <div className="flex flex-col pt-4 justify-center ml-5">
+          <div
+            className={cn(
+              "flex flex-col pt-4 justify-center ml-5",
+              context.uiOrientation === FIELD_ORIENTATIONS.DEFAULT
+                ? "flex-col"
+                : "flex-col-reverse"
+            )}
+          >
             <div className="flex flex-col pb-2">
               <Button
                 className="h-14 w-60"
@@ -240,7 +258,9 @@ export default function BallScoringScreen() {
         </div>
       </FieldImage>
       <div className="flex flex-row justify-end">
-        <ContinueButton />
+        <ContinueButton
+          onClick={() => screenContext.goToScreen(SCREEN_NAMES.FINALIZE)}
+        />
       </div>
     </>
   );

@@ -10,7 +10,6 @@ import FieldImage from "./common/field-image";
 import { useContext, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
 import {
-  FIELD_ORIENTATIONS,
   GAME_PIECES,
   LOCAL_STORAGE_KEYS,
   MATCH_STATES,
@@ -18,31 +17,27 @@ import {
 } from "../constants";
 import { cn } from "~/lib/utils";
 import { getFlexDirection } from "../utils";
+import FlipFieldButton from "~/app/scout/[eventCode]/components/common/flip-field-button";
 
 export default function StartingPositionScreen() {
   const context = useContext(ScoutDataContext);
   const screenContext = useContext(ScoutScreenContext);
-  const toggleFieldOrientation = () => {
-    const newOrientation =
-      context.uiOrientation === FIELD_ORIENTATIONS.DEFAULT
-        ? FIELD_ORIENTATIONS.FLIPPED
-        : FIELD_ORIENTATIONS.DEFAULT;
-
-    context.setUiOrientation(newOrientation);
-
-    localStorage.setItem(LOCAL_STORAGE_KEYS.UI_ORIENTATION, newOrientation);
-  };
 
   const updatePreload = () => {
     context.setStartingPosition({
       ...context.startingPosition,
       hasPreload: !context.startingPosition.hasPreload,
     });
-    if(!context.startingPosition.hasPreload)
-    {
-      context.setGamePieceState([{type: GAME_PIECES.CORAL, count: 1}, context.gamePieceState[1]])
+    if (!context.startingPosition.hasPreload) {
+      context.setGamePieceState([
+        { type: GAME_PIECES.CORAL, count: 1 },
+        context.gamePieceState[1],
+      ]);
     } else {
-      context.setGamePieceState([{type: GAME_PIECES.CORAL, count: 0}, context.gamePieceState[1]])
+      context.setGamePieceState([
+        { type: GAME_PIECES.CORAL, count: 0 },
+        context.gamePieceState[1],
+      ]);
     }
   };
   const updateShowedUp = () => {
@@ -62,12 +57,7 @@ export default function StartingPositionScreen() {
     <div>
       <PageHeading>Starting Position</PageHeading>
       <div className="flex flex-row justify-between mt-2">
-        <Button
-          className="font-bold text-2xl tracking-wide w-64 h-20"
-          onClick={toggleFieldOrientation}
-        >
-          FLIP FIELD
-        </Button>
+        <FlipFieldButton />
 
         <Button
           className="font-bold text-2xl tracking-wide w-64 h-20 dark:bg-sky-400 dark:text-white"

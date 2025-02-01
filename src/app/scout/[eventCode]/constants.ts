@@ -82,3 +82,16 @@ export const LOCAL_STORAGE_KEYS = {
   ACTIONS: "rhr_scouting:scouted_actions",
   CURRENT_SCREEN: "rhr_scouting:current_screen",
 };
+
+export const SCREEN_NAMES = {
+  MATCH_SELECTION: "match-selection",
+  STARTING_POSITIONS: "starting-positions",
+  AUTO: "auto",
+  TELEOP: "teleop",
+  ENDGAME: "endgame",
+  FINALIZE: "finalize",
+  ALTERNATE_SCOUT: {
+    SETUP: "alternate-scout-setup",
+    SCORING: "alternate-scout-scoring",
+  },
+};
