@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useContext } from "react";
+import { toast } from "sonner";
 import { LOCAL_STORAGE_KEYS } from "~/app/scout/[eventCode]/constants";
 import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
 import { Button } from "~/components/ui/button";
@@ -19,6 +20,7 @@ const UndoActionButton = ({ className }: { className?: string }) => {
       JSON.stringify(actionsCopy)
     );
     setUndoOccurred(true);
+    toast.error("PREVIOUS ACTION SUCCESSFULLY UNDONE");
   };
 
   return (
