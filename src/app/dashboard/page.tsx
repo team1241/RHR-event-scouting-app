@@ -24,13 +24,13 @@ export default async function Dashboard() {
   }
 
   const season = (await getSeasons()).filter((season) => season.isActive)[0];
-  const events = season.events;
+  const events = season?.events;
 
   return (
     <div>
       <PageHeading>Events</PageHeading>
       <div className="grid grid-cols-2 grid-flow-row gap-4 mt-2">
-        {events.length &&
+        {events?.length &&
           events.map((event) => (
             <Card className="border-2" key={`dashbaord-card-${event.eventKey}`}>
               <CardHeader>
