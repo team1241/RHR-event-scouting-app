@@ -73,7 +73,9 @@ export async function POST(req: Request) {
       return Response.json({ data: { user: newUser }, status: 200 });
     } catch (error) {
       console.log(error);
-      return new Error("There was an error");
+      return new Response("Error occured", {
+        status: 400,
+      });
     }
   } else if (eventType === "user.updated") {
     return new Response("", { status: 200 });

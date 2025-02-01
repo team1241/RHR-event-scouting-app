@@ -52,7 +52,7 @@ export default function Navbar() {
     if (!isSignedIn) {
       return (
         <SignInButton>
-          <Button>Sign in</Button>
+          <Button className="h-8">Sign in</Button>
         </SignInButton>
       );
     }
