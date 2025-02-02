@@ -27,7 +27,10 @@ export default async function Landing() {
         <h2 className="text-2xl font-bold">
           Click the button below to get started.
         </h2>
-        <SignInButton forceRedirectUrl={`/dashboard`}>
+        <SignInButton
+          forceRedirectUrl={`/dashboard`}
+          signUpForceRedirectUrl={"/dashboard"}
+        >
           <Button className="w-1/4 text-lg font-semibold" size={"lg"}>
             Get Started!
           </Button>
