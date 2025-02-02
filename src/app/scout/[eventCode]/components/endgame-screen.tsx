@@ -20,6 +20,7 @@ import {
 import ContinueButton from "./common/continue-button";
 import BackButton from "./common/back-button";
 import UndoActionButton from "./common/undo-action-button";
+import { getFlexDirection } from "../utils";
 export default function EndgameScreen() {
   const context = useContext(ScoutDataContext);
   const [hangPositionSelected, setHangPositionSelected] = useState<string>("");
@@ -29,16 +30,22 @@ export default function EndgameScreen() {
   return (
     <>
       <div className="flex flex-row">
-        <div className="flex flex-col justify-items-start">
+        <div className="flex flex-row justify-items-start gap-2">
+          <div className="mt-4">
           <PageHeading>Endgame</PageHeading>
-          <UndoActionButton className="text-xl" />
+          </div>
+          <UndoActionButton className="text-xl bg-red-600 h-16 w-40" />
         </div>
-        <p className="text-2xl font-bold ml-72">{`Action Selected: ${currentAction} `}</p>
+        <p className="text-2xl font-bold mt-4 ml-[5rem]">{`Action Selected: ${currentAction} `}</p>
       </div>
 
       <FieldImage imageSize="100%" fieldSize="half">
-        <div className="flex flex-row justify-between gap-20 h-full">
-          <div className="flex flex-col justify-stretch h-full ml-40">
+        <div className={cn("flex justify-between gap-20 h-full",
+          getFlexDirection(context.uiOrientation, context.allianceColour).row
+        )}
+          
+        >
+          <div className="flex flex-col justify-stretch h-full mx-28 my-6">
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
               gamePiece={GAME_PIECES.CAGE.SHALLOW}
@@ -90,12 +97,13 @@ export default function EndgameScreen() {
                   Failed Attempt
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-44">
+              <PopoverContent className="absolute mx-[6rem] w-[12rem]" 
+              side="top">
                 <ScoutActionButton
                   actionName={ACTION_NAMES.CLIMB.FAIL}
                   gamePiece={GAME_PIECES.CAGE.SHALLOW}
                   location={hangPositionSelected}
-                  className=" mb-1 h-16 w-40 font-bold text-xl !bg-pink-600"
+                  className="mb-1 h-16 w-40 font-bold text-xl !bg-pink-600"
                   onClick={() => {
                     setCurrentAction("Shallow Climb Failed ");
                     setIsMatchSelectionOpen(false);
@@ -139,7 +147,7 @@ export default function EndgameScreen() {
               Not Attempted
             </ScoutActionButton>
           </div>
-          <div className="flex flex-col gap-4 justify-stretch mr-48 pt-8">
+          <div className="flex flex-col justify-stretch my-[4rem] gap-2 mx-[5rem] pt-8">
             <Button
               className={cn(
                 " h-12 w-40  font-bold text-xl opacity-90 !bg-cyan-100",
@@ -179,7 +187,7 @@ export default function EndgameScreen() {
           </div>
         </div>
       </FieldImage>
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between mt-16">
         <BackButton></BackButton>
 
         <ContinueButton disabled={currentAction === ""}></ContinueButton>
