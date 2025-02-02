@@ -13,6 +13,11 @@ export default function BallScoutSetup() {
   const [blueHumanPlayerSelected, setBlueHumanPlayerSelected] = useState("");
   const context = useContext(ScoutDataContext);
   const screenContext = useContext(ScoutScreenContext);
+  const matchNumber = context.matchNumber.match(/\d+/g)![0];
+  const teamsInCurrentMatch = context.matchSchedule[
+    parseInt(matchNumber) - 1
+  ].teams.map((team) => team.teamNumber);
+
   const updateTeamNumber = (teamNumber: number, allianceColour: string) => {
     if (context.alternateScoutData && context.setAlternateScoutData) {
       context.setAlternateScoutData({
@@ -24,7 +29,7 @@ export default function BallScoutSetup() {
       });
     }
   };
-
+  console.log(context);
   return (
     <>
       <div className="flex flex-row">
@@ -38,12 +43,14 @@ export default function BallScoutSetup() {
             id="redOne"
             className={cn(
               "h-20 w-72 text-2xl",
-              redHumanPlayerSelected === "red1" &&
+              redHumanPlayerSelected === "Red1" &&
                 "dark:ring-yellow-400 ring-2 ring-offset-4"
             )}
             onClick={() => {
-              setRedHumanPlayerSelected("red1");
-              updateTeamNumber(1241, "red");
+              setRedHumanPlayerSelected("Red1");
+              updateTeamNumber(teamsInCurrentMatch[0], "red");
+              console.log(context);
+              console.log(teamsInCurrentMatch[0]);
             }}
           >
             Red 1
@@ -58,7 +65,7 @@ export default function BallScoutSetup() {
             )}
             onClick={() => {
               setRedHumanPlayerSelected("red2");
-              updateTeamNumber(1285, "red");
+              updateTeamNumber(teamsInCurrentMatch[1], "red");
             }}
           >
             Red 2
@@ -73,7 +80,7 @@ export default function BallScoutSetup() {
             )}
             onClick={() => {
               setRedHumanPlayerSelected("red3");
-              updateTeamNumber(1234, "red");
+              updateTeamNumber(teamsInCurrentMatch[2], "red");
             }}
           >
             Red 3
@@ -91,7 +98,7 @@ export default function BallScoutSetup() {
             )}
             onClick={() => {
               setBlueHumanPlayerSelected("blue1");
-              updateTeamNumber(4321, "blue");
+              updateTeamNumber(teamsInCurrentMatch[3], "blue");
             }}
           >
             {" "}
@@ -107,7 +114,7 @@ export default function BallScoutSetup() {
             )}
             onClick={() => {
               setBlueHumanPlayerSelected("blue2");
-              updateTeamNumber(2281, "blue");
+              updateTeamNumber(teamsInCurrentMatch[4], "blue");
             }}
           >
             {" "}
@@ -123,7 +130,7 @@ export default function BallScoutSetup() {
             )}
             onClick={() => {
               setBlueHumanPlayerSelected("blue3");
-              updateTeamNumber(1324, "blue");
+              updateTeamNumber(teamsInCurrentMatch[5], "blue");
             }}
           >
             {" "}
