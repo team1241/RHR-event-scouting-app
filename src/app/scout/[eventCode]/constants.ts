@@ -28,6 +28,7 @@ export const ACTION_NAMES = {
     ATTEMPT: "climb-attempt",
     SUCCESS: "climb-success",
     FAIL: "climb-fail",
+    NOTHING: "endgame-nothing"
   },
   PARK: "park",
   DEFENDING: "defending",
@@ -40,6 +41,7 @@ export const GAME_PIECES = {
     DEEP: "deep-cage",
     SHALLOW: "shallow-cage",
   },
+  NOGAMEPIECE: "no-game-piece",
 };
 
 export const LOCATIONS = {

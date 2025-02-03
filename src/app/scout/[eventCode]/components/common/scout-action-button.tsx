@@ -15,13 +15,17 @@ const ScoutActionButton = ({
   isAuto = false,
   className,
   label,
+  onClick,
+  disabled,
 }: {
   actionName: string;
-  gamePiece: string;
+  gamePiece?: string;
   location: string;
   isAuto?: boolean;
   className?: string;
   label: string;
+  onClick?: () => void;
+  disabled?: boolean;
 }) => {
   const scoutDataContext = useContext(ScoutDataContext);
   const isBlueAlliance =
@@ -52,6 +56,9 @@ const ScoutActionButton = ({
     );
     scoutDataContext.setUndoOccurred(false);
     scoutDataContext.setWasDefended(false);
+    if (onClick) {
+      onClick();
+    }
   };
 
   return (
@@ -63,6 +70,7 @@ const ScoutActionButton = ({
         isBlueAlliance ? "bg-blue-300/50" : "bg-red-300/50",
         className
       )}
+      disabled={disabled}
     >
       {label}
     </Button>

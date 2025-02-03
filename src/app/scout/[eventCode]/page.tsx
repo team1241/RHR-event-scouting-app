@@ -33,6 +33,7 @@ import {
 } from "~/app/scout/[eventCode]/constants";
 import BallScoringScreen from "./components/ball-scoring-page";
 import MatchSelectionScreen from "./components/match-selection-screen";
+import EndgameScreen from "./components/endgame-screen";
 
 const ScoutPage = () => {
   const { eventCode } = useParams<{ eventCode: string }>();
@@ -66,7 +67,7 @@ const ScoutPage = () => {
       canGoBack: true,
     },
     {
-      component: <div>Auto</div>,
+      component: <EndgameScreen />,
       name: SCREEN_NAMES.AUTO,
       canGoBack: false,
     },
