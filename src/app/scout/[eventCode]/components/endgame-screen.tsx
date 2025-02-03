@@ -88,7 +88,7 @@ export default function EndgameScreen() {
               open={isMatchSelectionOpen}
               onOpenChange={setIsMatchSelectionOpen}
             >
-              <PopoverTrigger>
+              <PopoverTrigger disabled={hangPositionSelected === ""}>
                 <Button
                   className=" mb-1 h-16 w-40 font-bold text-xl !text-white !bg-pink-600"
                   disabled={hangPositionSelected === ""}
@@ -97,8 +97,9 @@ export default function EndgameScreen() {
                   Failed Attempt
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="absolute mx-[6rem] w-[12rem]" 
-              side="top">
+              
+              <PopoverContent className="w-[12rem]" 
+              side="right" >
                 <ScoutActionButton
                   actionName={ACTION_NAMES.CLIMB.FAIL}
                   gamePiece={GAME_PIECES.CAGE.SHALLOW}
@@ -124,6 +125,7 @@ export default function EndgameScreen() {
                   Deep Hang
                 </ScoutActionButton>
               </PopoverContent>
+
             </Popover>
 
             {/* <ScoutActionButton
@@ -187,7 +189,7 @@ export default function EndgameScreen() {
           </div>
         </div>
       </FieldImage>
-      <div className="flex flex-row justify-between mt-16">
+      <div className="flex flex-row justify-between mt-14 ">
         <BackButton></BackButton>
 
         <ContinueButton disabled={currentAction === ""}></ContinueButton>
