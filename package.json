@@ -18,7 +18,7 @@
     "@clerk/nextjs": "^5.6.0",
     "@hookform/resolvers": "^3.9.0",
     "@number-flow/react": "^0.5.5",
-    "@prisma/client": "^5.19.1",
+    "@prisma/client": "^5.22.1",
     "@radix-ui/react-alert-dialog": "^1.1.2",
     "@radix-ui/react-checkbox": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.4",
