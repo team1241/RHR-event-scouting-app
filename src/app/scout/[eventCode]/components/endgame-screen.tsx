@@ -51,7 +51,7 @@ export default function EndgameScreen() {
             getFlexDirection(context.uiOrientation, context.allianceColour).row
           )}
         >
-          <div className="flex flex-col justify-stretch h-full mx-28 my-6">
+          <div className="flex flex-col justify-stretch h-full mx-28 my-14">
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
               gamePiece={GAME_PIECES.CAGE.SHALLOW}
@@ -61,9 +61,8 @@ export default function EndgameScreen() {
                 setCurrentAction("Successfully Climbed Shallow");
               }}
               disabled={hangPositionSelected === ""}
-            >
-              Shallow Hang
-            </ScoutActionButton>
+              label="Shallow Hang"
+            />
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
               gamePiece={GAME_PIECES.CAGE.DEEP}
@@ -73,9 +72,8 @@ export default function EndgameScreen() {
                 setCurrentAction("Successfully Climbed Deep");
               }}
               disabled={hangPositionSelected === ""}
-            >
-              Deep Hang
-            </ScoutActionButton>
+              label="Deep Hang"
+            />
 
             <ScoutActionButton
               actionName={ACTION_NAMES.PARK}
@@ -86,9 +84,8 @@ export default function EndgameScreen() {
                 setCurrentAction("Successfully Parked");
               }}
               disabled={hangPositionSelected === ""}
-            >
-              Park
-            </ScoutActionButton>
+              label="Park"
+            />
 
             <Popover
               open={isMatchSelectionOpen}
@@ -114,9 +111,9 @@ export default function EndgameScreen() {
                     setCurrentAction("Shallow Climb Failed ");
                     setIsMatchSelectionOpen(false);
                   }}
-                >
-                  Shallow Hang
-                </ScoutActionButton>
+                  label="Shallow Hang"
+                />
+
                 <ScoutActionButton
                   actionName={ACTION_NAMES.CLIMB.FAIL}
                   gamePiece={GAME_PIECES.CAGE.DEEP}
@@ -126,9 +123,8 @@ export default function EndgameScreen() {
                     setCurrentAction("Deep Climb Failed");
                     setIsMatchSelectionOpen(false);
                   }}
-                >
-                  Deep Hang
-                </ScoutActionButton>
+                  label="Deep Hang"
+                />
               </PopoverContent>
             </Popover>
             <ScoutActionButton
@@ -140,9 +136,8 @@ export default function EndgameScreen() {
               onClick={() => {
                 setCurrentAction("Endgame action skipped");
               }}
-            >
-              Not Attempted
-            </ScoutActionButton>
+              label="Not Attempted"
+            />
           </div>
           <div
             className={cn(

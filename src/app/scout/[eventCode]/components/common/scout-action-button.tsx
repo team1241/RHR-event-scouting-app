@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, useContext } from "react";
+import React, { useContext } from "react";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import { ScoutDataContext } from "../../context";
@@ -24,7 +24,6 @@ const ScoutActionButton = ({
   isAuto?: boolean;
   className?: string;
   label: string;
-  children: ReactNode;
   onClick?: () => void;
   disabled?: boolean;
 }) => {
