@@ -7,7 +7,13 @@ import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 
-const UndoActionButton = ({ className }: { className?: string }) => {
+const UndoActionButton = ({
+  className,
+  onClick,
+}: {
+  className?: string;
+  onClick?: () => void;
+}) => {
   const { actions, setActions, setUndoOccurred } = useContext(ScoutDataContext);
 
   const onUndoClick = () => {
@@ -21,6 +27,9 @@ const UndoActionButton = ({ className }: { className?: string }) => {
     );
     setUndoOccurred(true);
     toast.error("PREVIOUS ACTION SUCCESSFULLY UNDONE");
+    if (onClick) {
+      onClick();
+    }
   };
 
   return (

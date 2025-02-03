@@ -26,24 +26,30 @@ export default function EndgameScreen() {
   const [hangPositionSelected, setHangPositionSelected] = useState<string>("");
   const [currentAction, setCurrentAction] = useState<string>("");
   const [isMatchSelectionOpen, setIsMatchSelectionOpen] = useState(false);
-  console.log(context);
   return (
     <>
       <div className="flex flex-row">
         <div className="flex flex-row justify-items-start gap-2">
           <div className="mt-4">
-          <PageHeading>Endgame</PageHeading>
+            <PageHeading>Endgame</PageHeading>
           </div>
-          <UndoActionButton className="text-xl bg-red-600 h-16 w-40" />
+          <UndoActionButton
+            onClick={() => {
+              setHangPositionSelected("");
+              setCurrentAction("");
+            }}
+            className="text-xl bg-red-600 h-16 w-40"
+          />
         </div>
         <p className="text-2xl font-bold mt-4 ml-[5rem]">{`Action Selected: ${currentAction} `}</p>
       </div>
 
       <FieldImage imageSize="100%" fieldSize="half">
-        <div className={cn("flex justify-between gap-20 h-full",
-          getFlexDirection(context.uiOrientation, context.allianceColour).row
-        )}
-          
+        <div
+          className={cn(
+            "flex justify-between gap-20 h-full",
+            getFlexDirection(context.uiOrientation, context.allianceColour).row
+          )}
         >
           <div className="flex flex-col justify-stretch h-full mx-28 my-6">
             <ScoutActionButton
@@ -97,9 +103,8 @@ export default function EndgameScreen() {
                   Failed Attempt
                 </Button>
               </PopoverTrigger>
-              
-              <PopoverContent className="w-[12rem]" 
-              side="right" >
+
+              <PopoverContent className="w-[12rem]" side="right">
                 <ScoutActionButton
                   actionName={ACTION_NAMES.CLIMB.FAIL}
                   gamePiece={GAME_PIECES.CAGE.SHALLOW}
@@ -125,31 +130,27 @@ export default function EndgameScreen() {
                   Deep Hang
                 </ScoutActionButton>
               </PopoverContent>
-
             </Popover>
-
-            {/* <ScoutActionButton
-              actionName={ACTION_NAMES.CLIMB.FAIL}
-              gamePiece={GAME_PIECES.CAGE.DEEP}
-              location={hangPositionSelected}
-              className=" mb-1 h-16 w-40 font-bold text-xl"
-              onClick={() => {
-                setCurrentAction("Successfully Climbed Deep");
-              }}
-            >
-              Failed Climb
-            </ScoutActionButton> */}
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.NOTHING}
               gamePiece={GAME_PIECES.NOGAMEPIECE}
               location={hangPositionSelected}
               className=" mb-1 h-16 w-40 font-bold text-xl bg-pink-600"
               disabled={hangPositionSelected === ""}
+              onClick={() => {
+                setCurrentAction("Endgame action skipped");
+              }}
             >
               Not Attempted
             </ScoutActionButton>
           </div>
-          <div className="flex flex-col justify-stretch my-[4rem] gap-2 mx-[5rem] pt-8">
+          <div
+            className={cn(
+              "flex flex-col justify-stretch my-[3rem] gap-2 mx-[5rem]",
+              getFlexDirection(context.uiOrientation, context.allianceColour)
+                .col
+            )}
+          >
             <Button
               className={cn(
                 " h-12 w-40  font-bold text-xl opacity-90 !bg-cyan-100",
