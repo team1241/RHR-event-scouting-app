@@ -4,8 +4,7 @@ import { ScoutAction } from "~/app/scout/[eventCode]/context/data-context";
 
 export async function submitScoutDataForTeamAtEvent(
   eventCode: string,
-  actions: ScoutAction[],
-  wasMatchFogHorned: boolean
+  actions: ScoutAction[]
 ) {
   const event = await prisma.events.findFirst({
     where: {
@@ -36,7 +35,6 @@ export async function submitScoutDataForTeamAtEvent(
       hasUndo: action.hasUndo,
       wasDefended: action.wasDefended,
       isAuto: action.isAuto,
-      wasMatchFogHorned,
     })),
   });
 }

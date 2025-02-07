@@ -18,6 +18,9 @@ import {
 import { cn } from "~/lib/utils";
 import { getFlexDirection } from "../utils";
 import FlipFieldButton from "~/app/scout/[eventCode]/components/common/flip-field-button";
+import { useMutation } from "@tanstack/react-query";
+import { saveStartingPositionForTeamAtEvent } from "~/db/queries/starting-positions";
+import { toast } from "sonner";
 
 export default function StartingPositionScreen() {
   const context = useContext(ScoutDataContext);
@@ -53,6 +56,37 @@ export default function StartingPositionScreen() {
 
   const [isSaved, setSaved] = useState(false);
 
+  const saveStartingPosition = useMutation({
+    mutationKey: [
+      "save-starting-position",
+      context.eventCode,
+      context.teamToScout,
+    ],
+    mutationFn: async () => {
+      await saveStartingPositionForTeamAtEvent(context.eventCode, {
+        scouterId: context.scouterDetails.id,
+        matchNumber: context.matchNumber,
+        teamNumber: parseInt(context!.teamToScout as string),
+        hasPreload: context.startingPosition.hasPreload,
+        showedUp: context.startingPosition.showedUp,
+        startingPosition: context.startingPosition.position,
+      });
+    },
+  });
+
+  const isContinueDisabled = () => {
+    if (
+      isSaved &&
+      context.startingPosition.position === "" &&
+      !context.startingPosition.showedUp
+    )
+      return false;
+
+    if (isSaved && context.startingPosition.position !== "") return false;
+
+    return true;
+  };
+
   return (
     <div>
       <PageHeading>Starting Position</PageHeading>
@@ -61,12 +95,14 @@ export default function StartingPositionScreen() {
 
         <Button
           className="font-bold text-2xl tracking-wide w-64 h-20 dark:bg-sky-400 dark:text-white"
-          onClick={() => {
-            setSaved(true);
+          onClick={async () => {
+            await saveStartingPosition.mutateAsync();
+            toast.success("Starting position saved");
             localStorage.setItem(
               LOCAL_STORAGE_KEYS.STARTING_POSITION,
               JSON.stringify(context.startingPosition)
             );
+            setSaved(true);
           }}
         >
           SAVE
@@ -177,9 +213,7 @@ export default function StartingPositionScreen() {
               screenContext.nextScreen();
               context.setMatchState(MATCH_STATES.AUTO);
             }}
-            disabled={
-              isSaved === false || context.startingPosition.position === ""
-            }
+            disabled={isContinueDisabled()}
           />
         </div>
       </div>

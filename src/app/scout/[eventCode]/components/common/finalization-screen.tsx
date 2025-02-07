@@ -12,6 +12,7 @@ import {
 } from "~/app/scout/[eventCode]/context";
 import { ScoutAction } from "~/app/scout/[eventCode]/context/data-context";
 import PageHeading from "~/components/common/page-heading";
+import { AlertDialog, AlertDialogTrigger } from "~/components/ui/alert-dialog";
 import {
   Card,
   CardContent,
@@ -78,11 +79,7 @@ const FinalizationScreen = () => {
       context.teamToScout,
     ],
     mutationFn: async () => {
-      await submitScoutDataForTeamAtEvent(
-        context.eventCode,
-        context.actions,
-        isFogHornedSelected
-      );
+      await submitScoutDataForTeamAtEvent(context.eventCode, context.actions);
     },
   });
 
@@ -133,16 +130,24 @@ const FinalizationScreen = () => {
                         </p>
                         <p className="font-semibold">
                           Accuracy:{" "}
-                          <span>{`${(
-                            (parseFloat(
-                              context.alternateScoutData!.scoring.redScore.toFixed(
-                                2
-                              )
-                            ) /
-                              (context.alternateScoutData!.scoring.redMiss +
-                                context.alternateScoutData!.scoring.redScore)) *
-                            100
-                          ).toFixed(1)}%`}</span>
+                          <span>{`${
+                            context.alternateScoutData!.scoring.redMiss +
+                              context.alternateScoutData!.scoring.redScore !==
+                            0
+                              ? (
+                                  (parseFloat(
+                                    context.alternateScoutData!.scoring.redScore.toFixed(
+                                      2
+                                    )
+                                  ) /
+                                    (context.alternateScoutData!.scoring
+                                      .redMiss +
+                                      context.alternateScoutData!.scoring
+                                        .redScore)) *
+                                  100
+                                ).toFixed(1)
+                              : 0
+                          }%`}</span>
                         </p>
                       </div>
                       <div className="text-xl flex flex-col gap-2">
@@ -164,17 +169,24 @@ const FinalizationScreen = () => {
                         </p>
                         <p className="font-semibold">
                           Accuracy:{" "}
-                          <span>{`${(
-                            (parseFloat(
-                              context.alternateScoutData!.scoring.blueScore.toFixed(
-                                2
-                              )
-                            ) /
-                              (context.alternateScoutData!.scoring.blueMiss +
-                                context.alternateScoutData!.scoring
-                                  .blueScore)) *
-                            100
-                          ).toFixed(1)}%`}</span>
+                          <span>{`${
+                            context.alternateScoutData!.scoring.blueMiss +
+                              context.alternateScoutData!.scoring.blueScore !==
+                            0
+                              ? (
+                                  (parseFloat(
+                                    context.alternateScoutData!.scoring.blueScore.toFixed(
+                                      2
+                                    )
+                                  ) /
+                                    (context.alternateScoutData!.scoring
+                                      .blueMiss +
+                                      context.alternateScoutData!.scoring
+                                        .blueScore)) *
+                                  100
+                                ).toFixed(1)
+                              : 0
+                          }%`}</span>
                         </p>
                       </div>
                     </div>
@@ -293,22 +305,26 @@ const FinalizationScreen = () => {
             }
           }}
         />
-        <ContinueButton
-          label="SUBMIT MATCH"
-          onClick={async () => {
-            if (typeof window !== "undefined") {
-              localStorage.removeItem("rhr_scouting:current_screen");
-              localStorage.removeItem("rhr_scouting:starting_position");
-            }
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <ContinueButton
+              label="SUBMIT MATCH"
+              onClick={async () => {
+                if (typeof window !== "undefined") {
+                  localStorage.removeItem("rhr_scouting:current_screen");
+                  localStorage.removeItem("rhr_scouting:starting_position");
+                }
 
-            try {
-              // const saveResult = await saveDataMutation.mutateAsync();
-            } catch (e) {
-              console.error(e);
-            }
-            router.refresh();
-          }}
-        />
+                try {
+                  // const saveResult = await saveDataMutation.mutateAsync();
+                } catch (e) {
+                  console.error(e);
+                }
+                router.refresh();
+              }}
+            />
+          </AlertDialogTrigger>
+        </AlertDialog>
       </div>
     </>
   );

@@ -106,22 +106,23 @@ model StartingPositions {
   hasPreload       Boolean
   showedUp         Boolean
   timestamp        String
+
+  @@unique([eventId, matchNumber, teamNumber])
 }
 
 model Actions {
-  id           Int      @id @default(autoincrement())
-  isAuto       Boolean
-  hasUndo      Boolean?
-  wasDefended  Boolean?
-  event        Events   @relation(fields: [eventId], references: [id])
-  eventId      Int
-  scout        Users    @relation(fields: [scoutId], references: [id])
-  scoutId      Int
-  matchNumber  String
-  wasFogHorned Boolean  @default(false)
-  teamNumber   Int
-  actionName   String
-  gamePiece    String
-  location     String
-  timestamp    String
+  id          Int      @id @default(autoincrement())
+  isAuto      Boolean
+  hasUndo     Boolean?
+  wasDefended Boolean?
+  event       Events   @relation(fields: [eventId], references: [id])
+  eventId     Int
+  scout       Users    @relation(fields: [scoutId], references: [id])
+  scoutId     Int
+  matchNumber String
+  teamNumber  Int
+  actionName  String
+  gamePiece   String
+  location    String
+  timestamp   String
 }
