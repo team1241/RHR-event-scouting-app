@@ -16,19 +16,6 @@ export default function AutonomousScreen() {
   const [isAutoStopped, setAutoStopped] = useState(false);
   console.log(context.actions);
 
-  const getScoreOrMiss = (
-    isCoralMissSelectionOpen: boolean,
-    isCoralScoreSelectionOpen: boolean
-  ) => {
-    if (isCoralScoreSelectionOpen) {
-      return ACTION_NAMES.SCORE;
-    }
-    if (isCoralMissSelectionOpen) {
-      return ACTION_NAMES.MISS;
-    } else {
-      return "something wrong here bruh";
-    }
-  };
   return (
     <>
       <div className="flex flex-row justify-between">

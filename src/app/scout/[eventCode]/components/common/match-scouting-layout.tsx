@@ -5,7 +5,7 @@ import { useState, useContext } from "react";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import { ACTION_NAMES, GAME_PIECES, LOCATIONS } from "../../constants";
-import { ScoutDataContext, ScoutScreenContext } from "../../context";
+import { ScoutDataContext} from "../../context";
 import { getFlexDirection } from "../../utils";
 import FieldImage from "./field-image";
 import ScoutActionButton from "./scout-action-button";
@@ -293,6 +293,9 @@ const MatchScoutingLayout = ({isDisabled}: {isDisabled: boolean}) => {
                 isAuto
                 disabled={isDisabled}
               />
+            </div>
+            <div>
+              
             </div>
           </div>
         </FieldImage>
