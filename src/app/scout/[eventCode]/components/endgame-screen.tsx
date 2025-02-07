@@ -4,7 +4,7 @@ import PageHeading from "~/components/common/page-heading";
 import { Button } from "~/components/ui/button";
 import FieldImage from "./common/field-image";
 import { useContext, useState } from "react";
-import { ScoutDataContext } from "../context";
+import { ScoutDataContext, ScoutScreenContext } from "../context";
 import { cn } from "~/lib/utils";
 import ScoutActionButton from "./common/scout-action-button";
 import {
@@ -21,8 +21,10 @@ import ContinueButton from "./common/continue-button";
 import BackButton from "./common/back-button";
 import UndoActionButton from "./common/undo-action-button";
 import { getFlexDirection } from "../utils";
+
 export default function EndgameScreen() {
   const context = useContext(ScoutDataContext);
+  const screenContext = useContext(ScoutScreenContext);
   const [hangPositionSelected, setHangPositionSelected] = useState<string>("");
   const [currentAction, setCurrentAction] = useState<string>("");
   const [isMatchSelectionOpen, setIsMatchSelectionOpen] = useState(false);
@@ -186,9 +188,18 @@ export default function EndgameScreen() {
         </div>
       </FieldImage>
       <div className="flex flex-row justify-between mt-14 ">
-        <BackButton></BackButton>
+        <BackButton
+          onClick={() => {
+            screenContext.prevScreen();
+          }}
+        />
 
-        <ContinueButton disabled={currentAction === ""}></ContinueButton>
+        <ContinueButton
+          disabled={currentAction === "" || context.isTimerRunning}
+          onClick={() => {
+            screenContext.nextScreen();
+          }}
+        />
       </div>
     </>
   );

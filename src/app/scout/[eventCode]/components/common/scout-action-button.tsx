@@ -39,7 +39,7 @@ const ScoutActionButton = ({
         scoutId: scoutDataContext.scouterDetails.id.toString(),
         matchNumber: scoutDataContext.matchNumber,
         teamNumber: scoutDataContext.teamToScout!,
-        eventCode: scoutDataContext.matchNumber,
+        eventCode: scoutDataContext.matchNumber, 
         hasUndo: scoutDataContext.undoOccurred,
         wasDefended: scoutDataContext.wasDefended,
         actionName,

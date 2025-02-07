@@ -47,7 +47,7 @@ const FieldImage = ({
     )!.imageUrl;
   };
 
-  const height = "h-[28rem]";
+  const height = "h-[26rem]";
 
   return (
     <div

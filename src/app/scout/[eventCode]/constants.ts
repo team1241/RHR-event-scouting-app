@@ -32,6 +32,7 @@ export const ACTION_NAMES = {
   },
   PARK: "park",
   DEFENDING: "defending",
+  LEAVE: "left-starting-line",
 };
 
 export const GAME_PIECES = {
@@ -49,7 +50,10 @@ export const LOCATIONS = {
   ALLIANCE_HALF: "alliance-half",
   GROUND: "ground",
   // Game specific
-  CORAL_STATION: "coral-station",
+  CORAL_STATION: {
+    LEFT: "coral-station-left",
+    RIGHT: "coral-station-right",
+  },
   PROCESSOR: "processor",
   NET: "net",
   REEF: {

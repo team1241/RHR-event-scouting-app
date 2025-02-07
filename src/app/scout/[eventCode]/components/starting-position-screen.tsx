@@ -79,11 +79,11 @@ export default function StartingPositionScreen() {
       <FieldImage imageSize="100%" fieldSize="half">
         <div
           className={cn(
-            "flex h-full w-full gap-48",
+            "flex h-full w-full",
             getFlexDirection(context.uiOrientation, context.allianceColour).row
           )}
         >
-          <div className="flex flex-col space-y-20 items-start mx-4 justify-center">
+          <div className="flex flex-col space-y-20 items-start mx-4 justify-center w-full">
             <div className="flex items-center space-x-4 bg-black/90 font-bold p-3 rounded-lg">
               <Checkbox
                 id="noshow"
@@ -122,7 +122,7 @@ export default function StartingPositionScreen() {
           </div>
           <div
             className={cn(
-              "flex justify-stretch w-28 my-12 mx-16",
+              "flex justify-between w-28 my-12 mx-16",
               getFlexDirection(context.uiOrientation, context.allianceColour)
                 .col
             )}
