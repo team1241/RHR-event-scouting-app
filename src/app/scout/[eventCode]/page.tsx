@@ -25,16 +25,11 @@ import {
 } from "~/app/scout/[eventCode]/constants";
 import BallScoutSetup from "./components/ball-scout-setup";
 import StartingPositionScreen from "./components/starting-position-screen";
-import ScoutActionButton from "~/app/scout/[eventCode]/components/common/scout-action-button";
-import {
-  ACTION_NAMES,
-  GAME_PIECES,
-  LOCATIONS,
-} from "~/app/scout/[eventCode]/constants";
 import BallScoringScreen from "./components/ball-scoring-page";
 import MatchSelectionScreen from "./components/match-selection-screen";
 import EndgameScreen from "./components/endgame-screen";
 import AutonomousScreen from "./components/autonomous-screen";
+import TeleopScoringScreen from "./components/teleop-scoring-screen";
 
 const ScoutPage = () => {
   const { eventCode } = useParams<{ eventCode: string }>();
@@ -73,12 +68,12 @@ const ScoutPage = () => {
       canGoBack: false,
     },
     {
-      component: <div>Teleop</div>,
+      component: <TeleopScoringScreen />,
       name: SCREEN_NAMES.TELEOP,
       canGoBack: false,
     },
     {
-      component: <div>Endgame</div>,
+      component: <EndgameScreen />,
       name: SCREEN_NAMES.ENDGAME,
       canGoBack: true,
     },
@@ -277,13 +272,7 @@ const ScoutPage = () => {
         }}
       >
         <ScoutingInfoHeader />
-        {screens[2].component}
-        <ScoutActionButton
-          actionName={ACTION_NAMES.INTAKE}
-          gamePiece={GAME_PIECES.CORAL}
-          location={LOCATIONS.OPPONENT_HALF}
-          label="Scout Action"
-        />
+        {screens[currentScreenIndex].component}
       </ScoutDataContext.Provider>
     </ScoutScreenContext.Provider>
   );

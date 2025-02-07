@@ -15,6 +15,7 @@ const ScoutActionButton = ({
   isAuto = false,
   className,
   label,
+  disabled,
   onClick,
   disabled,
 }: {
@@ -24,6 +25,7 @@ const ScoutActionButton = ({
   isAuto?: boolean;
   className?: string;
   label: string;
+  disabled?: boolean;
   onClick?: () => void;
   disabled?: boolean;
 }) => {
@@ -39,7 +41,7 @@ const ScoutActionButton = ({
         scoutId: scoutDataContext.scouterDetails.id.toString(),
         matchNumber: scoutDataContext.matchNumber,
         teamNumber: scoutDataContext.teamToScout!,
-        eventCode: scoutDataContext.matchNumber,
+        eventCode: scoutDataContext.matchNumber, //update this after rebase
         hasUndo: scoutDataContext.undoOccurred,
         wasDefended: scoutDataContext.wasDefended,
         actionName,

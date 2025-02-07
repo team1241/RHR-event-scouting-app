@@ -79,7 +79,7 @@ export default function StartingPositionScreen() {
       <FieldImage imageSize="100%" fieldSize="half">
         <div
           className={cn(
-            "flex h-full w-full gap-48",
+            "flex h-full w-full",
             getFlexDirection(context.uiOrientation, context.allianceColour).row
           )}
         >
