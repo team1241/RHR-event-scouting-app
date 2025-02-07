@@ -178,7 +178,7 @@ export default function StartingPositionScreen() {
           <ContinueButton
             onClick={() => {
               screenContext.nextScreen();
-              context.setMatchState(MATCH_STATES.AUTO);
+            
             }}
             disabled={
               isSaved === false || context.startingPosition.position === ""
