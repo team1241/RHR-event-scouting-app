@@ -15,7 +15,6 @@ const ScoutActionButton = ({
   isAuto = false,
   className,
   label,
-  disabled,
   onClick,
   disabled,
 }: {
@@ -25,7 +24,6 @@ const ScoutActionButton = ({
   isAuto?: boolean;
   className?: string;
   label: string;
-  disabled?: boolean;
   onClick?: () => void;
   disabled?: boolean;
 }) => {
