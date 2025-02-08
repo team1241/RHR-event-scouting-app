@@ -28,6 +28,18 @@ export default function EndgameScreen() {
   const [hangPositionSelected, setHangPositionSelected] = useState<string>("");
   const [currentAction, setCurrentAction] = useState<string>("");
   const [isMatchSelectionOpen, setIsMatchSelectionOpen] = useState(false);
+  const [actionDone, setActionDone] = useState(false);
+  // const [firstPageLoad, setFirstPage] = useState(true);
+  function checkDisabled() {
+    let disability = false;
+    //  const lastAction = context.actions.map;
+    if (hangPositionSelected !== "" && actionDone) {
+      disability = true;
+    }
+    console.log(actionDone);
+    return disability;
+  }
+  console.log(context.actions);
   return (
     <>
       <div className="flex flex-row">
@@ -37,8 +49,11 @@ export default function EndgameScreen() {
           </div>
           <UndoActionButton
             onClick={() => {
-              setHangPositionSelected("");
-              setCurrentAction("");
+              if (hangPositionSelected !== "") {
+                setHangPositionSelected("");
+                setActionDone(false);
+                setCurrentAction("");
+              }
             }}
             className="text-xl bg-red-600 h-16 w-40"
           />
@@ -60,9 +75,10 @@ export default function EndgameScreen() {
               location={hangPositionSelected}
               className=" mb-1 h-16 w-40 font-bold text-xl bg-pink-600"
               onClick={() => {
+                setActionDone(true);
                 setCurrentAction("Successfully Climbed Shallow");
               }}
-              disabled={hangPositionSelected === ""}
+              disabled={checkDisabled() && hangPositionSelected !== ""}
               label="Shallow Hang"
             />
             <ScoutActionButton
@@ -71,9 +87,10 @@ export default function EndgameScreen() {
               location={hangPositionSelected}
               className=" mb-1 h-16 w-40 font-bold text-xl bg-pink-600"
               onClick={() => {
+                setActionDone(true);
                 setCurrentAction("Successfully Climbed Deep");
               }}
-              disabled={hangPositionSelected === ""}
+              disabled={checkDisabled()}
               label="Deep Hang"
             />
 
@@ -83,9 +100,10 @@ export default function EndgameScreen() {
               location={hangPositionSelected}
               className=" mb-1 h-16 w-40 font-bold text-xl bg-pink-600"
               onClick={() => {
+                setActionDone(true);
                 setCurrentAction("Successfully Parked");
               }}
-              disabled={hangPositionSelected === ""}
+              disabled={checkDisabled() && hangPositionSelected !== ""}
               label="Park"
             />
 
@@ -93,10 +111,10 @@ export default function EndgameScreen() {
               open={isMatchSelectionOpen}
               onOpenChange={setIsMatchSelectionOpen}
             >
-              <PopoverTrigger disabled={hangPositionSelected === ""}>
+              <PopoverTrigger disabled={checkDisabled()}>
                 <Button
                   className=" mb-1 h-16 w-40 font-bold text-xl !text-white !bg-pink-600"
-                  disabled={hangPositionSelected === ""}
+                  disabled={checkDisabled() && hangPositionSelected !== ""}
                 >
                   {" "}
                   Failed Attempt
@@ -110,9 +128,11 @@ export default function EndgameScreen() {
                   location={hangPositionSelected}
                   className="mb-1 h-16 w-40 font-bold text-xl !bg-pink-600"
                   onClick={() => {
+                    setActionDone(true);
                     setCurrentAction("Shallow Climb Failed ");
                     setIsMatchSelectionOpen(false);
                   }}
+                  disabled={checkDisabled() && hangPositionSelected !== ""}
                   label="Shallow Hang"
                 />
 
@@ -122,9 +142,11 @@ export default function EndgameScreen() {
                   location={hangPositionSelected}
                   className=" mb-1 h-16 w-40 font-bold text-xl !bg-pink-600"
                   onClick={() => {
+                    setActionDone(true);
                     setCurrentAction("Deep Climb Failed");
                     setIsMatchSelectionOpen(false);
                   }}
+                  disabled={checkDisabled() && hangPositionSelected !== ""}
                   label="Deep Hang"
                 />
               </PopoverContent>
@@ -134,8 +156,9 @@ export default function EndgameScreen() {
               gamePiece={GAME_PIECES.NOGAMEPIECE}
               location={hangPositionSelected}
               className=" mb-1 h-16 w-40 font-bold text-xl bg-pink-600"
-              disabled={hangPositionSelected === ""}
+              disabled={checkDisabled()}
               onClick={() => {
+                setActionDone(true);
                 setCurrentAction("Endgame action skipped");
               }}
               label="Not Attempted"
