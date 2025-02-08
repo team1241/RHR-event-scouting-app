@@ -63,7 +63,7 @@ export default function StartingPositionScreen() {
       context.teamToScout,
     ],
     mutationFn: async () => {
-      await saveStartingPositionForTeamAtEvent(context.eventCode, {
+      await saveStartingPositionForTeamAtEvent(context.eventCode.substring(4), {
         scouterId: context.scouterDetails.id,
         matchNumber: context.matchNumber,
         teamNumber: parseInt(context!.teamToScout as string),
@@ -112,11 +112,11 @@ export default function StartingPositionScreen() {
       <FieldImage imageSize="100%" fieldSize="half">
         <div
           className={cn(
-            "flex h-full w-full",
+            "flex h-full w-full justify-between",
             getFlexDirection(context.uiOrientation, context.allianceColour).row
           )}
         >
-          <div className="flex flex-col space-y-20 items-start mx-4 justify-center w-full">
+          <div className="flex flex-col space-y-20 items-start mx-4 justify-center">
             <div className="flex items-center space-x-4 bg-black/90 font-bold p-3 rounded-lg">
               <Checkbox
                 id="noshow"
@@ -155,14 +155,15 @@ export default function StartingPositionScreen() {
           </div>
           <div
             className={cn(
-              "flex justify-between w-72 my-10 mx-52",
+              // "flex justify-between w-72 my-10 mx-52",
+              "flex justify-between my-12 mx-52",
               getFlexDirection(context.uiOrientation, context.allianceColour)
                 .col
             )}
           >
             <Button
               className={cn(
-                "h-full dark:bg-red-500/50 font-bold text-lg dark:text-white dark:hover:bg-red-500/70",
+                "h-full dark:bg-red-500/50 font-bold text-lg dark:text-white dark:hover:bg-red-500/70 w-28",
                 context.startingPosition.position ===
                   STARTING_POSITIONS.ZONE_1 &&
                   "dark:ring-2 dark:bg-red-500/70 ring-white"
@@ -176,7 +177,7 @@ export default function StartingPositionScreen() {
             </Button>
             <Button
               className={cn(
-                "h-full dark:bg-green-500/50 font-bold text-lg dark:text-white dark:hover:bg-green-500/70",
+                "h-full dark:bg-green-500/50 font-bold text-lg dark:text-white dark:hover:bg-green-500/70 w-28",
                 context.startingPosition.position ===
                   STARTING_POSITIONS.ZONE_2 &&
                   "dark:ring-2 dark:bg-green-500/70 ring-white"
@@ -190,7 +191,7 @@ export default function StartingPositionScreen() {
             </Button>
             <Button
               className={cn(
-                "h-full dark:bg-blue-500/50 font-bold text-lg dark:text-white dark:hover:bg-blue-500/70",
+                "h-full dark:bg-blue-500/50 font-bold text-lg dark:text-white dark:hover:bg-blue-500/70 w-28",
                 context.startingPosition.position ===
                   STARTING_POSITIONS.ZONE_3 &&
                   "dark:ring-2 dark:bg-blue-500/70 ring-white"

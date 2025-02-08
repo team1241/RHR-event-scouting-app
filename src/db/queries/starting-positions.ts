@@ -29,8 +29,6 @@ export async function saveStartingPositionForTeamAtEvent(
       },
     });
 
-    console.log(event);
-
     await prisma.startingPositions.upsert({
       where: {
         eventId_matchNumber_teamNumber: {
