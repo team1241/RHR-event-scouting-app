@@ -17,9 +17,13 @@ export enum MATCH_STATES {
 
 export const ACTION_NAMES = {
   A_STOP: "a-stop",
+<<<<<<< HEAD
   MATCH_START: "match-start",
   AUTO_COMPLETE: "auto-complete",
   TELEOP_START: "teleop-start",
+=======
+  BROWN_OUT: "brown_out",
+>>>>>>> 59282ce (final commit before rebase hopefully - added brownout buttons, better button feedback for endgame screen, as well as reworking how recording climbs work w the start climb button)
   UNDO: "undo",
   OUTTAKE: "outtake",
   DISLODGE: "dislodge",
@@ -28,6 +32,7 @@ export const ACTION_NAMES = {
   DROP: "drop",
   MISS: "miss",
   CLIMB: {
+    START: "climb-start",
     ATTEMPT: "climb-attempt",
     SUCCESS: "climb-success",
     FAIL: "climb-fail",
