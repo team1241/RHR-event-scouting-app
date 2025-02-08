@@ -36,7 +36,6 @@ export default function EndgameScreen() {
     setActionDone(context.previousEndgameAction.actionDone);
   }, [context.previousEndgameAction]);
 
-
   function checkActionButtonDisabled() {
     let disability = false;
     if (!positionSelected || actionDone) {
@@ -48,14 +47,28 @@ export default function EndgameScreen() {
 
   const [screenDisabled, setScreenDisabled] = useState(false);
   const [climbStarted, setClimbStarted] = useState(false);
-  const [brownOutLabel, setBrownOutLabel] = useState("BROWNOUT")
-  const [button1Style, setButton1Style] = useState("mb-1 h-16 w-40 font-bold text-xl bg-pink-600")
-  const [button2Style, setButton2Style] = useState("mb-1 h-16 w-40 font-bold text-xl bg-pink-600")
-  const [button3Style, setButton3Style] = useState("mb-1 h-16 w-40 font-bold text-xl bg-blue-500")
-  const [button4Style, setButton4Style] = useState("mb-1 h-16 w-40 font-bold text-xl bg-blue-500")
-  const [popoverButton1Style, setPopoverButton1Style] = useState("mb-1 h-16 w-40 font-bold text-xl !bg-pink-600 !text-white")
-  const [popoverButton2Style, setPopoverButton2Style] = useState("mb-1 h-16 w-40 font-bold text-xl !bg-pink-600 !text-white")
-  const [startClimbButtonStyle, setStartClimbButtonStyle] = useState("mb-1 h-16 w-40 font-bold text-xl !bg-green-700 !text-white")
+  const [brownOutLabel, setBrownOutLabel] = useState("BROWNOUT");
+  const [button1Style, setButton1Style] = useState(
+    "mb-1 h-16 w-40 font-bold text-xl bg-pink-600"
+  );
+  const [button2Style, setButton2Style] = useState(
+    "mb-1 h-16 w-40 font-bold text-xl bg-pink-600"
+  );
+  const [button3Style, setButton3Style] = useState(
+    "mb-1 h-16 w-40 font-bold text-xl bg-blue-500"
+  );
+  const [button4Style, setButton4Style] = useState(
+    "mb-1 h-16 w-40 font-bold text-xl bg-blue-500"
+  );
+  const [popoverButton1Style, setPopoverButton1Style] = useState(
+    "mb-1 h-16 w-40 font-bold text-xl !bg-pink-600 !text-white"
+  );
+  const [popoverButton2Style, setPopoverButton2Style] = useState(
+    "mb-1 h-16 w-40 font-bold text-xl !bg-pink-600 !text-white"
+  );
+  const [startClimbButtonStyle, setStartClimbButtonStyle] = useState(
+    "mb-1 h-16 w-40 font-bold text-xl !bg-green-700 !text-white"
+  );
   return (
     <>
       <div className="flex flex-row">
@@ -101,12 +114,23 @@ export default function EndgameScreen() {
                 });
                 toast.error("Robot climbed shallow cage!");
                 setCurrentAction("Successfully Climbed Shallow Cage");
-                setClimbStarted(false)
-                setButton1Style("mb-1 h-16 w-40 font-bold text-xl bg-white text-black")
-                setTimeout(() => setButton1Style("mb-1 h-16 w-40 font-bold text-xl bg-pink-600"),500)
+                setClimbStarted(false);
+                setButton1Style(
+                  "mb-1 h-16 w-40 font-bold text-xl bg-white text-black"
+                );
+                setTimeout(
+                  () =>
+                    setButton1Style(
+                      "mb-1 h-16 w-40 font-bold text-xl bg-pink-600"
+                    ),
+                  500
+                );
               }}
-
-              disabled={checkActionButtonDisabled() || screenDisabled || climbStarted === false}
+              disabled={
+                checkActionButtonDisabled() ||
+                screenDisabled ||
+                climbStarted === false
+              }
               label="Shallow Hang"
             />
             <ScoutActionButton
@@ -122,14 +146,26 @@ export default function EndgameScreen() {
                   positionSelected: hangPositionSelected,
                   actionMessage: "Successfully Climbed Deep",
                 });
-           
+
                 toast.error("Robot climbed deep cage!");
                 setCurrentAction("Successfully Climbed Deep Cage");
-                setClimbStarted(false)
-                setButton2Style("mb-1 h-16 w-40 font-bold text-xl bg-white text-black")
-                setTimeout(() => setButton2Style("mb-1 h-16 w-40 font-bold text-xl bg-pink-600"),500)
+                setClimbStarted(false);
+                setButton2Style(
+                  "mb-1 h-16 w-40 font-bold text-xl bg-white text-black"
+                );
+                setTimeout(
+                  () =>
+                    setButton2Style(
+                      "mb-1 h-16 w-40 font-bold text-xl bg-pink-600"
+                    ),
+                  500
+                );
               }}
-              disabled={checkActionButtonDisabled() || screenDisabled || climbStarted === false}
+              disabled={
+                checkActionButtonDisabled() ||
+                screenDisabled ||
+                climbStarted === false
+              }
               label="Deep Hang"
             />
 
@@ -146,25 +182,44 @@ export default function EndgameScreen() {
                   positionSelected: hangPositionSelected,
                   actionMessage: "Successfully Parked",
                 });
-              
+
                 toast.error("Robot parked!");
                 setCurrentAction("Successfully Parked");
-                setButton3Style("mb-1 h-16 w-40 font-bold text-xl bg-white text-black")
-                setTimeout(() => setButton3Style("mb-1 h-16 w-40 font-bold text-xl bg-blue-500"),500)
+                setButton3Style(
+                  "mb-1 h-16 w-40 font-bold text-xl bg-white text-black"
+                );
+                setTimeout(
+                  () =>
+                    setButton3Style(
+                      "mb-1 h-16 w-40 font-bold text-xl bg-blue-500"
+                    ),
+                  500
+                );
               }}
-              disabled={checkActionButtonDisabled() || screenDisabled || climbStarted}
+              disabled={
+                checkActionButtonDisabled() || screenDisabled || climbStarted
+              }
               label="Park"
             />
 
             <Popover
               open={isMatchSelectionOpen}
               onOpenChange={setIsMatchSelectionOpen}
-              
             >
-              <PopoverTrigger disabled={checkActionButtonDisabled() || screenDisabled || climbStarted === false}>
+              <PopoverTrigger
+                disabled={
+                  checkActionButtonDisabled() ||
+                  screenDisabled ||
+                  climbStarted === false
+                }
+              >
                 <Button
                   className="mb-1 h-16 w-40 font-bold text-xl !text-white !bg-pink-600 hover:dark:bg-white"
-                  disabled={checkActionButtonDisabled() || screenDisabled || climbStarted === false}
+                  disabled={
+                    checkActionButtonDisabled() ||
+                    screenDisabled ||
+                    climbStarted === false
+                  }
                 >
                   {" "}
                   Failed Attempt
@@ -187,12 +242,24 @@ export default function EndgameScreen() {
                     });
                     toast.error("Robot failed shallow climb!");
                     setCurrentAction("Shallow Climb Failed ");
-                    setTimeout(() => setIsMatchSelectionOpen(false),500)
-                    setPopoverButton1Style("mb-1 h-16 w-40 font-bold text-xl !bg-white !text-black");
-                    setTimeout(() => setPopoverButton1Style("mb-1 h-16 w-40 font-bold text-xl !bg-pink-600 !text-white"),1000);
-                    setClimbStarted(false)                                
+                    setTimeout(() => setIsMatchSelectionOpen(false), 500);
+                    setPopoverButton1Style(
+                      "mb-1 h-16 w-40 font-bold text-xl !bg-white !text-black"
+                    );
+                    setTimeout(
+                      () =>
+                        setPopoverButton1Style(
+                          "mb-1 h-16 w-40 font-bold text-xl !bg-pink-600 !text-white"
+                        ),
+                      1000
+                    );
+                    setClimbStarted(false);
                   }}
-                  disabled={checkActionButtonDisabled() || screenDisabled || climbStarted === false}
+                  disabled={
+                    checkActionButtonDisabled() ||
+                    screenDisabled ||
+                    climbStarted === false
+                  }
                   label="Shallow Hang"
                 />
 
@@ -212,12 +279,24 @@ export default function EndgameScreen() {
                     });
                     toast.error("Robot failed deep climb!");
                     setCurrentAction("Deep Climb Failed");
-                    setTimeout(() => setIsMatchSelectionOpen(false),500)
-                    setPopoverButton2Style("mb-1 h-16 w-40 font-bold text-xl !bg-white !text-black");
-                    setTimeout(() => setPopoverButton2Style("mb-1 h-16 w-40 font-bold text-xl !bg-pink-600 !text-white"),1000);
-                    setClimbStarted(false)
+                    setTimeout(() => setIsMatchSelectionOpen(false), 500);
+                    setPopoverButton2Style(
+                      "mb-1 h-16 w-40 font-bold text-xl !bg-white !text-black"
+                    );
+                    setTimeout(
+                      () =>
+                        setPopoverButton2Style(
+                          "mb-1 h-16 w-40 font-bold text-xl !bg-pink-600 !text-white"
+                        ),
+                      1000
+                    );
+                    setClimbStarted(false);
                   }}
-                  disabled={checkActionButtonDisabled() || screenDisabled || climbStarted === false}
+                  disabled={
+                    checkActionButtonDisabled() ||
+                    screenDisabled ||
+                    climbStarted === false
+                  }
                   label="Deep Hang"
                 />
               </PopoverContent>
@@ -227,7 +306,9 @@ export default function EndgameScreen() {
               gamePiece={GAME_PIECES.NOGAMEPIECE}
               location={hangPositionSelected}
               className={button4Style}
-              disabled={checkActionButtonDisabled() || screenDisabled || climbStarted}
+              disabled={
+                checkActionButtonDisabled() || screenDisabled || climbStarted
+              }
               onClick={() => {
                 setActionDone(true);
                 toast.error("Robot did not attempt endgame action!");
@@ -237,8 +318,16 @@ export default function EndgameScreen() {
                   positionSelected: hangPositionSelected,
                   actionMessage: "Endgame action skipped",
                 });
-                setButton4Style("mb-1 h-16 w-40 font-bold text-xl bg-white text-black")
-                setTimeout(() => setButton4Style("mb-1 h-16 w-40 font-bold text-xl bg-blue-600"),500)
+                setButton4Style(
+                  "mb-1 h-16 w-40 font-bold text-xl bg-white text-black"
+                );
+                setTimeout(
+                  () =>
+                    setButton4Style(
+                      "mb-1 h-16 w-40 font-bold text-xl bg-blue-600"
+                    ),
+                  500
+                );
               }}
               label="Not Attempted"
             />
@@ -250,20 +339,29 @@ export default function EndgameScreen() {
               gamePiece={GAME_PIECES.NOGAMEPIECE}
               location={hangPositionSelected}
               className={startClimbButtonStyle}
-              disabled={checkActionButtonDisabled() || climbStarted === true || screenDisabled}
+              disabled={
+                checkActionButtonDisabled() ||
+                climbStarted === true ||
+                screenDisabled
+              }
               onClick={() => {
                 toast.error("Climb started!");
                 setCurrentAction("Started Climb Attempt");
-                setStartClimbButtonStyle("mb-1 h-16 w-40 font-bold text-xl bg-white text-black")
-                setTimeout(() => setStartClimbButtonStyle("mb-1 h-16 w-40 font-bold text-xl bg-green-700"),500)
-                setClimbStarted(true)
+                setStartClimbButtonStyle(
+                  "mb-1 h-16 w-40 font-bold text-xl bg-white text-black"
+                );
+                setTimeout(
+                  () =>
+                    setStartClimbButtonStyle(
+                      "mb-1 h-16 w-40 font-bold text-xl bg-green-700"
+                    ),
+                  500
+                );
+                setClimbStarted(true);
               }}
               label="Start Climb"
             />
           </div>
-
-
-
 
           <div
             className={cn(
@@ -276,13 +374,12 @@ export default function EndgameScreen() {
               className={cn(
                 "h-12 w-40 font-bold text-xl opacity-90 !bg-cyan-100",
                 hangPositionSelected === LOCATIONS.BARGE.OUTER &&
-                "dark:ring-2 ring-yellow-400  ring-offset-4"
+                  "dark:ring-2 ring-yellow-400  ring-offset-4"
               )}
               onClick={() => {
                 setPositionSelected(true);
                 setHangPositionSelected(LOCATIONS.BARGE.OUTER);
               }}
-
               disabled={screenDisabled}
             >
               Far Cage
@@ -291,7 +388,7 @@ export default function EndgameScreen() {
               className={cn(
                 " h-12 w-40  font-bold text-xl opacity-90 !bg-cyan-100",
                 hangPositionSelected === LOCATIONS.BARGE.MIDDLE &&
-                "dark:ring-2 ring-yellow-400  ring-offset-4"
+                  "dark:ring-2 ring-yellow-400  ring-offset-4"
               )}
               onClick={() => {
                 setHangPositionSelected(LOCATIONS.BARGE.MIDDLE);
@@ -305,7 +402,7 @@ export default function EndgameScreen() {
               className={cn(
                 " mb-1 h-12 w-40  font-bold text-xl opacity-90 !bg-cyan-100",
                 hangPositionSelected === LOCATIONS.BARGE.INNER &&
-                "dark:ring-2 ring-yellow-400  ring-offset-4"
+                  "dark:ring-2 ring-yellow-400  ring-offset-4"
               )}
               onClick={() => {
                 setPositionSelected(true);
@@ -332,20 +429,16 @@ export default function EndgameScreen() {
           location="null"
           label={brownOutLabel}
           onClick={() => {
-            if (screenDisabled == false){
+            if (screenDisabled == false) {
               setScreenDisabled(true);
               toast.error("Robot has stopped. Screen disabled!");
-              setBrownOutLabel("ROBOT RESTARTED")
-
-            }
-            else{
-              setScreenDisabled(false)
+              setBrownOutLabel("ROBOT RESTARTED");
+            } else {
+              setScreenDisabled(false);
               toast.error("Robot has restarted. Screen enabled!");
-              setBrownOutLabel("BROWNOUT")
-            } 
-    
+              setBrownOutLabel("BROWNOUT");
+            }
           }}
-
         />
 
         <ContinueButton

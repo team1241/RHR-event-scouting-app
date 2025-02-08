@@ -1,4 +1,4 @@
-        "use client";
+"use client";
 
 import { useContext, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
@@ -15,7 +15,7 @@ import { toast } from "sonner";
 const TeleopScoringScreen = () => {
   const context = useContext(ScoutDataContext);
   const screenContext = useContext(ScoutScreenContext);
-  const [brownOutLabel, setBrownOutLabel] = useState("BROWNOUT")
+  const [brownOutLabel, setBrownOutLabel] = useState("BROWNOUT");
   const [screenDisabled, setScreenDisabled] = useState(false);
 
   return (
@@ -68,25 +68,23 @@ const TeleopScoringScreen = () => {
         />
 
         <ScoutActionButton
-                className="bg-red-500 flex items-center justify-center text-black font-bold text-xl h-20 w-64 px-4 py-2"
-                actionName={ACTION_NAMES.BROWN_OUT}
-                gamePiece="null"
-                location="null"
-                label={brownOutLabel}
-                onClick={() => {
-                  if (screenDisabled == false){
-                    setScreenDisabled(true);
-                    toast.error("Robot has stopped. Screen disabled!");
-                    setBrownOutLabel("ROBOT RESTARTED")
-      
-                  }
-                  else{
-                    setScreenDisabled(false)
-                    toast.error("Robot has restarted. Screen enabled!");
-                    setBrownOutLabel("BROWNOUT")
-                  } 
-                }}
-         />
+          className="bg-red-500 flex items-center justify-center text-black font-bold text-xl h-20 w-64 px-4 py-2"
+          actionName={ACTION_NAMES.BROWN_OUT}
+          gamePiece="null"
+          location="null"
+          label={brownOutLabel}
+          onClick={() => {
+            if (screenDisabled == false) {
+              setScreenDisabled(true);
+              toast.error("Robot has stopped. Screen disabled!");
+              setBrownOutLabel("ROBOT RESTARTED");
+            } else {
+              setScreenDisabled(false);
+              toast.error("Robot has restarted. Screen enabled!");
+              setBrownOutLabel("BROWNOUT");
+            }
+          }}
+        />
 
         <div className="flex grow justify-end">
           <ContinueButton
@@ -102,4 +100,4 @@ const TeleopScoringScreen = () => {
   );
 };
 
-        export default TeleopScoringScreen;
+export default TeleopScoringScreen;
