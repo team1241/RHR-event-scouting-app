@@ -6,7 +6,9 @@ import ContinueButton from "./common/continue-button";
 import ScoutActionButton from "./common/scout-action-button";
 import PageHeading from "~/components/common/page-heading";
 import UndoActionButton from "./common/undo-action-button";
-import MatchScoutingLayout from "~/app/scout/[eventCode]/components/common/match-scouting-layout";
+import MatchScoutingLayout, {
+  getHasCoralOrAlgae,
+} from "~/app/scout/[eventCode]/components/common/match-scouting-layout";
 import { useContext, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
 
@@ -14,11 +16,12 @@ export default function AutonomousScreen() {
   const context = useContext(ScoutDataContext);
   const screenContext = useContext(ScoutScreenContext);
   const [isAutoStopped, setAutoStopped] = useState(false);
-  console.log(context.actions);
+  const [hasCoral, setHasCoral] = useState(false);
+  const [hasAlgae, setHasAlgae] = useState(false);
 
   return (
     <>
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row items-center space-x-4">
           <PageHeading>Autonomous</PageHeading>
           <UndoActionButton
@@ -29,7 +32,11 @@ export default function AutonomousScreen() {
           />
         </div>
       </div>
-      <MatchScoutingLayout isDisabled={isAutoStopped} />
+      <MatchScoutingLayout
+        isDisabled={isAutoStopped}
+        haveCoral={hasCoral}
+        haveAlgae={hasAlgae}
+      />
       <div className="flex flex-row justify-between">
         <ScoutActionButton
           className="bg-red-500 flex items-center justify-center text-black font-bold text-xl h-20 w-64 px-4 py-2"
