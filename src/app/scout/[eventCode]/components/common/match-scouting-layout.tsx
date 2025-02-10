@@ -1,17 +1,21 @@
-'use client';
+"use client";
 
-import { Popover, PopoverTrigger, PopoverContent } from "@radix-ui/react-popover";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@radix-ui/react-popover";
 import { useState, useContext } from "react";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import { ACTION_NAMES, GAME_PIECES, LOCATIONS } from "../../constants";
-import { ScoutDataContext} from "../../context";
+import { ScoutDataContext } from "../../context";
 import { getFlexDirection } from "../../utils";
 import FieldImage from "./field-image";
 import ScoutActionButton from "./scout-action-button";
 
-const MatchScoutingLayout = ({isDisabled}: {isDisabled: boolean}) => {
-    const [isCoralScoreSelectionOpen, setIsCoralScoreSelectionOpen] =
+const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
+  const [isCoralScoreSelectionOpen, setIsCoralScoreSelectionOpen] =
     useState(false);
   const [isCoralScoreSelected, setCoralScoreSelected] = useState(false);
   const [isCoralMissSelected, setCoralMissSelected] = useState(false);
@@ -33,6 +37,17 @@ const MatchScoutingLayout = ({isDisabled}: {isDisabled: boolean}) => {
       return "something wrong here bruh";
     }
   };
+
+  const checkIsDisabled = (isDisabled: boolean, isDefending: boolean) => {
+    if (context.isDefending) {
+      return true;
+    } else if (isDisabled) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <div>
       <div>
@@ -58,7 +73,7 @@ const MatchScoutingLayout = ({isDisabled}: {isDisabled: boolean}) => {
                 location={LOCATIONS.CORAL_STATION.LEFT}
                 label="Coral Pickup"
                 isAuto
-                disabled={isDisabled}
+                disabled={checkIsDisabled(isDisabled, context.isDefending)}
               />
               <ScoutActionButton
                 className="text-xl font-bold w-52 h-16 bg-white text-black"
@@ -67,7 +82,7 @@ const MatchScoutingLayout = ({isDisabled}: {isDisabled: boolean}) => {
                 location={LOCATIONS.GROUND}
                 label="Ground Intake Coral"
                 isAuto
-                disabled={isDisabled}
+                disabled={checkIsDisabled(isDisabled, context.isDefending)}
               />
               <ScoutActionButton
                 className="dark:bg-teal-400 text-xl font-bold w-52 h-16 text-black"
@@ -76,7 +91,7 @@ const MatchScoutingLayout = ({isDisabled}: {isDisabled: boolean}) => {
                 location={LOCATIONS.GROUND}
                 label="Ground Intake Algae"
                 isAuto
-                disabled={isDisabled}
+                disabled={checkIsDisabled(isDisabled, context.isDefending)}
               />
               <ScoutActionButton
                 className="text-xl font-bold w-52 h-16 bg-white text-black"
@@ -85,7 +100,7 @@ const MatchScoutingLayout = ({isDisabled}: {isDisabled: boolean}) => {
                 location={LOCATIONS.CORAL_STATION.RIGHT}
                 label="Coral Pickup"
                 isAuto
-                disabled={isDisabled}
+                disabled={checkIsDisabled(isDisabled, context.isDefending)}
               />
             </div>
             <div className="flex flex-col items-center justify-between h-full w-full gap-3 mx-28">
@@ -96,7 +111,7 @@ const MatchScoutingLayout = ({isDisabled}: {isDisabled: boolean}) => {
                 <PopoverTrigger asChild>
                   <Button
                     className="dark:bg-teal-400 text-xl font-bold w-44 h-16 my-20"
-                    disabled={isDisabled}
+                    disabled={checkIsDisabled(isDisabled, context.isDefending)}
                   >
                     Algae Dislodge
                   </Button>
@@ -136,14 +151,20 @@ const MatchScoutingLayout = ({isDisabled}: {isDisabled: boolean}) => {
                     setIsCoralMissSelectionOpen || setIsCoralScoreSelectionOpen
                   }
                 >
-                  <PopoverTrigger asChild>
+                  <PopoverTrigger
+                    asChild
+                    disabled={checkIsDisabled(isDisabled, context.isDefending)}
+                  >
                     <div className="flex flex-col ">
                       <Button
                         className="text-xl font-bold w-44 h-16"
                         onClick={() => {
                           setCoralScoreSelected(true);
                         }}
-                        disabled={isDisabled}
+                        disabled={checkIsDisabled(
+                          isDisabled,
+                          context.isDefending
+                        )}
                       >
                         Coral Score
                       </Button>
@@ -152,7 +173,10 @@ const MatchScoutingLayout = ({isDisabled}: {isDisabled: boolean}) => {
                         onClick={() => {
                           setCoralMissSelected(true);
                         }}
-                        disabled={isDisabled}
+                        disabled={checkIsDisabled(
+                          isDisabled,
+                          context.isDefending
+                        )}
                       >
                         Coral Miss
                       </Button>
@@ -272,7 +296,7 @@ const MatchScoutingLayout = ({isDisabled}: {isDisabled: boolean}) => {
                   location={LOCATIONS.NET}
                   isAuto
                   label="Net Scored"
-                  disabled={isDisabled}
+                  disabled={checkIsDisabled(isDisabled, context.isDefending)}
                 />
                 <ScoutActionButton
                   className="text-xl font-bold w-36 h-16 bg-red-500 text-black"
@@ -281,7 +305,7 @@ const MatchScoutingLayout = ({isDisabled}: {isDisabled: boolean}) => {
                   location={LOCATIONS.NET}
                   isAuto
                   label="Net Miss"
-                  disabled={isDisabled}
+                  disabled={checkIsDisabled(isDisabled, context.isDefending)}
                 />
               </div>
               <ScoutActionButton
@@ -291,19 +315,15 @@ const MatchScoutingLayout = ({isDisabled}: {isDisabled: boolean}) => {
                 location={LOCATIONS.PROCESSOR}
                 label="Processor Score"
                 isAuto
-                disabled={isDisabled}
+                disabled={checkIsDisabled(isDisabled, context.isDefending)}
               />
             </div>
-            <div>
-              
-            </div>
+            <div></div>
           </div>
         </FieldImage>
       </div>
-      
     </div>
   );
-}
-
+};
 
 export default MatchScoutingLayout;

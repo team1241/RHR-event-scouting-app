@@ -28,7 +28,7 @@ export const ACTION_NAMES = {
     ATTEMPT: "climb-attempt",
     SUCCESS: "climb-success",
     FAIL: "climb-fail",
-    NOTHING: "endgame-nothing"
+    NOTHING: "endgame-nothing",
   },
   PARK: "park",
   DEFENDING: "defending",
