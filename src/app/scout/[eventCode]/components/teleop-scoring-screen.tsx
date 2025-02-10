@@ -40,10 +40,10 @@ const TeleopScoringScreen = () => {
             )}
             disabled={context.isDefending}
             onClick={() => {
-              if (!context.wasDefended) {
-                context.setWasDefended(true);
-              } else {
+              if (context.wasDefended) {
                 context.setWasDefended(false);
+              } else {
+                context.setWasDefended(true);
               }
             }}
           >
