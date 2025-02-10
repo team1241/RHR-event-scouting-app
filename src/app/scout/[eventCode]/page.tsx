@@ -53,11 +53,6 @@ const ScoutPage = () => {
       canGoBack: true,
     },
     {
-      component: <FinalizationScreen />,
-      name: SCREEN_NAMES.FINALIZE,
-      canGoBack: true,
-    },
-    {
       component: <AutonomousScreen />,
       name: SCREEN_NAMES.AUTO,
       canGoBack: false,
@@ -72,7 +67,11 @@ const ScoutPage = () => {
       name: SCREEN_NAMES.ENDGAME,
       canGoBack: true,
     },
-
+    {
+      component: <FinalizationScreen />,
+      name: SCREEN_NAMES.FINALIZE,
+      canGoBack: true,
+    },
     {
       component: <BallScoutSetup />,
       name: SCREEN_NAMES.ALTERNATE_SCOUT.SETUP,

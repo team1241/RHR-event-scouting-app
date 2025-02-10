@@ -21,14 +21,14 @@ export default function BallScoringScreen() {
   return (
     <>
       <PageHeading>Human Player Balls Scored</PageHeading>
-      <div className="flex flex-row justify-between mt-2">
+      <div className="flex flex-row justify-between mt-2 mb-5">
         <FlipFieldButton />
       </div>
       <FieldImage imageSize="100%" fieldSize="full">
         <div className={cn("flex h-full w-full justify-center")}>
           <div
             className={cn(
-              "flex pt-4 justify-center mr-5",
+              "flex justify-center mr-5",
               context.uiOrientation === FIELD_ORIENTATIONS.DEFAULT
                 ? "flex-col"
                 : "flex-col-reverse"
@@ -142,7 +142,7 @@ export default function BallScoringScreen() {
           </div>
           <div
             className={cn(
-              "flex flex-col pt-4 justify-center ml-5",
+              "flex flex-col justify-center ml-5",
               context.uiOrientation === FIELD_ORIENTATIONS.DEFAULT
                 ? "flex-col"
                 : "flex-col-reverse"
@@ -257,7 +257,7 @@ export default function BallScoringScreen() {
           </div>
         </div>
       </FieldImage>
-      <div className="flex flex-row justify-end">
+      <div className="flex flex-row justify-end mt-8">
         <ContinueButton
           onClick={() => screenContext.goToScreen(SCREEN_NAMES.FINALIZE)}
         />

@@ -1,6 +1,6 @@
 "use client";
 
-import { Save } from "lucide-react";
+import { Loader2Icon, Save } from "lucide-react";
 import PageHeading from "~/components/common/page-heading";
 import { Button } from "~/components/ui/button";
 import BackButton from "./common/back-button";
@@ -105,8 +105,16 @@ export default function StartingPositionScreen() {
             setSaved(true);
           }}
         >
-          SAVE
-          <Save className="!size-5" />
+          {saveStartingPosition.isPending ? (
+            <>
+              SAVING... <Loader2Icon className="animate-spin size-6" />{" "}
+            </>
+          ) : (
+            <>
+              SAVE
+              <Save className="!size-5" />
+            </>
+          )}
         </Button>
       </div>
       <FieldImage imageSize="100%" fieldSize="half">
