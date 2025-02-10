@@ -38,7 +38,7 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
     }
   };
 
-  const checkIsDisabled = (isDisabled: boolean, isDefending: boolean) => {
+  const checkIsDisabled = (isDisabled: boolean) => {
     if (context.isDefending) {
       return true;
     } else if (isDisabled) {
@@ -73,7 +73,7 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
                 location={LOCATIONS.CORAL_STATION.LEFT}
                 label="Coral Pickup"
                 isAuto
-                disabled={checkIsDisabled(isDisabled, context.isDefending)}
+                disabled={checkIsDisabled(isDisabled)}
               />
               <ScoutActionButton
                 className="text-xl font-bold w-52 h-16 bg-white text-black"
@@ -82,7 +82,7 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
                 location={LOCATIONS.GROUND}
                 label="Ground Intake Coral"
                 isAuto
-                disabled={checkIsDisabled(isDisabled, context.isDefending)}
+                disabled={checkIsDisabled(isDisabled)}
               />
               <ScoutActionButton
                 className="dark:bg-teal-400 text-xl font-bold w-52 h-16 text-black"
@@ -91,7 +91,7 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
                 location={LOCATIONS.GROUND}
                 label="Ground Intake Algae"
                 isAuto
-                disabled={checkIsDisabled(isDisabled, context.isDefending)}
+                disabled={checkIsDisabled(isDisabled)}
               />
               <ScoutActionButton
                 className="text-xl font-bold w-52 h-16 bg-white text-black"
@@ -100,7 +100,7 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
                 location={LOCATIONS.CORAL_STATION.RIGHT}
                 label="Coral Pickup"
                 isAuto
-                disabled={checkIsDisabled(isDisabled, context.isDefending)}
+                disabled={checkIsDisabled(isDisabled)}
               />
             </div>
             <div className="flex flex-col items-center justify-between h-full w-full gap-3 mx-28">
@@ -111,7 +111,7 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
                 <PopoverTrigger asChild>
                   <Button
                     className="dark:bg-teal-400 text-xl font-bold w-44 h-16 my-20"
-                    disabled={checkIsDisabled(isDisabled, context.isDefending)}
+                    disabled={checkIsDisabled(isDisabled)}
                   >
                     Algae Dislodge
                   </Button>
@@ -153,7 +153,7 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
                 >
                   <PopoverTrigger
                     asChild
-                    disabled={checkIsDisabled(isDisabled, context.isDefending)}
+                    disabled={checkIsDisabled(isDisabled)}
                   >
                     <div className="flex flex-col ">
                       <Button
@@ -161,10 +161,7 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
                         onClick={() => {
                           setCoralScoreSelected(true);
                         }}
-                        disabled={checkIsDisabled(
-                          isDisabled,
-                          context.isDefending
-                        )}
+                        disabled={checkIsDisabled(isDisabled)}
                       >
                         Coral Score
                       </Button>
@@ -173,10 +170,7 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
                         onClick={() => {
                           setCoralMissSelected(true);
                         }}
-                        disabled={checkIsDisabled(
-                          isDisabled,
-                          context.isDefending
-                        )}
+                        disabled={checkIsDisabled(isDisabled)}
                       >
                         Coral Miss
                       </Button>
@@ -296,7 +290,7 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
                   location={LOCATIONS.NET}
                   isAuto
                   label="Net Scored"
-                  disabled={checkIsDisabled(isDisabled, context.isDefending)}
+                  disabled={checkIsDisabled(isDisabled)}
                 />
                 <ScoutActionButton
                   className="text-xl font-bold w-36 h-16 bg-red-500 text-black"
@@ -305,7 +299,7 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
                   location={LOCATIONS.NET}
                   isAuto
                   label="Net Miss"
-                  disabled={checkIsDisabled(isDisabled, context.isDefending)}
+                  disabled={checkIsDisabled(isDisabled)}
                 />
               </div>
               <ScoutActionButton
@@ -315,7 +309,7 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
                 location={LOCATIONS.PROCESSOR}
                 label="Processor Score"
                 isAuto
-                disabled={checkIsDisabled(isDisabled, context.isDefending)}
+                disabled={checkIsDisabled(isDisabled)}
               />
             </div>
             <div></div>
