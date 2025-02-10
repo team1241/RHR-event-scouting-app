@@ -14,7 +14,6 @@ import { cn } from "~/lib/utils";
 const TeleopScoringScreen = () => {
   const context = useContext(ScoutDataContext);
   const screenContext = useContext(ScoutScreenContext);
-  console.log(context.actions);
 
   return (
     <>
