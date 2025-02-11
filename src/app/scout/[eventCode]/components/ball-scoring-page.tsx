@@ -18,118 +18,11 @@ export default function BallScoringScreen() {
       <FieldImage imageSize="100%" fieldSize="full">
         <div
           className={cn(
-            "flex h-full w-full justify-center"
+            "flex h-full w-full justify-around"
             // getFlexDirection(context.uiOrientation, context.allianceColour).row
           )}
         >
           <div className="flex flex-col pt-4 justify-center mr-5">
-            <div className="flex flex-col pb-2">
-              <Button
-                className="h-14 w-60"
-                onClick={() => {
-                  if (
-                    context.alternateScoutData &&
-                    context.setAlternateScoutData
-                  ) {
-                    const currentMisses = Number(
-                      context.alternateScoutData?.scoring.blueMiss
-                    );
-                    context.setAlternateScoutData({
-                      ...context!.alternateScoutData,
-                      scoring: {
-                        ...context!.alternateScoutData.scoring,
-                        blueMiss: currentMisses + 1,
-                      },
-                    });
-                  }
-                }}
-              >
-                <PlusIcon className="!size-8"></PlusIcon>
-              </Button>
-              <p className="dark:bg-blue-600 pt-3 text-center text-white font-bold text-2xl h-24 w-60">
-                Blue Miss <br></br>
-                <span className="text-4xl">
-                  {`${context.alternateScoutData?.scoring.blueMiss}`}
-                </span>
-              </p>
-
-              <Button
-                className="h-14 w-60"
-                onClick={() => {
-                  if (
-                    context.alternateScoutData &&
-                    context.setAlternateScoutData
-                  ) {
-                    const currentMisses = Number(
-                      context.alternateScoutData?.scoring.blueMiss
-                    );
-                    context.setAlternateScoutData({
-                      ...context!.alternateScoutData,
-                      scoring: {
-                        ...context!.alternateScoutData.scoring,
-                        blueMiss: currentMisses !== 0 ? currentMisses - 1 : 0,
-                      },
-                    });
-                  }
-                }}
-              >
-                <MinusIcon className="!size-8"></MinusIcon>
-              </Button>
-            </div>
-            <div className="flex flex-col pb-2">
-              <Button
-                className="h-14 w-60"
-                onClick={() => {
-                  if (
-                    context.alternateScoutData &&
-                    context.setAlternateScoutData
-                  ) {
-                    const currentMisses = Number(
-                      context.alternateScoutData?.scoring.redMiss
-                    );
-                    context.setAlternateScoutData({
-                      ...context!.alternateScoutData,
-                      scoring: {
-                        ...context!.alternateScoutData.scoring,
-                        redMiss: currentMisses + 1,
-                      },
-                    });
-                  }
-                }}
-              >
-                <PlusIcon className="!size-8"></PlusIcon>
-              </Button>
-              <p className="dark:bg-red-600 p-3 text-center text-white font-bold text-2xl h-24 w-60">
-                Red Miss <br></br>
-                <span className="text-4xl">
-                  {`${context.alternateScoutData?.scoring.redMiss}`}
-                </span>
-              </p>
-              <Button
-                className="h-14"
-                onClick={() => {
-                  if (
-                    context.alternateScoutData &&
-                    context.setAlternateScoutData
-                  ) {
-                    const currentMisses = Number(
-                      context.alternateScoutData?.scoring.redMiss
-                    );
-                    context.setAlternateScoutData({
-                      ...context!.alternateScoutData,
-                      scoring: {
-                        ...context!.alternateScoutData.scoring,
-                        redMiss: currentMisses !== 0 ? currentMisses - 1 : 0,
-                      },
-                    });
-                  }
-                }}
-              >
-                <MinusIcon className="!size-8"></MinusIcon>
-              </Button>
-            </div>
-          </div>
-          <div className="flex flex-col pt-4 justify-center ml-5">
             <div className="flex flex-col pb-2">
               <Button
                 className="h-14 w-60"
@@ -192,6 +85,62 @@ export default function BallScoringScreen() {
                     context.alternateScoutData &&
                     context.setAlternateScoutData
                   ) {
+                    const currentMisses = Number(
+                      context.alternateScoutData?.scoring.blueMiss
+                    );
+                    context.setAlternateScoutData({
+                      ...context!.alternateScoutData,
+                      scoring: {
+                        ...context!.alternateScoutData.scoring,
+                        blueMiss: currentMisses + 1,
+                      },
+                    });
+                  }
+                }}
+              >
+                <PlusIcon className="!size-8"></PlusIcon>
+              </Button>
+              <p className="dark:bg-blue-600 pt-3 text-center text-white font-bold text-2xl h-24 w-60">
+                Blue Miss <br></br>
+                <span className="text-4xl">
+                  {`${context.alternateScoutData?.scoring.blueMiss}`}
+                </span>
+              </p>
+
+              <Button
+                className="h-14 w-60"
+                onClick={() => {
+                  if (
+                    context.alternateScoutData &&
+                    context.setAlternateScoutData
+                  ) {
+                    const currentMisses = Number(
+                      context.alternateScoutData?.scoring.blueMiss
+                    );
+                    context.setAlternateScoutData({
+                      ...context!.alternateScoutData,
+                      scoring: {
+                        ...context!.alternateScoutData.scoring,
+                        blueMiss: currentMisses !== 0 ? currentMisses - 1 : 0,
+                      },
+                    });
+                  }
+                }}
+              >
+                <MinusIcon className="!size-8"></MinusIcon>
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex flex-col pt-4 justify-center ml-5">
+            <div className="flex flex-col pb-2">
+              <Button
+                className="h-14 w-60"
+                onClick={() => {
+                  if (
+                    context.alternateScoutData &&
+                    context.setAlternateScoutData
+                  ) {
                     const currentScores = Number(
                       context.alternateScoutData?.scoring.redScore
                     );
@@ -236,10 +185,62 @@ export default function BallScoringScreen() {
                 <MinusIcon className="!size-8"></MinusIcon>
               </Button>
             </div>
+            <div className="flex flex-col pb-2">
+              <Button
+                className="h-14 w-60"
+                onClick={() => {
+                  if (
+                    context.alternateScoutData &&
+                    context.setAlternateScoutData
+                  ) {
+                    const currentMisses = Number(
+                      context.alternateScoutData?.scoring.redMiss
+                    );
+                    context.setAlternateScoutData({
+                      ...context!.alternateScoutData,
+                      scoring: {
+                        ...context!.alternateScoutData.scoring,
+                        redMiss: currentMisses + 1,
+                      },
+                    });
+                  }
+                }}
+              >
+                <PlusIcon className="!size-8"></PlusIcon>
+              </Button>
+              <p className="dark:bg-red-600 p-3 text-center text-white font-bold text-2xl h-24 w-60">
+                Red Miss <br></br>
+                <span className="text-4xl">
+                  {`${context.alternateScoutData?.scoring.redMiss}`}
+                </span>
+              </p>
+              <Button
+                className="h-14"
+                onClick={() => {
+                  if (
+                    context.alternateScoutData &&
+                    context.setAlternateScoutData
+                  ) {
+                    const currentMisses = Number(
+                      context.alternateScoutData?.scoring.redMiss
+                    );
+                    context.setAlternateScoutData({
+                      ...context!.alternateScoutData,
+                      scoring: {
+                        ...context!.alternateScoutData.scoring,
+                        redMiss: currentMisses !== 0 ? currentMisses - 1 : 0,
+                      },
+                    });
+                  }
+                }}
+              >
+                <MinusIcon className="!size-8"></MinusIcon>
+              </Button>
+            </div>
           </div>
         </div>
       </FieldImage>
-      <div className="flex flex-row justify-end">
+      <div className="flex flex-row my-12 justify-end">
         <ContinueButton />
       </div>
     </>
