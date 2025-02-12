@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext} from "react";
+import { useContext } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
 import PageHeading from "~/components/common/page-heading";
 import MatchScoutingLayout from "./common/match-scouting-layout";
@@ -64,14 +64,15 @@ const TeleopScoringScreen = () => {
               }
             }}
           />
+
+          <ContinueButton
+            onClick={() => {
+              context.setIsDefending(false);
+              context.setWasDefended(false);
+              screenContext.nextScreen();
+            }}
+          />
         </div>
-        <ContinueButton
-          onClick={() => {
-            context.setIsDefending(false);
-            context.setWasDefended(false);
-            screenContext.nextScreen();
-          }}
-        />
       </div>
     </>
   );

@@ -17,6 +17,9 @@ export enum MATCH_STATES {
 
 export const ACTION_NAMES = {
   A_STOP: "a-stop",
+  MATCH_START: "match-start",
+  AUTO_COMPLETE: "auto-complete",
+  TELEOP_START: "teleop-start",
   UNDO: "undo",
   OUTTAKE: "outtake",
   DISLODGE: "dislodge",

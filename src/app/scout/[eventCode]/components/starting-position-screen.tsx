@@ -11,8 +11,10 @@ import { useContext, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
 import {
   GAME_PIECES,
+  ACTION_NAMES,
   LOCAL_STORAGE_KEYS,
   MATCH_STATES,
+  SCREEN_NAMES,
   STARTING_POSITIONS,
 } from "../constants";
 import { cn } from "~/lib/utils";
@@ -21,6 +23,7 @@ import FlipFieldButton from "~/app/scout/[eventCode]/components/common/flip-fiel
 import { useMutation } from "@tanstack/react-query";
 import { saveStartingPositionForTeamAtEvent } from "~/db/queries/starting-positions";
 import { toast } from "sonner";
+import { formatISO } from "date-fns";
 
 export default function StartingPositionScreen() {
   const context = useContext(ScoutDataContext);
@@ -219,8 +222,25 @@ export default function StartingPositionScreen() {
           <BackButton onClick={() => screenContext.prevScreen()} />
           <ContinueButton
             onClick={() => {
+              if (!context.startingPosition.showedUp) {
+                screenContext.goToScreen(SCREEN_NAMES.FINALIZE);
+                return;
+              }
               screenContext.nextScreen();
               context.setMatchState(MATCH_STATES.AUTO);
+              context.actions.push({
+                scoutId: context.scouterDetails.id.toString(),
+                matchNumber: context.matchNumber,
+                teamNumber: Number(context.teamToScout!),
+                eventCode: context.matchNumber,
+                hasUndo: false,
+                wasDefended: false,
+                actionName: ACTION_NAMES.MATCH_START,
+                gamePiece: "None",
+                location: "None",
+                isAuto: true,
+                timestamp: formatISO(new Date()),
+              });
             }}
             disabled={isContinueDisabled()}
           />

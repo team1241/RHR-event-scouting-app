@@ -1,6 +1,8 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
+import { differenceInSeconds } from "date-fns";
+import { ShieldIcon, UndoIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
 import BackButton from "~/app/scout/[eventCode]/components/common/back-button";
@@ -11,8 +13,19 @@ import {
   ScoutScreenContext,
 } from "~/app/scout/[eventCode]/context";
 import { ScoutAction } from "~/app/scout/[eventCode]/context/data-context";
+import { capitalize } from "~/app/scout/[eventCode]/utils";
 import PageHeading from "~/components/common/page-heading";
-import { AlertDialog, AlertDialogTrigger } from "~/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "~/components/ui/alert-dialog";
 import {
   Card,
   CardContent,
@@ -68,6 +81,7 @@ const FinalizationScreen = () => {
       action.actionName === ACTION_NAMES.CLIMB.FAIL
     ) {
       endgameActions.push(action);
+      // teleopActions.splice(teleopActions.indexOf(action), 1);
     }
   });
 
@@ -83,6 +97,35 @@ const FinalizationScreen = () => {
     },
   });
 
+  const renderActionList = (actions: ScoutAction[]) => {
+    if (actions.length === 0) return [];
+    let timeRemaining = actions[0].isAuto ? 15 : 135;
+
+    return actions.map((action, index) => {
+      if (index > 0) {
+        timeRemaining -= differenceInSeconds(
+          actions[index].timestamp,
+          actions[index - 1].timestamp
+        );
+      }
+
+      return (
+        <div
+          key={`action-${index}`}
+          className="flex flex-row gap-2 items-center"
+        >
+          <p className="font-semibold text-xl">{index + 1}</p>
+          <p>{capitalize(action.gamePiece)}</p>
+          <p>{capitalize(action.actionName)}</p>
+          <p>{capitalize(action.location)}</p>
+          {action.wasDefended && <ShieldIcon />}
+          {action.hasUndo && <UndoIcon />}
+          <p className="grow text-right">{`T = ${timeRemaining}`}</p>
+        </div>
+      );
+    });
+  };
+
   return (
     <>
       <PageHeading>Match Finalization</PageHeading>
@@ -90,22 +133,28 @@ const FinalizationScreen = () => {
         <div className="w-full flex flex-col gap-2 items-start">
           <h2 className="text-2xl font-semibold">Actions:</h2>
           <Tabs defaultValue="teleop" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-2">
+            <TabsList className="grid w-full grid-cols-2 mb-2">
               <TabsTrigger value="auto" disabled={context.isAlternateScout}>
                 Auto
               </TabsTrigger>
               <TabsTrigger value="teleop">Teleop</TabsTrigger>
-              <TabsTrigger value="endgame" disabled={context.isAlternateScout}>
-                Endgame
-              </TabsTrigger>
             </TabsList>
             <Card>
               <CardContent>
-                <TabsContent value="auto">
-                  {autoActions.length === 0 ? <p>No actions logged</p> : <></>}
+                <TabsContent value="auto" className="h-[300px] w-full">
+                  {autoActions.length === 0 ? (
+                    <p>No actions logged</p>
+                  ) : (
+                    <ScrollArea className="h-[300px]">
+                      {renderActionList(autoActions)}
+                      <p className="text-center text-xl font-semibold">
+                        {"---- End of list ----"}
+                      </p>
+                    </ScrollArea>
+                  )}
                   {/* This content is disabled if the user is an alternate scout */}
                 </TabsContent>
-                <TabsContent value="teleop">
+                <TabsContent value="teleop" className="h-[300px] w-full">
                   {teleopActions.length === 0 && !context.isAlternateScout && (
                     <p>No actions logged</p>
                   )}
@@ -191,25 +240,27 @@ const FinalizationScreen = () => {
                       </div>
                     </div>
                   ) : (
-                    <></>
+                    <ScrollArea className="h-[300px]">
+                      {renderActionList(teleopActions)}
+                      <p className="text-center text-xl font-semibold">
+                        {"---- End of list ----"}
+                      </p>
+                    </ScrollArea>
                   )}
-                </TabsContent>
-                <TabsContent value="endgame">
-                  {endgameActions.length === 0 ? (
-                    <p>No actions logged</p>
-                  ) : (
-                    <></>
-                  )}
-                  {/* This content is disabled if the user is an alternate scout */}
                 </TabsContent>
               </CardContent>
             </Card>
           </Tabs>
-          <ScrollArea className="h-full w-full">
-            {context.actions.map((action, index) => (
-              <p key={`action-${index}`}>{action.actionName}</p>
-            ))}
-          </ScrollArea>
+          <div className="flex flex-col gap-2 items-start">
+            <div className="flex flex-row gap-2 items-center">
+              <UndoIcon />
+              <span>{"= undo action occurred"}</span>
+            </div>
+            <div className="flex flex-row gap-2 items-center">
+              <ShieldIcon />
+              <span>{"= robot was defended during action"}</span>
+            </div>
+          </div>
         </div>
         <div className="w-full flex flex-col gap-2 items-start">
           <h2 className="text-2xl font-semibold">Other info:</h2>
@@ -300,6 +351,8 @@ const FinalizationScreen = () => {
           onClick={() => {
             if (context.isAlternateScout) {
               screenContext.goToScreen(SCREEN_NAMES.ALTERNATE_SCOUT.SCORING);
+            } else if (!context.startingPosition.showedUp) {
+              screenContext.goToScreen(SCREEN_NAMES.STARTING_POSITIONS);
             } else {
               screenContext.prevScreen();
             }
@@ -307,23 +360,42 @@ const FinalizationScreen = () => {
         />
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <ContinueButton
-              label="SUBMIT MATCH"
-              onClick={async () => {
-                if (typeof window !== "undefined") {
-                  localStorage.removeItem("rhr_scouting:current_screen");
-                  localStorage.removeItem("rhr_scouting:starting_position");
-                }
-
-                try {
-                  // const saveResult = await saveDataMutation.mutateAsync();
-                } catch (e) {
-                  console.error(e);
-                }
-                router.refresh();
-              }}
-            />
+            <ContinueButton label="SUBMIT MATCH" />
           </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                {isFogHornedSelected
+                  ? "Are you sure the match was fog horned?"
+                  : "Confirm Match Submission"}
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                {isFogHornedSelected
+                  ? "A fog horned match WILL NOT be submitted and will DELETE all data for this match."
+                  : "This action cannot be undone. This data cannot be updated once it is submitted."}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={async () => {
+                  if (typeof window !== "undefined") {
+                    localStorage.removeItem("rhr_scouting:current_screen");
+                    localStorage.removeItem("rhr_scouting:starting_position");
+                  }
+
+                  try {
+                    // const saveResult = await saveDataMutation.mutateAsync();
+                  } catch (e) {
+                    console.error(e);
+                  }
+                  router.refresh();
+                }}
+              >
+                Confirm
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
         </AlertDialog>
       </div>
     </>
