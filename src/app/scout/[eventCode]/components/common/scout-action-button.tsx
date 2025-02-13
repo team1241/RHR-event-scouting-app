@@ -55,7 +55,6 @@ const ScoutActionButton = ({
       JSON.stringify(updatedActionsList)
     );
     scoutDataContext.setUndoOccurred(false);
-    scoutDataContext.setWasDefended(false);
     if (onClick) {
       onClick();
     }

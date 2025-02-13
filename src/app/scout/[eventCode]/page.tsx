@@ -101,6 +101,7 @@ const ScoutPage = () => {
   const [isAlternateScout, setIsAlternateScout] = useState(false);
   const [undoOccurred, setUndoOccurred] = useState(false);
   const [wasDefended, setWasDefended] = useState(false);
+  const [isDefending, setIsDefending] = useState(false);
   const [matchSchedule, setMatchSchedule] = useState<MatchScheduleType[]>([]);
   const [currentMatch, setCurrentMatch] = useState<MatchScheduleType>();
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
@@ -263,6 +264,8 @@ const ScoutPage = () => {
           setUndoOccurred,
           wasDefended,
           setWasDefended,
+          isDefending,
+          setIsDefending,
           fieldImages,
           matchState,
           setMatchState,

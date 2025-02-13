@@ -74,6 +74,8 @@ interface ScoutDataContextType {
   setUndoOccurred: (undoOccurred: boolean) => void;
   wasDefended: boolean;
   setWasDefended: (wasDefended: boolean) => void;
+  isDefending: boolean;
+  setIsDefending: (isDefending: boolean) => void;
   matchState: MATCH_STATES;
   setMatchState: (matchState: MATCH_STATES) => void;
   isTimerRunning: boolean;
