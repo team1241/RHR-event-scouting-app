@@ -38,9 +38,6 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
   const [isReefIntakeSelectionOpen, setIsReefIntakeSelectionOpen] =
     useState(false);
 
-  // const [hasCoral, setHasCoral] = useState(false);
-  // const [hasAlgae, setHasAlgae] = useState(false);
-
   const context = useContext(ScoutDataContext);
   const hasCoral = context.gamePieceState[0].count > 0;
   const hasAlgae = context.gamePieceState[1].count > 0;
