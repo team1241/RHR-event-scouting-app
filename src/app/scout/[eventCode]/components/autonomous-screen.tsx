@@ -7,7 +7,6 @@ import ScoutActionButton from "./common/scout-action-button";
 import PageHeading from "~/components/common/page-heading";
 import UndoActionButton from "./common/undo-action-button";
 import MatchScoutingLayout, {
-  getHasCoralOrAlgae,
 } from "~/app/scout/[eventCode]/components/common/match-scouting-layout";
 import { useContext, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
@@ -16,8 +15,7 @@ export default function AutonomousScreen() {
   const context = useContext(ScoutDataContext);
   const screenContext = useContext(ScoutScreenContext);
   const [isAutoStopped, setAutoStopped] = useState(false);
-  const [hasCoral, setHasCoral] = useState(false);
-  const [hasAlgae, setHasAlgae] = useState(false);
+
 
   return (
     <>
@@ -34,8 +32,6 @@ export default function AutonomousScreen() {
       </div>
       <MatchScoutingLayout
         isDisabled={isAutoStopped}
-        haveCoral={hasCoral}
-        haveAlgae={hasAlgae}
       />
       <div className="flex flex-row justify-between">
         <ScoutActionButton

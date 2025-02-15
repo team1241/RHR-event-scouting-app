@@ -21,10 +21,12 @@ import {
   MATCH_STATES,
 } from "../../constants";
 import { ScoutDataContext } from "../../context";
-import { getFlexDirection } from "../../utils";
+import { getFlexDirection, getHasCoralOrAlgae } from "../../utils";
 import FieldImage from "./field-image";
 import ScoutActionButton from "./scout-action-button";
+import { boolean } from "zod";
 
+const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
 const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
   const [isCoralScoreSelectionOpen, setIsCoralScoreSelectionOpen] =
     useState(false);
@@ -36,10 +38,42 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
   const [isReefIntakeSelectionOpen, setIsReefIntakeSelectionOpen] =
     useState(false);
 
-  const [hasCoral, setHasCoral] = useState(false);
-  const [hasAlgae, setHasAlgae] = useState(false);
+  // const [hasCoral, setHasCoral] = useState(false);
+  // const [hasAlgae, setHasAlgae] = useState(false);
 
   const context = useContext(ScoutDataContext);
+  const hasCoral = context.gamePieceState[0].count > 0;
+  const hasAlgae = context.gamePieceState[1].count > 0;
+
+  const setHasCoral = (hasCoral: boolean) => {
+    if (hasCoral) {
+      context.setGamePieceState([
+        { type: GAME_PIECES.CORAL, count: 1 },
+        context.gamePieceState[1],
+      ]);
+    } else {
+      context.setGamePieceState([
+        { type: GAME_PIECES.CORAL, count: 0 },
+        context.gamePieceState[1],
+      ]);
+    }
+  };
+
+  const setHasAlgae = (hasAlgae: boolean) => {
+    if (hasAlgae) {
+      context.setGamePieceState([
+        context.gamePieceState[0],
+        { type: GAME_PIECES.ALGAE, count: 1 },
+      ]);
+    } else {
+      context.setGamePieceState([
+        context.gamePieceState[0],
+        { type: GAME_PIECES.ALGAE, count: 0 },
+      ]);
+    }
+  };
+  
+
   const getScoreOrMiss = (
     isCoralMissSelected: boolean,
     isCoralScoreSelected: boolean
@@ -145,7 +179,7 @@ const MatchScoutingLayout = ({ isDisabled }: { isDisabled: boolean }) => {
                   <PopoverTrigger asChild>
                     <Button
                       className="dark:bg-teal-400 text-xl font-bold w-44 h-16 "
-                      disabled={checkIsDisabled(isDisabled)}
+                      disabled={checkIsDisabled(isDisabled) || hasAlgae}
                     >
                       Algae Dislodge
                     </Button>
