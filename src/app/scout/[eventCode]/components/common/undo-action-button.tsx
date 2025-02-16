@@ -3,7 +3,11 @@
 import { Undo } from "lucide-react";
 import React, { useContext } from "react";
 import { toast } from "sonner";
-import { LOCAL_STORAGE_KEYS } from "~/app/scout/[eventCode]/constants";
+import {
+  ACTION_NAMES,
+  GAME_PIECES,
+  LOCAL_STORAGE_KEYS,
+} from "~/app/scout/[eventCode]/constants";
 import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
@@ -15,12 +19,38 @@ const UndoActionButton = ({
   className?: string;
   onClick?: () => void;
 }) => {
-  const { actions, setActions, setUndoOccurred } = useContext(ScoutDataContext);
+  const {
+    actions,
+    setActions,
+    setUndoOccurred,
+    gamePieceState,
+    setGamePieceState,
+  } = useContext(ScoutDataContext);
 
   const onUndoClick = () => {
     if (actions.length === 0) return;
     const actionsCopy = [...actions];
-    actionsCopy.pop();
+    const lastAction = actionsCopy.pop();
+    if (lastAction?.gamePiece === GAME_PIECES.CORAL) {
+      const newCoralCount =
+        lastAction.actionName === ACTION_NAMES.INTAKE
+          ? 0
+          : 1;
+      lastAction.actionName;
+      setGamePieceState([
+        { type: GAME_PIECES.CORAL, count: newCoralCount },
+        gamePieceState[1],
+      ]);
+    } else if (lastAction?.gamePiece === GAME_PIECES.ALGAE) {
+      const newAlgaeCount =
+        lastAction.actionName === ACTION_NAMES.INTAKE
+          ? 0
+          : 1;
+      setGamePieceState([
+        gamePieceState[0],
+        { type: GAME_PIECES.ALGAE, count: newAlgaeCount },
+      ]);
+    }
     setActions(actionsCopy);
     localStorage.setItem(
       LOCAL_STORAGE_KEYS.ACTIONS,

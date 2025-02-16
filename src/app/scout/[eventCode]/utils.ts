@@ -24,3 +24,14 @@ export const getFlexDirection = (uiOrientation: string, allianceColour: string) 
 
     return { row: "flex-row", col: "flex-col" };
   };
+
+  export const getHasCoralOrAlgae = (hasCoral: boolean, hasAlgae: boolean) => {
+    if (hasCoral && hasAlgae == false) {
+      return "Has coral";
+    } else if (hasAlgae && hasCoral == false) {
+      return "Has algae";
+    } else if (hasCoral && hasAlgae) {
+      return "Has coral and algae";
+    }
+    return "Has no game piece";
+  };

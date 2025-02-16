@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext} from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
 import PageHeading from "~/components/common/page-heading";
 import MatchScoutingLayout from "./common/match-scouting-layout";

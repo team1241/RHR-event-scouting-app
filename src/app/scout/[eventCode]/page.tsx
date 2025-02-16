@@ -20,6 +20,7 @@ import { FieldImages } from "@prisma/client";
 import { getFieldImagesForActiveSeason } from "~/db/queries/field-images";
 import {
   FIELD_ORIENTATIONS,
+  GAME_PIECES,
   LOCAL_STORAGE_KEYS,
   MATCH_STATES,
 } from "~/app/scout/[eventCode]/constants";
@@ -126,7 +127,10 @@ const ScoutPage = () => {
     });
   const [gamePieceState, setGamePieceState] = useState<
     { type: string; count: number }[]
-  >([]);
+  >([
+    { type: GAME_PIECES.CORAL, count: 0 },
+    { type: GAME_PIECES.ALGAE, count: 0 },
+  ]);
   const [actions, setActions] = useState<ScoutAction[]>([]);
   const [alternateScoutData, setAlternateScoutData] =
     useState<AlternateScoutData>({
