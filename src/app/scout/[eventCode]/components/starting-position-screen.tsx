@@ -11,6 +11,7 @@ import { useContext, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
 import {
   FIELD_ORIENTATIONS,
+  GAME_PIECES,
   LOCAL_STORAGE_KEYS,
   MATCH_STATES,
   STARTING_POSITIONS,
@@ -37,6 +38,12 @@ export default function StartingPositionScreen() {
       ...context.startingPosition,
       hasPreload: !context.startingPosition.hasPreload,
     });
+    if(!context.startingPosition.hasPreload)
+    {
+      context.setGamePieceState([{type: GAME_PIECES.CORAL, count: 1}, context.gamePieceState[1]])
+    } else {
+      context.setGamePieceState([{type: GAME_PIECES.CORAL, count: 0}, context.gamePieceState[1]])
+    }
   };
   const updateShowedUp = () => {
     context.setStartingPosition({

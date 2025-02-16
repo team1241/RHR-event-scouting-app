@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext} from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
 import PageHeading from "~/components/common/page-heading";
 import MatchScoutingLayout from "./common/match-scouting-layout";
@@ -14,8 +14,6 @@ import { cn } from "~/lib/utils";
 const TeleopScoringScreen = () => {
   const context = useContext(ScoutDataContext);
   const screenContext = useContext(ScoutScreenContext);
-  const [hasCoral, setHasCoral] = useState(false);
-  const [hasAlgae, setHasAlgae] = useState(false);
 
   return (
     <>
