@@ -90,7 +90,6 @@ export const MatchScoutingLayout = ({
     }
   };
 
-  console.log(context.actions);
   return (
     <div>
       <p className="text-3xl font-bold my-1">
@@ -176,7 +175,7 @@ export const MatchScoutingLayout = ({
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent
-                    className="flex flex-col w-auto gap-4 bg-black p-4 rounded-lg"
+                    className="flex flex-col w-auto gap-4 bg-black p-4 rounded-lg z-10"
                     side="right"
                   >
                     <ScoutActionButton
@@ -216,7 +215,7 @@ export const MatchScoutingLayout = ({
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent
-                    className="flex flex-col w-auto gap-4 bg-black p-4 rounded-lg"
+                    className="flex flex-col w-auto gap-4 bg-black p-4 rounded-lg z-10"
                     side="right"
                   >
                     <ScoutActionButton
@@ -283,7 +282,7 @@ export const MatchScoutingLayout = ({
                     </div>
                   </PopoverTrigger>
                   <PopoverContent
-                    className="flex flex-col gap-3 w-auto bg-black p-4 rounded-lg"
+                    className="flex flex-col gap-3 w-auto bg-black p-4 rounded-lg z-10"
                     side="right"
                     align="end"
                     alignOffset={84}

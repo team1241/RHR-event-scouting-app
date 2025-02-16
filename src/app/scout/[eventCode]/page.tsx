@@ -92,6 +92,8 @@ const ScoutPage = () => {
   const [undoOccurred, setUndoOccurred] = useState(false);
   const [wasDefended, setWasDefended] = useState(false);
   const [isDefending, setIsDefending] = useState(false);
+  const [hasLeftStartingLine, setHasLeftStartingLine] = useState(false);
+  const [isAutoStopped, setIsAutoStopped] = useState(false);
   const [matchSchedule, setMatchSchedule] = useState<MatchScheduleType[]>([]);
   const [currentMatch, setCurrentMatch] = useState<MatchScheduleType>();
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
@@ -277,6 +279,10 @@ const ScoutPage = () => {
           eventType: eventType || "Qualification",
           eventCode,
           isMatchScheduleLoading,
+          hasLeftStartingLine,
+          setHasLeftStartingLine,
+          isAutoStopped,
+          setIsAutoStopped,
         }}
       >
         <ScoutingInfoHeader />

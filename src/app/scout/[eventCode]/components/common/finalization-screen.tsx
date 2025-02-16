@@ -3,7 +3,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { differenceInSeconds } from "date-fns";
 import { Loader2Icon, ShieldIcon, UndoIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
 import { toast } from "sonner";
 import BackButton from "~/app/scout/[eventCode]/components/common/back-button";
@@ -42,7 +41,6 @@ import { submitScoutDataForTeamAtEvent } from "~/db/queries/actions";
 import { cn } from "~/lib/utils";
 
 const FinalizationScreen = () => {
-  const router = useRouter();
   const context = useContext(ScoutDataContext);
   const screenContext = useContext(ScoutScreenContext);
 
@@ -385,8 +383,7 @@ const FinalizationScreen = () => {
                       localStorage.removeItem("rhr_scouting:scouted_actions");
                       localStorage.removeItem("rhr_scouting:starting_position");
                     }
-                    router.refresh();
-                    screenContext.goToScreen(SCREEN_NAMES.MATCH_SELECTION);
+                    window.location.reload();
                   } catch (e) {
                     console.log(e);
                     toast.error("Error submitting match data");

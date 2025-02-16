@@ -94,6 +94,10 @@ interface ScoutDataContextType {
   setEndGameAction: string;
   eventCode: string;
   isMatchScheduleLoading: boolean;
+  hasLeftStartingLine: boolean;
+  setHasLeftStartingLine: (hasLeftStartingLine: boolean) => void;
+  isAutoStopped: boolean;
+  setIsAutoStopped: (isAutoStopped: boolean) => void;
 }
 export const ScoutDataContext = createContext<ScoutDataContextType>(
   {} as ScoutDataContextType

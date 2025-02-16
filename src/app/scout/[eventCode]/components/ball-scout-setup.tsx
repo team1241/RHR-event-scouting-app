@@ -29,7 +29,7 @@ export default function BallScoutSetup() {
       });
     }
   };
-  console.log(context);
+
   return (
     <>
       <div className="flex flex-row">

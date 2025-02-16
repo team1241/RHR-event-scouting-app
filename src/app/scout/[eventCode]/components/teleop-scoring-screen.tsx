@@ -31,40 +31,40 @@ const TeleopScoringScreen = () => {
         </div>
       </div>
       <MatchScoutingLayout isDisabled={false} />
-      <div className="flex flex-row justify-between">
-        <div className="flex flex-row gap-3 justify-end">
-          <Button
-            className={cn(
-              "dark:bg-orange-400 w-40 h-14 dark:text-white font-bold text-xl",
-              context.wasDefended && "dark:ring-yellow-400 ring-2 ring-offset-4"
-            )}
-            disabled={context.isDefending}
-            onClick={() => {
-              if (context.wasDefended) {
-                context.setWasDefended(false);
-              } else {
-                context.setWasDefended(true);
-              }
-            }}
-          >
-            Was Defended
-          </Button>
+      <div className="flex flex-row gap-3 justify-end w-full">
+        <Button
+          className={cn(
+            "dark:bg-orange-400 w-44 h-20 dark:text-white font-bold text-xl",
+            context.wasDefended && "dark:ring-yellow-400 ring-2 ring-offset-4"
+          )}
+          disabled={context.isDefending}
+          onClick={() => {
+            if (context.wasDefended) {
+              context.setWasDefended(false);
+            } else {
+              context.setWasDefended(true);
+            }
+          }}
+        >
+          Was Defended
+        </Button>
 
-          <ScoutActionButton
-            actionName={ACTION_NAMES.DEFENDING}
-            gamePiece={GAME_PIECES.NOGAMEPIECE}
-            location={LOCATIONS.OPPONENT_HALF}
-            className="font-bold text-xl dark:bg-orange-400 w-40 h-14"
-            label="Is Defending"
-            onClick={() => {
-              if (context.isDefending) {
-                context.setIsDefending(false);
-              } else {
-                context.setIsDefending(true);
-              }
-            }}
-          />
+        <ScoutActionButton
+          actionName={ACTION_NAMES.DEFENDING}
+          gamePiece={GAME_PIECES.NOGAMEPIECE}
+          location={LOCATIONS.OPPONENT_HALF}
+          className="font-bold text-xl dark:bg-orange-400 w-44 h-20"
+          label="Is Defending"
+          onClick={() => {
+            if (context.isDefending) {
+              context.setIsDefending(false);
+            } else {
+              context.setIsDefending(true);
+            }
+          }}
+        />
 
+        <div className="flex grow justify-end">
           <ContinueButton
             onClick={() => {
               context.setIsDefending(false);
