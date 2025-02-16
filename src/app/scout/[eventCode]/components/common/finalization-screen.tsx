@@ -2,12 +2,13 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { differenceInSeconds } from "date-fns";
-import { ShieldIcon, UndoIcon } from "lucide-react";
+import { Loader2Icon, ShieldIcon, UndoIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useContext, useState } from "react";
+import { toast } from "sonner";
 import BackButton from "~/app/scout/[eventCode]/components/common/back-button";
 import ContinueButton from "~/app/scout/[eventCode]/components/common/continue-button";
-import { ACTION_NAMES, SCREEN_NAMES } from "~/app/scout/[eventCode]/constants";
+import { SCREEN_NAMES } from "~/app/scout/[eventCode]/constants";
 import {
   ScoutDataContext,
   ScoutScreenContext,
@@ -46,6 +47,7 @@ const FinalizationScreen = () => {
   const screenContext = useContext(ScoutScreenContext);
 
   const [isFogHornedSelected, setIsFogHornedSelected] = useState(false);
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
   const getMatchInfoTitleText = () => {
     let text = "";
@@ -73,18 +75,6 @@ const FinalizationScreen = () => {
     }
   });
 
-  const endgameActions: ScoutAction[] = [];
-  teleopActions.forEach((action) => {
-    if (
-      action.actionName === ACTION_NAMES.CLIMB.SUCCESS ||
-      action.actionName === ACTION_NAMES.CLIMB.ATTEMPT ||
-      action.actionName === ACTION_NAMES.CLIMB.FAIL
-    ) {
-      endgameActions.push(action);
-      // teleopActions.splice(teleopActions.indexOf(action), 1);
-    }
-  });
-
   const saveDataMutation = useMutation({
     mutationKey: [
       "submit-match-data",
@@ -93,7 +83,10 @@ const FinalizationScreen = () => {
       context.teamToScout,
     ],
     mutationFn: async () => {
-      await submitScoutDataForTeamAtEvent(context.eventCode, context.actions);
+      await submitScoutDataForTeamAtEvent(
+        context.eventCode.substring(4),
+        context.actions
+      );
     },
   });
 
@@ -358,7 +351,10 @@ const FinalizationScreen = () => {
             }
           }}
         />
-        <AlertDialog>
+        <AlertDialog
+          open={isConfirmDialogOpen}
+          onOpenChange={setIsConfirmDialogOpen}
+        >
           <AlertDialogTrigger asChild>
             <ContinueButton label="SUBMIT MATCH" />
           </AlertDialogTrigger>
@@ -378,21 +374,30 @@ const FinalizationScreen = () => {
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
-                onClick={async () => {
-                  if (typeof window !== "undefined") {
-                    localStorage.removeItem("rhr_scouting:current_screen");
-                    localStorage.removeItem("rhr_scouting:starting_position");
-                  }
-
+                onClick={async (e) => {
+                  e.preventDefault();
                   try {
-                    // const saveResult = await saveDataMutation.mutateAsync();
+                    if (!isFogHornedSelected) {
+                      await saveDataMutation.mutateAsync();
+                      toast.success("Match data submitted!");
+                    }
+                    if (typeof window !== "undefined") {
+                      localStorage.removeItem("rhr_scouting:scouted_actions");
+                      localStorage.removeItem("rhr_scouting:starting_position");
+                    }
+                    router.refresh();
+                    screenContext.goToScreen(SCREEN_NAMES.MATCH_SELECTION);
                   } catch (e) {
-                    console.error(e);
+                    console.log(e);
+                    toast.error("Error submitting match data");
                   }
-                  router.refresh();
+                  setIsConfirmDialogOpen(false);
                 }}
               >
                 Confirm
+                {saveDataMutation.isPending && (
+                  <Loader2Icon className="animate-spin size-5" />
+                )}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
