@@ -114,6 +114,13 @@ const ScoutPage = () => {
       localStorage.getItem(LOCAL_STORAGE_KEYS.UI_ORIENTATION)) ||
       FIELD_ORIENTATIONS.DEFAULT
   );
+
+  const [previousEndgameAction, setPreviousEndgameAction] = useState({
+    actionDone: false,
+    positionSelected: "",
+    actionMessage: "",
+  });
+
   const [scouterDetails, setScouterDetails] = useState({
     name: "",
     clerkId: "",
@@ -275,6 +282,9 @@ const ScoutPage = () => {
           setMatchState,
           isTimerRunning,
           setIsTimerRunning,
+          setPreviousEndgameAction,
+          previousEndgameAction,
+          setEndGameAction: "", // Add this line
           eventType: eventType || "Qualification",
         }}
       >
