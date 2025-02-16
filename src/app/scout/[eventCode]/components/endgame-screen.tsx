@@ -53,17 +53,12 @@ export default function EndgameScreen() {
           </div>
           <UndoActionButton
             onClick={() => {
-<<<<<<< HEAD
-              setHangPositionSelected("");
-              setCurrentAction("");
-=======
               if (hangPositionSelected !== "") {
                 setHangPositionSelected("");
                 setActionDone(false);
                 setCurrentAction("");
                 setPositionSelected(false);
               }
->>>>>>> cadf7f0 (╰(*°▽°*)╯╰(*°▽°*)╯FIXED IT!!!!! ╰(*°▽°*)╯╰(*°▽°*)╯)
             }}
             className="text-xl bg-red-600 h-16 w-40"
           />
