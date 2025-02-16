@@ -3,7 +3,7 @@
 import PageHeading from "~/components/common/page-heading";
 import { Button } from "~/components/ui/button";
 import FieldImage from "./common/field-image";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
 import { cn } from "~/lib/utils";
 import ScoutActionButton from "./common/scout-action-button";
@@ -30,9 +30,11 @@ export default function EndgameScreen() {
   const [isMatchSelectionOpen, setIsMatchSelectionOpen] = useState(false);
   const [actionDone, setActionDone] = useState(false);
   const [positionSelected, setPositionSelected] = useState(false);
-  setCurrentAction(context.previousEndgameAction.actionMessage);
-  setPositionSelected(context.previousEndgameAction.wasPositionSelected);
-  setActionDone(context.previousEndgameAction.actionDone);
+  useEffect(() => {
+    setCurrentAction(context.previousEndgameAction.actionMessage);
+    setHangPositionSelected(context.previousEndgameAction.positionSelected);
+    setActionDone(context.previousEndgameAction.actionDone);
+  }, [context.previousEndgameAction]);
   function checkActionButtonDisabled() {
     let disability = false;
     if (!positionSelected || actionDone) {
@@ -83,9 +85,9 @@ export default function EndgameScreen() {
                 setActionDone(true);
                 setCurrentAction("Successfully Climbed Shallow");
                 context.setPreviousEndgameAction({
-                  actionDone: actionDone,
-                  wasPositionSelected: true,
-                  actionMessage: currentAction,
+                  actionDone: true,
+                  positionSelected: hangPositionSelected,
+                  actionMessage: "Successfully Climbed Shallow",
                 });
               }}
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
@@ -102,6 +104,11 @@ export default function EndgameScreen() {
               onClick={() => {
                 setActionDone(true);
                 setCurrentAction("Successfully Climbed Deep");
+                context.setPreviousEndgameAction({
+                  actionDone: true,
+                  positionSelected: hangPositionSelected,
+                  actionMessage: "Successfully Climbed Deep",
+                });
               }}
               disabled={checkActionButtonDisabled()}
               label="Deep Hang"
@@ -115,6 +122,11 @@ export default function EndgameScreen() {
               onClick={() => {
                 setActionDone(true);
                 setCurrentAction("Successfully Parked");
+                context.setPreviousEndgameAction({
+                  actionDone: true,
+                  positionSelected: hangPositionSelected,
+                  actionMessage: "Successfully Parked",
+                });
               }}
               disabled={checkActionButtonDisabled()}
               label="Park"
@@ -144,6 +156,11 @@ export default function EndgameScreen() {
                     setActionDone(true);
                     setCurrentAction("Shallow Climb Failed ");
                     setIsMatchSelectionOpen(false);
+                    context.setPreviousEndgameAction({
+                      actionDone: true,
+                      positionSelected: hangPositionSelected,
+                      actionMessage: "Shallow Climb Failed ",
+                    });
                   }}
                   disabled={checkActionButtonDisabled()}
                   label="Shallow Hang"
@@ -158,6 +175,11 @@ export default function EndgameScreen() {
                     setActionDone(true);
                     setCurrentAction("Deep Climb Failed");
                     setIsMatchSelectionOpen(false);
+                    context.setPreviousEndgameAction({
+                      actionDone: true,
+                      positionSelected: hangPositionSelected,
+                      actionMessage: "Deep Climb Failed",
+                    });
                   }}
                   disabled={checkActionButtonDisabled()}
                   label="Deep Hang"
@@ -173,6 +195,11 @@ export default function EndgameScreen() {
               onClick={() => {
                 setActionDone(true);
                 setCurrentAction("Endgame action skipped");
+                context.setPreviousEndgameAction({
+                  actionDone: true,
+                  positionSelected: hangPositionSelected,
+                  actionMessage: "Endgame action skipped",
+                });
               }}
               label="Not Attempted"
             />

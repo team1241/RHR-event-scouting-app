@@ -83,12 +83,12 @@ interface ScoutDataContextType {
   eventType: string;
   previousEndgameAction: {
     actionDone: boolean;
-    wasPositionSelected: boolean;
+    positionSelected: string;
     actionMessage: string;
   };
   setPreviousEndgameAction: (previousEndgameAction: {
     actionDone: boolean;
-    wasPositionSelected: boolean;
+    positionSelected: string;
     actionMessage: string;
   }) => void;
   setEndGameAction: string;
