@@ -28,7 +28,6 @@ export default function EndgameScreen() {
   const [hangPositionSelected, setHangPositionSelected] = useState<string>("");
   const [currentAction, setCurrentAction] = useState<string>("");
   const [isMatchSelectionOpen, setIsMatchSelectionOpen] = useState(false);
-<<<<<<< HEAD
   const [actionDone, setActionDone] = useState(false);
   const [positionSelected, setPositionSelected] = useState(false);
   useEffect(() => {
@@ -36,6 +35,8 @@ export default function EndgameScreen() {
     setHangPositionSelected(context.previousEndgameAction.positionSelected);
     setActionDone(context.previousEndgameAction.actionDone);
   }, [context.previousEndgameAction]);
+
+
   function checkActionButtonDisabled() {
     let disability = false;
     if (!positionSelected || actionDone) {
@@ -45,7 +46,6 @@ export default function EndgameScreen() {
     return disability;
   }
 
-=======
   const [screenDisabled, setScreenDisabled] = useState(false);
   const [climbStarted, setClimbStarted] = useState(false);
   const [brownOutLabel, setBrownOutLabel] = useState("BROWNOUT")
@@ -56,7 +56,6 @@ export default function EndgameScreen() {
   const [popoverButton1Style, setPopoverButton1Style] = useState("mb-1 h-16 w-40 font-bold text-xl !bg-pink-600 !text-white")
   const [popoverButton2Style, setPopoverButton2Style] = useState("mb-1 h-16 w-40 font-bold text-xl !bg-pink-600 !text-white")
   const [startClimbButtonStyle, setStartClimbButtonStyle] = useState("mb-1 h-16 w-40 font-bold text-xl !bg-green-700 !text-white")
->>>>>>> 59282ce (final commit before rebase hopefully - added brownout buttons, better button feedback for endgame screen, as well as reworking how recording climbs work w the start climb button)
   return (
     <>
       <div className="flex flex-row">
@@ -88,7 +87,10 @@ export default function EndgameScreen() {
         >
           <div className="flex flex-col justify-evenly h-full mx-28">
             <ScoutActionButton
-              className=" mb-1 h-16 w-40 font-bold text-xl bg-pink-600"
+              actionName={ACTION_NAMES.CLIMB.SUCCESS}
+              gamePiece={GAME_PIECES.CAGE.SHALLOW}
+              location={hangPositionSelected}
+              className={button1Style}
               onClick={() => {
                 setActionDone(true);
                 setCurrentAction("Successfully Climbed Shallow");
@@ -97,15 +99,6 @@ export default function EndgameScreen() {
                   positionSelected: hangPositionSelected,
                   actionMessage: "Successfully Climbed Shallow",
                 });
-              }}
-              actionName={ACTION_NAMES.CLIMB.SUCCESS}
-              gamePiece={GAME_PIECES.CAGE.SHALLOW}
-              location={hangPositionSelected}
-<<<<<<< HEAD
-              disabled={checkActionButtonDisabled()}
-=======
-              className={button1Style}
-              onClick={() => {
                 toast.error("Robot climbed shallow cage!");
                 setCurrentAction("Successfully Climbed Shallow Cage");
                 setClimbStarted(false)
@@ -113,8 +106,7 @@ export default function EndgameScreen() {
                 setTimeout(() => setButton1Style("mb-1 h-16 w-40 font-bold text-xl bg-pink-600"),500)
               }}
 
-              disabled={hangPositionSelected === "" || screenDisabled || climbStarted === false}
->>>>>>> 59282ce (final commit before rebase hopefully - added brownout buttons, better button feedback for endgame screen, as well as reworking how recording climbs work w the start climb button)
+              disabled={checkActionButtonDisabled() || screenDisabled || climbStarted === false}
               label="Shallow Hang"
             />
             <ScoutActionButton
@@ -123,7 +115,6 @@ export default function EndgameScreen() {
               location={hangPositionSelected}
               className={button2Style}
               onClick={() => {
-<<<<<<< HEAD
                 setActionDone(true);
                 setCurrentAction("Successfully Climbed Deep");
                 context.setPreviousEndgameAction({
@@ -131,17 +122,14 @@ export default function EndgameScreen() {
                   positionSelected: hangPositionSelected,
                   actionMessage: "Successfully Climbed Deep",
                 });
-              }}
-              disabled={checkActionButtonDisabled()}
-=======
+           
                 toast.error("Robot climbed deep cage!");
                 setCurrentAction("Successfully Climbed Deep Cage");
                 setClimbStarted(false)
                 setButton2Style("mb-1 h-16 w-40 font-bold text-xl bg-white text-black")
                 setTimeout(() => setButton2Style("mb-1 h-16 w-40 font-bold text-xl bg-pink-600"),500)
               }}
-              disabled={hangPositionSelected === "" || screenDisabled || climbStarted === false}
->>>>>>> 59282ce (final commit before rebase hopefully - added brownout buttons, better button feedback for endgame screen, as well as reworking how recording climbs work w the start climb button)
+              disabled={checkActionButtonDisabled() || screenDisabled || climbStarted === false}
               label="Deep Hang"
             />
 
@@ -151,7 +139,6 @@ export default function EndgameScreen() {
               location={hangPositionSelected}
               className={button3Style}
               onClick={() => {
-<<<<<<< HEAD
                 setActionDone(true);
                 setCurrentAction("Successfully Parked");
                 context.setPreviousEndgameAction({
@@ -159,16 +146,13 @@ export default function EndgameScreen() {
                   positionSelected: hangPositionSelected,
                   actionMessage: "Successfully Parked",
                 });
-              }}
-              disabled={checkActionButtonDisabled()}
-=======
+              
                 toast.error("Robot parked!");
                 setCurrentAction("Successfully Parked");
                 setButton3Style("mb-1 h-16 w-40 font-bold text-xl bg-white text-black")
                 setTimeout(() => setButton3Style("mb-1 h-16 w-40 font-bold text-xl bg-blue-500"),500)
               }}
-              disabled={hangPositionSelected === "" || screenDisabled || climbStarted}
->>>>>>> 59282ce (final commit before rebase hopefully - added brownout buttons, better button feedback for endgame screen, as well as reworking how recording climbs work w the start climb button)
+              disabled={checkActionButtonDisabled() || screenDisabled || climbStarted}
               label="Park"
             />
 
@@ -177,17 +161,10 @@ export default function EndgameScreen() {
               onOpenChange={setIsMatchSelectionOpen}
               
             >
-<<<<<<< HEAD
-              <PopoverTrigger disabled={checkActionButtonDisabled()}>
-                <Button
-                  className=" mb-1 h-16 w-40 font-bold text-xl !text-white !bg-pink-600"
-                  disabled={checkActionButtonDisabled()}
-=======
-              <PopoverTrigger disabled={hangPositionSelected === "" || screenDisabled || climbStarted === false}>
+              <PopoverTrigger disabled={checkActionButtonDisabled() || screenDisabled || climbStarted === false}>
                 <Button
                   className="mb-1 h-16 w-40 font-bold text-xl !text-white !bg-pink-600 hover:dark:bg-white"
-                  disabled={hangPositionSelected === "" || screenDisabled || climbStarted === false}
->>>>>>> 59282ce (final commit before rebase hopefully - added brownout buttons, better button feedback for endgame screen, as well as reworking how recording climbs work w the start climb button)
+                  disabled={checkActionButtonDisabled() || screenDisabled || climbStarted === false}
                 >
                   {" "}
                   Failed Attempt
@@ -200,7 +177,6 @@ export default function EndgameScreen() {
                   location={hangPositionSelected}
                   className={popoverButton1Style}
                   onClick={() => {
-<<<<<<< HEAD
                     setActionDone(true);
                     setCurrentAction("Shallow Climb Failed ");
                     setIsMatchSelectionOpen(false);
@@ -209,18 +185,14 @@ export default function EndgameScreen() {
                       positionSelected: hangPositionSelected,
                       actionMessage: "Shallow Climb Failed ",
                     });
-=======
                     toast.error("Robot failed shallow climb!");
                     setCurrentAction("Shallow Climb Failed ");
                     setTimeout(() => setIsMatchSelectionOpen(false),500)
                     setPopoverButton1Style("mb-1 h-16 w-40 font-bold text-xl !bg-white !text-black");
                     setTimeout(() => setPopoverButton1Style("mb-1 h-16 w-40 font-bold text-xl !bg-pink-600 !text-white"),1000);
-                    setClimbStarted(false)
-                    
-                    
->>>>>>> 59282ce (final commit before rebase hopefully - added brownout buttons, better button feedback for endgame screen, as well as reworking how recording climbs work w the start climb button)
+                    setClimbStarted(false)                                
                   }}
-                  disabled={checkActionButtonDisabled()}
+                  disabled={checkActionButtonDisabled() || screenDisabled || climbStarted === false}
                   label="Shallow Hang"
                 />
 
@@ -230,7 +202,6 @@ export default function EndgameScreen() {
                   location={hangPositionSelected}
                   className={popoverButton2Style}
                   onClick={() => {
-<<<<<<< HEAD
                     setActionDone(true);
                     setCurrentAction("Deep Climb Failed");
                     setIsMatchSelectionOpen(false);
@@ -239,16 +210,14 @@ export default function EndgameScreen() {
                       positionSelected: hangPositionSelected,
                       actionMessage: "Deep Climb Failed",
                     });
-=======
                     toast.error("Robot failed deep climb!");
                     setCurrentAction("Deep Climb Failed");
                     setTimeout(() => setIsMatchSelectionOpen(false),500)
                     setPopoverButton2Style("mb-1 h-16 w-40 font-bold text-xl !bg-white !text-black");
                     setTimeout(() => setPopoverButton2Style("mb-1 h-16 w-40 font-bold text-xl !bg-pink-600 !text-white"),1000);
                     setClimbStarted(false)
->>>>>>> 59282ce (final commit before rebase hopefully - added brownout buttons, better button feedback for endgame screen, as well as reworking how recording climbs work w the start climb button)
                   }}
-                  disabled={checkActionButtonDisabled()}
+                  disabled={checkActionButtonDisabled() || screenDisabled || climbStarted === false}
                   label="Deep Hang"
                 />
               </PopoverContent>
@@ -257,26 +226,19 @@ export default function EndgameScreen() {
               actionName={ACTION_NAMES.CLIMB.NOTHING}
               gamePiece={GAME_PIECES.NOGAMEPIECE}
               location={hangPositionSelected}
-<<<<<<< HEAD
-              className=" mb-1 h-16 w-40 font-bold text-xl bg-pink-600"
-              disabled={checkActionButtonDisabled()}
+              className={button4Style}
+              disabled={checkActionButtonDisabled() || screenDisabled || climbStarted}
               onClick={() => {
                 setActionDone(true);
+                toast.error("Robot did not attempt endgame action!");
                 setCurrentAction("Endgame action skipped");
                 context.setPreviousEndgameAction({
                   actionDone: true,
                   positionSelected: hangPositionSelected,
                   actionMessage: "Endgame action skipped",
                 });
-=======
-              className={button4Style}
-              disabled={hangPositionSelected === "" || screenDisabled || climbStarted}
-              onClick={() => {
-                toast.error("Robot did not attempt endgame action!");
-                setCurrentAction("Endgame action skipped");
                 setButton4Style("mb-1 h-16 w-40 font-bold text-xl bg-white text-black")
                 setTimeout(() => setButton4Style("mb-1 h-16 w-40 font-bold text-xl bg-blue-600"),500)
->>>>>>> 59282ce (final commit before rebase hopefully - added brownout buttons, better button feedback for endgame screen, as well as reworking how recording climbs work w the start climb button)
               }}
               label="Not Attempted"
             />
@@ -288,7 +250,7 @@ export default function EndgameScreen() {
               gamePiece={GAME_PIECES.NOGAMEPIECE}
               location={hangPositionSelected}
               className={startClimbButtonStyle}
-              disabled={hangPositionSelected == "" || climbStarted === true || screenDisabled}
+              disabled={checkActionButtonDisabled() || climbStarted === true || screenDisabled}
               onClick={() => {
                 toast.error("Climb started!");
                 setCurrentAction("Started Climb Attempt");
@@ -320,12 +282,8 @@ export default function EndgameScreen() {
                 setPositionSelected(true);
                 setHangPositionSelected(LOCATIONS.BARGE.OUTER);
               }}
-<<<<<<< HEAD
-              disabled={hangPositionSelected !== ""}
-=======
 
               disabled={screenDisabled}
->>>>>>> 59282ce (final commit before rebase hopefully - added brownout buttons, better button feedback for endgame screen, as well as reworking how recording climbs work w the start climb button)
             >
               Far Cage
             </Button>
@@ -339,11 +297,7 @@ export default function EndgameScreen() {
                 setHangPositionSelected(LOCATIONS.BARGE.MIDDLE);
                 setPositionSelected(true);
               }}
-<<<<<<< HEAD
-              disabled={hangPositionSelected !== ""}
-=======
               disabled={screenDisabled}
->>>>>>> 59282ce (final commit before rebase hopefully - added brownout buttons, better button feedback for endgame screen, as well as reworking how recording climbs work w the start climb button)
             >
               Middle Cage
             </Button>
@@ -357,11 +311,7 @@ export default function EndgameScreen() {
                 setPositionSelected(true);
                 setHangPositionSelected(LOCATIONS.BARGE.INNER);
               }}
-<<<<<<< HEAD
-              disabled={hangPositionSelected !== ""}
-=======
               disabled={screenDisabled}
->>>>>>> 59282ce (final commit before rebase hopefully - added brownout buttons, better button feedback for endgame screen, as well as reworking how recording climbs work w the start climb button)
             >
               Near Cage
             </Button>
@@ -395,7 +345,6 @@ export default function EndgameScreen() {
             } 
     
           }}
-
 
         />
 
