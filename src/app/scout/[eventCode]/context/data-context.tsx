@@ -14,7 +14,7 @@ export type ScoutAction = {
   actionName: string;
   gamePiece: string;
   location: string;
-  timestamp?: string | undefined;
+  timestamp: string;
   hasUndo?: boolean;
   wasDefended?: boolean;
 };
@@ -27,7 +27,7 @@ export type StartingPositionDataType = {
 
 export type AlternateScoutData = {
   scoring: {
-    [key: string]: string | number | object;
+    [key: string]: number;
   };
   setup: {
     [key: string]: string | number | object;
@@ -92,6 +92,12 @@ interface ScoutDataContextType {
     actionMessage: string;
   }) => void;
   setEndGameAction: string;
+  eventCode: string;
+  isMatchScheduleLoading: boolean;
+  hasLeftStartingLine: boolean;
+  setHasLeftStartingLine: (hasLeftStartingLine: boolean) => void;
+  isAutoStopped: boolean;
+  setIsAutoStopped: (isAutoStopped: boolean) => void;
 }
 export const ScoutDataContext = createContext<ScoutDataContextType>(
   {} as ScoutDataContextType

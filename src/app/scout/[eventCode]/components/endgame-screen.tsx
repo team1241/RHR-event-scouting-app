@@ -259,7 +259,7 @@ export default function EndgameScreen() {
         />
 
         <ContinueButton
-          disabled={currentAction === "" || context.isTimerRunning}
+          // disabled={currentAction === "" || context.isTimerRunning}
           onClick={() => {
             screenContext.nextScreen();
           }}

@@ -25,6 +25,8 @@ const UndoActionButton = ({
     setUndoOccurred,
     gamePieceState,
     setGamePieceState,
+    setHasLeftStartingLine,
+    setIsAutoStopped,
   } = useContext(ScoutDataContext);
 
   const onUndoClick = () => {
@@ -33,9 +35,7 @@ const UndoActionButton = ({
     const lastAction = actionsCopy.pop();
     if (lastAction?.gamePiece === GAME_PIECES.CORAL) {
       const newCoralCount =
-        lastAction.actionName === ACTION_NAMES.INTAKE
-          ? 0
-          : 1;
+        lastAction.actionName === ACTION_NAMES.INTAKE ? 0 : 1;
       lastAction.actionName;
       setGamePieceState([
         { type: GAME_PIECES.CORAL, count: newCoralCount },
@@ -43,14 +43,21 @@ const UndoActionButton = ({
       ]);
     } else if (lastAction?.gamePiece === GAME_PIECES.ALGAE) {
       const newAlgaeCount =
-        lastAction.actionName === ACTION_NAMES.INTAKE
-          ? 0
-          : 1;
+        lastAction.actionName === ACTION_NAMES.INTAKE ? 0 : 1;
       setGamePieceState([
         gamePieceState[0],
         { type: GAME_PIECES.ALGAE, count: newAlgaeCount },
       ]);
     }
+
+    if (lastAction?.actionName === ACTION_NAMES.LEAVE) {
+      setHasLeftStartingLine(false);
+    }
+
+    if (lastAction?.actionName === ACTION_NAMES.A_STOP) {
+      setIsAutoStopped(false);
+    }
+
     setActions(actionsCopy);
     localStorage.setItem(
       LOCAL_STORAGE_KEYS.ACTIONS,

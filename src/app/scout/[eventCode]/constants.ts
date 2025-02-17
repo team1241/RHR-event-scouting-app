@@ -17,6 +17,9 @@ export enum MATCH_STATES {
 
 export const ACTION_NAMES = {
   A_STOP: "a-stop",
+  MATCH_START: "match-start",
+  AUTO_COMPLETE: "auto-complete",
+  TELEOP_START: "teleop-start",
   UNDO: "undo",
   OUTTAKE: "outtake",
   DISLODGE: "dislodge",
@@ -81,4 +84,17 @@ export const LOCAL_STORAGE_KEYS = {
   SCOUTER_DETAILS: "rhr_scouting:scouter_details",
   ACTIONS: "rhr_scouting:scouted_actions",
   CURRENT_SCREEN: "rhr_scouting:current_screen",
+};
+
+export const SCREEN_NAMES = {
+  MATCH_SELECTION: "match-selection",
+  STARTING_POSITIONS: "starting-positions",
+  AUTO: "auto",
+  TELEOP: "teleop",
+  ENDGAME: "endgame",
+  FINALIZE: "finalize",
+  ALTERNATE_SCOUT: {
+    SETUP: "alternate-scout-setup",
+    SCORING: "alternate-scout-scoring",
+  },
 };

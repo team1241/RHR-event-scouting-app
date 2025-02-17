@@ -13,5 +13,6 @@ jobs:
         with:
           node-version: "20.x"
           cache: "npm"
+      - run: npm pkg set scripts.postinstall="echo no-postinstall"
       - run: npm install
       - run: npm run lint

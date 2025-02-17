@@ -106,6 +106,8 @@ model StartingPositions {
   hasPreload       Boolean
   showedUp         Boolean
   timestamp        String
+
+  @@unique([eventId, matchNumber, teamNumber])
 }
 
 model Actions {
