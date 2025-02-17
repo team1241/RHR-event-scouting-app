@@ -22,6 +22,7 @@ import BackButton from "./common/back-button";
 import UndoActionButton from "./common/undo-action-button";
 import { getFlexDirection } from "../utils";
 import { toast } from "sonner";
+
 export default function EndgameScreen() {
   const context = useContext(ScoutDataContext);
   const screenContext = useContext(ScoutScreenContext);
@@ -83,6 +84,7 @@ export default function EndgameScreen() {
                 setActionDone(false);
                 setCurrentAction("");
                 setPositionSelected(false);
+                setClimbStarted(false);
               }
             }}
             className="text-xl bg-red-600 h-16 w-40"
@@ -425,8 +427,8 @@ export default function EndgameScreen() {
         <ScoutActionButton
           className="bg-red-500 flex items-center justify-center text-black font-bold text-xl h-20 w-64 px-4 py-2"
           actionName={ACTION_NAMES.BROWN_OUT}
-          gamePiece="null"
-          location="null"
+          gamePiece="None"
+          location="None"
           label={brownOutLabel}
           onClick={() => {
             if (screenDisabled == false) {
