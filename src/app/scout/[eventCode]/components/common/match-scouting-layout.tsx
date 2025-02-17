@@ -24,12 +24,9 @@ export const MatchScoutingLayout = ({
 }: {
   isDisabled: boolean;
 }) => {
-  const [isCoralScoreSelectionOpen, setIsCoralScoreSelectionOpen] =
-    useState(false);
+  const [isCoralPopoverOpen, setIsCoralPopoverOpen] = useState(false);
   const [isCoralScoreSelected, setCoralScoreSelected] = useState(false);
   const [isCoralMissSelected, setCoralMissSelected] = useState(false);
-  const [isCoralMissSelectionOpen, setIsCoralMissSelectionOpen] =
-    useState(false);
   const [isDislodgeSelectionOpen, setIsDislodgeSelectionOpen] = useState(false);
   const [isReefIntakeSelectionOpen, setIsReefIntakeSelectionOpen] =
     useState(false);
@@ -247,45 +244,27 @@ export const MatchScoutingLayout = ({
               </div>
               <div className="flex flex-col items-center justify-between">
                 <Popover
-                  open={isCoralScoreSelectionOpen || isCoralMissSelectionOpen}
-                  onOpenChange={
-                    setIsCoralMissSelectionOpen || setIsCoralScoreSelectionOpen
-                  }
+                  open={isCoralPopoverOpen}
+                  onOpenChange={setIsCoralPopoverOpen}
                 >
-                  <PopoverTrigger
-                    asChild
-                    disabled={checkIsDisabled(isDisabled || hasCoral == false)}
-                  >
-                    <div className="flex flex-col ">
-                      <Button
-                        className="text-xl font-bold w-44 h-16"
-                        onClick={() => {
-                          setCoralScoreSelected(true);
-                        }}
-                        disabled={
-                          checkIsDisabled(isDisabled) || hasCoral == false
-                        }
-                      >
-                        Coral Score
-                      </Button>
-                      <Button
-                        className=" dark:bg-red-500 text-xl font-bold w-44 h-16 my-3"
-                        onClick={() => {
-                          setCoralMissSelected(true);
-                        }}
-                        disabled={
-                          checkIsDisabled(isDisabled) || hasCoral == false
-                        }
-                      >
-                        Coral Miss
-                      </Button>
-                    </div>
+                  <PopoverTrigger asChild>
+                    <Button
+                      className="text-xl font-bold w-44 h-16"
+                      onClick={() => {
+                        setCoralScoreSelected(true);
+                        setCoralMissSelected(false);
+                      }}
+                      disabled={checkIsDisabled(isDisabled) || !hasCoral}
+                    >
+                      Coral Score
+                    </Button>
                   </PopoverTrigger>
                   <PopoverContent
                     className="flex flex-col gap-3 w-auto bg-black p-4 rounded-lg z-10"
                     side="right"
                     align="end"
-                    alignOffset={84}
+                    sideOffset={10}
+                    alignOffset={-42}
                   >
                     <ScoutActionButton
                       actionName={cn(
@@ -300,8 +279,7 @@ export const MatchScoutingLayout = ({
                       label="L4"
                       isAuto={context.matchState === MATCH_STATES.AUTO}
                       onClick={() => {
-                        setIsCoralScoreSelectionOpen(false);
-                        setIsCoralMissSelectionOpen(false);
+                        setIsCoralPopoverOpen(false);
                         setCoralScoreSelected(false);
                         setCoralMissSelected(false);
                         setHasCoral(false);
@@ -320,8 +298,7 @@ export const MatchScoutingLayout = ({
                       label="L3"
                       isAuto={context.matchState === MATCH_STATES.AUTO}
                       onClick={() => {
-                        setIsCoralScoreSelectionOpen(false);
-                        setIsCoralMissSelectionOpen(false);
+                        setIsCoralPopoverOpen(false);
                         setCoralScoreSelected(false);
                         setCoralMissSelected(false);
                         setHasCoral(false);
@@ -340,8 +317,7 @@ export const MatchScoutingLayout = ({
                       label="L2"
                       isAuto={context.matchState === MATCH_STATES.AUTO}
                       onClick={() => {
-                        setIsCoralScoreSelectionOpen(false);
-                        setIsCoralMissSelectionOpen(false);
+                        setIsCoralPopoverOpen(false);
                         setCoralScoreSelected(false);
                         setCoralMissSelected(false);
                         setHasCoral(false);
@@ -360,8 +336,7 @@ export const MatchScoutingLayout = ({
                       label="L1"
                       isAuto={context.matchState === MATCH_STATES.AUTO}
                       onClick={() => {
-                        setIsCoralScoreSelectionOpen(false);
-                        setIsCoralMissSelectionOpen(false);
+                        setIsCoralPopoverOpen(false);
                         setCoralScoreSelected(false);
                         setCoralMissSelected(false);
                         setHasCoral(false);
@@ -380,8 +355,7 @@ export const MatchScoutingLayout = ({
                       label="DON'T KNOW"
                       isAuto={context.matchState === MATCH_STATES.AUTO}
                       onClick={() => {
-                        setIsCoralScoreSelectionOpen(false);
-                        setIsCoralMissSelectionOpen(false);
+                        setIsCoralPopoverOpen(false);
                         setCoralScoreSelected(false);
                         setCoralMissSelected(false);
                         setHasCoral(false);
@@ -389,6 +363,17 @@ export const MatchScoutingLayout = ({
                     />
                   </PopoverContent>
                 </Popover>
+                <Button
+                  className=" dark:bg-red-500 text-xl font-bold w-44 h-16 my-3"
+                  onClick={() => {
+                    setIsCoralPopoverOpen(!isCoralPopoverOpen);
+                    setCoralScoreSelected(false);
+                    setCoralMissSelected(true);
+                  }}
+                  disabled={checkIsDisabled(isDisabled) || !hasCoral}
+                >
+                  Coral Miss
+                </Button>
               </div>
             </div>
             <div
@@ -418,7 +403,7 @@ export const MatchScoutingLayout = ({
                   location={LOCATIONS.NET}
                   isAuto={context.matchState === MATCH_STATES.AUTO}
                   label="Net Miss"
-                  disabled={checkIsDisabled(isDisabled) || hasAlgae == false}
+                  disabled={checkIsDisabled(isDisabled) || hasAlgae === false}
                   onClick={() => {
                     setHasAlgae(false);
                   }}
@@ -431,7 +416,7 @@ export const MatchScoutingLayout = ({
                 location={LOCATIONS.PROCESSOR}
                 label="Processor Score"
                 isAuto={context.matchState === MATCH_STATES.AUTO}
-                disabled={checkIsDisabled(isDisabled) || hasAlgae == false}
+                disabled={checkIsDisabled(isDisabled) || hasAlgae === false}
                 onClick={() => {
                   setHasAlgae(false);
                 }}
@@ -471,7 +456,7 @@ export const MatchScoutingLayout = ({
                 location={LOCATIONS.GROUND}
                 label="Algae Outtake"
                 isAuto={context.matchState === MATCH_STATES.AUTO}
-                disabled={checkIsDisabled(isDisabled) || hasAlgae == false}
+                disabled={checkIsDisabled(isDisabled) || hasAlgae === false}
                 onClick={() => {
                   setHasAlgae(false);
                 }}

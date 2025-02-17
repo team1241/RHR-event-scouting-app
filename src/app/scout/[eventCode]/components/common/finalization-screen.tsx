@@ -133,16 +133,12 @@ const FinalizationScreen = () => {
             <Card>
               <CardContent>
                 <TabsContent value="auto" className="h-[300px] w-full">
-                  {autoActions.length === 0 ? (
-                    <p>No actions logged</p>
-                  ) : (
-                    <ScrollArea className="h-[300px]">
-                      {renderActionList(autoActions)}
-                      <p className="text-center text-xl font-semibold">
-                        {"---- End of list ----"}
-                      </p>
-                    </ScrollArea>
-                  )}
+                  <ScrollArea className="h-[300px]">
+                    {renderActionList(autoActions)}
+                    <p className="text-center text-xl font-semibold">
+                      {"---- End of list ----"}
+                    </p>
+                  </ScrollArea>
                   {/* This content is disabled if the user is an alternate scout */}
                 </TabsContent>
                 <TabsContent value="teleop" className="h-[300px] w-full">
