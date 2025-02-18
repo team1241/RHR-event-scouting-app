@@ -73,7 +73,7 @@ export default function EndgameScreen() {
             getFlexDirection(context.uiOrientation, context.allianceColour).row
           )}
         >
-          <div className="flex flex-col justify-stretch h-full mx-28 my-14">
+          <div className="flex flex-col justify-evenly h-full mx-28">
             <ScoutActionButton
               className=" mb-1 h-16 w-40 font-bold text-xl bg-pink-600"
               onClick={() => {
@@ -201,14 +201,14 @@ export default function EndgameScreen() {
           </div>
           <div
             className={cn(
-              "flex flex-col justify-stretch my-[3rem] gap-2 mx-[5rem]",
+              "flex flex-col my-[3rem] gap-2 mx-[5rem]",
               getFlexDirection(context.uiOrientation, context.allianceColour)
                 .col
             )}
           >
             <Button
               className={cn(
-                " h-12 w-40  font-bold text-xl opacity-90 !bg-cyan-100",
+                "h-12 w-40 font-bold text-xl opacity-90 !bg-cyan-100",
                 hangPositionSelected === LOCATIONS.BARGE.OUTER &&
                   "dark:ring-2 ring-yellow-400  ring-offset-4"
               )}

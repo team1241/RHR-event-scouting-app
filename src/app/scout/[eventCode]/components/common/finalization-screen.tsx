@@ -38,6 +38,7 @@ import { Label } from "~/components/ui/label";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { submitScoutDataForTeamAtEvent } from "~/db/queries/actions";
+import { submitAlternateScoutDataForMatch } from "~/db/queries/alternate-scout";
 import { cn } from "~/lib/utils";
 
 const FinalizationScreen = () => {
@@ -85,6 +86,21 @@ const FinalizationScreen = () => {
         context.eventCode.substring(4),
         context.actions
       );
+    },
+  });
+
+  const alternateScoutDateMutation = useMutation({
+    mutationKey: [
+      "submit-alternate-scout-data",
+      context.eventCode,
+      context.matchNumber,
+    ],
+    mutationFn: async () => {
+      await submitAlternateScoutDataForMatch(context.eventCode.substring(4), {
+        scoutId: context.scouterDetails.id,
+        matchNumber: context.matchNumber,
+        data: JSON.stringify(context.alternateScoutData),
+      });
     },
   });
 
@@ -372,7 +388,11 @@ const FinalizationScreen = () => {
                   e.preventDefault();
                   try {
                     if (!isFogHornedSelected) {
-                      await saveDataMutation.mutateAsync();
+                      if (context.isAlternateScout) {
+                        await alternateScoutDateMutation.mutateAsync();
+                      } else {
+                        await saveDataMutation.mutateAsync();
+                      }
                       toast.success("Match data submitted!");
                     }
                     if (typeof window !== "undefined") {
@@ -388,7 +408,8 @@ const FinalizationScreen = () => {
                 }}
               >
                 Confirm
-                {saveDataMutation.isPending && (
+                {(saveDataMutation.isPending ||
+                  alternateScoutDateMutation.isPending) && (
                   <Loader2Icon className="animate-spin size-5" />
                 )}
               </AlertDialogAction>
