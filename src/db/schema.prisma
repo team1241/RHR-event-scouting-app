@@ -41,6 +41,8 @@ model Users {
   createdAt        String
   updatedAt        String
   Actions          Actions[]
+
+  AlternateScoutData AlternateScoutData[]
 }
 
 model Seasons {
@@ -93,6 +95,8 @@ model Events {
   updatedAt         String
   actions           Actions[]
   startingPositions StartingPositions[]
+
+  AlternateScoutData AlternateScoutData[]
 }
 
 model StartingPositions {
@@ -125,4 +129,17 @@ model Actions {
   gamePiece   String
   location    String
   timestamp   String
+}
+
+model AlternateScoutData {
+  id          Int    @id @default(autoincrement())
+  event       Events @relation(fields: [eventId], references: [id])
+  eventId     Int
+  scout       Users  @relation(fields: [scoutId], references: [id])
+  scoutId     Int
+  matchNumber String
+  dataJSON    String
+  timestamp   String
+
+  @@unique([eventId, matchNumber])
 }
