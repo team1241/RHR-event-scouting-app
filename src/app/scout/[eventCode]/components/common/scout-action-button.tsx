@@ -67,6 +67,9 @@ const ScoutActionButton = ({
       className={cn(
         "text-white font-bold",
         isBlueAlliance ? "bg-blue-300/50" : "bg-red-300/50",
+        scoutDataContext.isDefending || scoutDataContext.isAutoStopped
+          ? "disabled:opacity-10"
+          : "disabled:opacity-0",
         className
       )}
       disabled={disabled}

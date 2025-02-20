@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@radix-ui/react-popover";
-import { useState, useContext } from "react";
-import { Button } from "~/components/ui/button";
+import { useContext } from "react";
 import { cn } from "~/lib/utils";
 import {
   ACTION_NAMES,
@@ -18,19 +12,13 @@ import { ScoutDataContext } from "../../context";
 import { getFlexDirection, getHasCoralOrAlgae } from "../../utils";
 import FieldImage from "./field-image";
 import ScoutActionButton from "./scout-action-button";
+import { toast } from "sonner";
 
 export const MatchScoutingLayout = ({
   isDisabled,
 }: {
   isDisabled: boolean;
 }) => {
-  const [isCoralPopoverOpen, setIsCoralPopoverOpen] = useState(false);
-  const [isCoralScoreSelected, setCoralScoreSelected] = useState(false);
-  const [isCoralMissSelected, setCoralMissSelected] = useState(false);
-  const [isDislodgeSelectionOpen, setIsDislodgeSelectionOpen] = useState(false);
-  const [isReefIntakeSelectionOpen, setIsReefIntakeSelectionOpen] =
-    useState(false);
-
   const context = useContext(ScoutDataContext);
   const hasCoral = context.gamePieceState[0].count > 0;
   const hasAlgae = context.gamePieceState[1].count > 0;
@@ -63,20 +51,6 @@ export const MatchScoutingLayout = ({
     }
   };
 
-  const getScoreOrMiss = (
-    isCoralMissSelected: boolean,
-    isCoralScoreSelected: boolean
-  ) => {
-    if (isCoralScoreSelected) {
-      return ACTION_NAMES.SCORE;
-    }
-    if (isCoralMissSelected) {
-      return ACTION_NAMES.MISS;
-    } else {
-      return "something wrong here bruh";
-    }
-  };
-
   const checkIsDisabled = (isDisabled: boolean) => {
     if (context.isDefending) {
       return true;
@@ -90,13 +64,13 @@ export const MatchScoutingLayout = ({
   return (
     <div>
       <p className="text-3xl font-bold my-1">
-        {getHasCoralOrAlgae(hasCoral, hasAlgae)}
+        {getHasCoralOrAlgae(hasCoral, hasAlgae, context.isDefending)}
       </p>
       <div>
         <FieldImage imageSize="100%" fieldSize="half">
           <div
             className={cn(
-              "flex w-full h-full",
+              "flex w-full h-full justify-between",
               getFlexDirection(context.uiOrientation, context.allianceColour)
                 .row
             )}
@@ -157,310 +131,181 @@ export const MatchScoutingLayout = ({
                 }}
               />
             </div>
-            <div className="flex flex-col items-center justify-between h-full w-full gap-3">
+            <div className="flex flex-col items-center justify-center h-full gap-3">
               <div className="flex flex-col mt-3 gap-3">
-                <Popover
-                  open={isDislodgeSelectionOpen}
-                  onOpenChange={setIsDislodgeSelectionOpen}
-                >
-                  <PopoverTrigger asChild>
-                    <Button
-                      className="dark:bg-teal-400 text-xl font-bold w-44 h-16 "
-                      disabled={checkIsDisabled(isDisabled) || hasAlgae}
-                    >
-                      Algae Dislodge
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    className="flex flex-col w-auto gap-4 bg-black p-4 rounded-lg z-10"
-                    side="right"
-                  >
-                    <ScoutActionButton
-                      actionName={ACTION_NAMES.INTAKE}
-                      gamePiece={GAME_PIECES.ALGAE}
-                      location={LOCATIONS.REEF.L2}
-                      className="font-bold text-xl dark:bg-yellow-500 w-40 h-14"
-                      label="L2"
-                      isAuto={context.matchState === MATCH_STATES.AUTO}
-                      onClick={() => {
-                        setIsDislodgeSelectionOpen(false);
-                      }}
-                    />
-                    <ScoutActionButton
-                      actionName={ACTION_NAMES.DISLODGE}
-                      gamePiece={GAME_PIECES.ALGAE}
-                      location={LOCATIONS.REEF.L3}
-                      className="font-bold text-xl dark:bg-yellow-500 w-40 h-14"
-                      label="L3"
-                      isAuto={context.matchState === MATCH_STATES.AUTO}
-                      onClick={() => {
-                        setIsDislodgeSelectionOpen(false);
-                      }}
-                    />
-                  </PopoverContent>
-                </Popover>
-                <Popover
-                  open={isReefIntakeSelectionOpen}
-                  onOpenChange={setIsReefIntakeSelectionOpen}
-                >
-                  <PopoverTrigger asChild>
-                    <Button
-                      className="dark:bg-teal-400 text-xl font-bold w-44 h-16 text-wrap"
-                      disabled={isDisabled || hasAlgae == true}
-                    >
-                      Intake Algae From Reef
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    className="flex flex-col w-auto gap-4 bg-black p-4 rounded-lg z-10"
-                    side="right"
-                  >
-                    <ScoutActionButton
-                      actionName={ACTION_NAMES.INTAKE}
-                      gamePiece={GAME_PIECES.ALGAE}
-                      location={LOCATIONS.REEF.L2}
-                      className="font-bold text-xl dark:bg-yellow-500 w-40 h-14"
-                      label="L2"
-                      isAuto={context.matchState === MATCH_STATES.AUTO}
-                      onClick={() => {
-                        setIsReefIntakeSelectionOpen(false);
-                        setHasAlgae(true);
-                      }}
-                    />
-                    <ScoutActionButton
-                      actionName={ACTION_NAMES.INTAKE}
-                      gamePiece={GAME_PIECES.ALGAE}
-                      location={LOCATIONS.REEF.L3}
-                      className="font-bold text-xl dark:bg-yellow-500 w-40 h-14"
-                      label="L3"
-                      isAuto={context.matchState === MATCH_STATES.AUTO}
-                      onClick={() => {
-                        setIsReefIntakeSelectionOpen(false);
-                        setHasAlgae(true);
-                      }}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-              <div className="flex flex-col items-center justify-between">
-                <Popover
-                  open={isCoralPopoverOpen}
-                  onOpenChange={setIsCoralPopoverOpen}
-                >
-                  <PopoverTrigger asChild>
-                    <Button
-                      className="text-xl font-bold w-44 h-16"
-                      onClick={() => {
-                        setCoralScoreSelected(true);
-                        setCoralMissSelected(false);
-                      }}
-                      disabled={checkIsDisabled(isDisabled) || !hasCoral}
-                    >
-                      Coral Score
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    className="flex flex-col gap-3 w-auto bg-black p-4 rounded-lg z-10"
-                    side="right"
-                    align="end"
-                    sideOffset={10}
-                    alignOffset={-42}
-                  >
-                    <ScoutActionButton
-                      actionName={cn(
-                        getScoreOrMiss(
-                          isCoralMissSelected,
-                          isCoralScoreSelected
-                        )
-                      )}
-                      gamePiece={GAME_PIECES.CORAL}
-                      location={LOCATIONS.REEF.L4}
-                      className="font-bold text-xl dark:bg-yellow-500 w-40 h-14"
-                      label="L4"
-                      isAuto={context.matchState === MATCH_STATES.AUTO}
-                      onClick={() => {
-                        setIsCoralPopoverOpen(false);
-                        setCoralScoreSelected(false);
-                        setCoralMissSelected(false);
-                        setHasCoral(false);
-                      }}
-                    />
-                    <ScoutActionButton
-                      actionName={cn(
-                        getScoreOrMiss(
-                          isCoralMissSelected,
-                          isCoralScoreSelected
-                        )
-                      )}
-                      gamePiece={GAME_PIECES.CORAL}
-                      location={LOCATIONS.REEF.L3}
-                      className="font-bold text-xl dark:bg-yellow-500 w-40 h-14"
-                      label="L3"
-                      isAuto={context.matchState === MATCH_STATES.AUTO}
-                      onClick={() => {
-                        setIsCoralPopoverOpen(false);
-                        setCoralScoreSelected(false);
-                        setCoralMissSelected(false);
-                        setHasCoral(false);
-                      }}
-                    />
-                    <ScoutActionButton
-                      actionName={cn(
-                        getScoreOrMiss(
-                          isCoralMissSelected,
-                          isCoralScoreSelected
-                        )
-                      )}
-                      gamePiece={GAME_PIECES.CORAL}
-                      location={LOCATIONS.REEF.L2}
-                      className="font-bold text-xl dark:bg-yellow-500 w-40 h-14"
-                      label="L2"
-                      isAuto={context.matchState === MATCH_STATES.AUTO}
-                      onClick={() => {
-                        setIsCoralPopoverOpen(false);
-                        setCoralScoreSelected(false);
-                        setCoralMissSelected(false);
-                        setHasCoral(false);
-                      }}
-                    />
-                    <ScoutActionButton
-                      actionName={cn(
-                        getScoreOrMiss(
-                          isCoralMissSelected,
-                          isCoralScoreSelected
-                        )
-                      )}
-                      gamePiece={GAME_PIECES.CORAL}
-                      location={LOCATIONS.REEF.L1}
-                      className="font-bold text-xl dark:bg-yellow-500 w-40 h-14"
-                      label="L1"
-                      isAuto={context.matchState === MATCH_STATES.AUTO}
-                      onClick={() => {
-                        setIsCoralPopoverOpen(false);
-                        setCoralScoreSelected(false);
-                        setCoralMissSelected(false);
-                        setHasCoral(false);
-                      }}
-                    />
-                    <ScoutActionButton
-                      actionName={cn(
-                        getScoreOrMiss(
-                          isCoralMissSelected,
-                          isCoralScoreSelected
-                        )
-                      )}
-                      gamePiece={GAME_PIECES.CORAL}
-                      location={"DON'T KNOW"}
-                      className="font-bold text-xl dark:bg-yellow-500 w-40 h-14"
-                      label="DON'T KNOW"
-                      isAuto={context.matchState === MATCH_STATES.AUTO}
-                      onClick={() => {
-                        setIsCoralPopoverOpen(false);
-                        setCoralScoreSelected(false);
-                        setCoralMissSelected(false);
-                        setHasCoral(false);
-                      }}
-                    />
-                  </PopoverContent>
-                </Popover>
-                <Button
-                  className=" dark:bg-red-500 text-xl font-bold w-44 h-16 my-3"
+                <ScoutActionButton
+                  actionName={ACTION_NAMES.DISLODGE}
+                  gamePiece={GAME_PIECES.ALGAE}
+                  location={LOCATIONS.REEF.BASE}
+                  className="dark:bg-teal-400 text-xl font-bold h-16 w-40 text-black"
+                  label="Algae Dislodge"
+                  isAuto={context.matchState === MATCH_STATES.AUTO}
+                  disabled={checkIsDisabled(isDisabled) || hasAlgae}
                   onClick={() => {
-                    setIsCoralPopoverOpen(!isCoralPopoverOpen);
-                    setCoralScoreSelected(false);
-                    setCoralMissSelected(true);
+                    toast.info("Algae dislodged from reef!");
                   }}
-                  disabled={checkIsDisabled(isDisabled) || !hasCoral}
-                >
-                  Coral Miss
-                </Button>
+                />
+                <ScoutActionButton
+                  actionName={ACTION_NAMES.INTAKE}
+                  gamePiece={GAME_PIECES.ALGAE}
+                  location={LOCATIONS.REEF.BASE}
+                  className="dark:bg-teal-400 text-xl font-bold h-16 w-40 text-black text-wrap"
+                  label="Intake Algae From Reef"
+                  isAuto={context.matchState === MATCH_STATES.AUTO}
+                  onClick={() => {
+                    setHasAlgae(true);
+                  }}
+                  disabled={checkIsDisabled(isDisabled) || hasAlgae}
+                />
               </div>
+            </div>
+            <div className="flex flex-col items-center justify-center h-full gap-3">
+              <ScoutActionButton
+                actionName={ACTION_NAMES.SCORE}
+                gamePiece={GAME_PIECES.CORAL}
+                location={LOCATIONS.REEF.L4}
+                className="font-bold text-xl dark:bg-yellow-500 w-40 h-16 text-black"
+                label="L4 Score"
+                isAuto={context.matchState === MATCH_STATES.AUTO}
+                onClick={() => {
+                  setHasCoral(false);
+                }}
+                disabled={checkIsDisabled(isDisabled) || !hasCoral}
+              />
+              <ScoutActionButton
+                actionName={ACTION_NAMES.SCORE}
+                gamePiece={GAME_PIECES.CORAL}
+                location={LOCATIONS.REEF.L3}
+                className="font-bold text-xl dark:bg-yellow-500 w-40 h-16 text-black"
+                label="L3 Score"
+                isAuto={context.matchState === MATCH_STATES.AUTO}
+                onClick={() => {
+                  setHasCoral(false);
+                }}
+                disabled={checkIsDisabled(isDisabled) || !hasCoral}
+              />
+              <ScoutActionButton
+                actionName={ACTION_NAMES.SCORE}
+                gamePiece={GAME_PIECES.CORAL}
+                location={LOCATIONS.REEF.L2}
+                className="font-bold text-xl dark:bg-yellow-500 w-40 h-16 text-black"
+                label="L2 Score"
+                isAuto={context.matchState === MATCH_STATES.AUTO}
+                onClick={() => {
+                  setHasCoral(false);
+                }}
+                disabled={checkIsDisabled(isDisabled) || !hasCoral}
+              />
+              <ScoutActionButton
+                actionName={ACTION_NAMES.SCORE}
+                gamePiece={GAME_PIECES.CORAL}
+                location={LOCATIONS.REEF.L1}
+                className="font-bold text-xl dark:bg-yellow-500 w-40 h-16 text-black"
+                label="L1 Score"
+                isAuto={context.matchState === MATCH_STATES.AUTO}
+                onClick={() => {
+                  setHasCoral(false);
+                }}
+                disabled={checkIsDisabled(isDisabled) || !hasCoral}
+              />
+              <ScoutActionButton
+                actionName={ACTION_NAMES.MISS}
+                gamePiece={GAME_PIECES.CORAL}
+                location={LOCATIONS.REEF.BASE}
+                className="dark:bg-red-500 text-xl text-black font-bold w-40 h-16"
+                label="Miss"
+                isAuto={context.matchState === MATCH_STATES.AUTO}
+                onClick={() => {
+                  setHasCoral(false);
+                }}
+                disabled={checkIsDisabled(isDisabled) || !hasCoral}
+              />
             </div>
             <div
               className={cn(
-                "flex flex-col h-full items-center",
+                "flex flex-col h-full items-center mx-2",
                 getFlexDirection(context.uiOrientation, context.allianceColour)
                   .col
               )}
             >
-              <div className="flex flex-col my-20 gap-3">
-                <ScoutActionButton
-                  className="text-xl font-bold w-36 h-16 dark:bg-teal-400 text-black"
-                  actionName={ACTION_NAMES.SCORE}
-                  gamePiece={GAME_PIECES.ALGAE}
-                  location={LOCATIONS.NET}
-                  isAuto={context.matchState === MATCH_STATES.AUTO}
-                  label="Net Scored"
-                  disabled={checkIsDisabled(isDisabled) || hasAlgae === false}
-                  onClick={() => {
-                    setHasAlgae(false);
-                  }}
-                />
-                <ScoutActionButton
-                  className="text-xl font-bold w-36 h-16 bg-red-500 text-black"
-                  actionName={ACTION_NAMES.MISS}
-                  gamePiece={GAME_PIECES.ALGAE}
-                  location={LOCATIONS.NET}
-                  isAuto={context.matchState === MATCH_STATES.AUTO}
-                  label="Net Miss"
-                  disabled={checkIsDisabled(isDisabled) || hasAlgae === false}
-                  onClick={() => {
-                    setHasAlgae(false);
-                  }}
-                />
+              <div
+                className={cn(
+                  "h-full flex flex-col mt-12 gap-12",
+                  getFlexDirection(
+                    context.uiOrientation,
+                    context.allianceColour
+                  ).col
+                )}
+              >
+                <div
+                  className={cn(
+                    "flex flex-col gap-4",
+                    getFlexDirection(
+                      context.uiOrientation,
+                      context.allianceColour
+                    ).col
+                  )}
+                >
+                  <ScoutActionButton
+                    className="text-xl font-bold w-40 h-16 dark:bg-teal-400 text-black"
+                    actionName={ACTION_NAMES.SCORE}
+                    gamePiece={GAME_PIECES.ALGAE}
+                    location={LOCATIONS.NET}
+                    isAuto={context.matchState === MATCH_STATES.AUTO}
+                    label="Net Scored"
+                    disabled={checkIsDisabled(isDisabled) || hasAlgae === false}
+                    onClick={() => {
+                      setHasAlgae(false);
+                    }}
+                  />
+                  <ScoutActionButton
+                    className="text-xl font-bold w-40 h-16 bg-red-500 text-black"
+                    actionName={ACTION_NAMES.MISS}
+                    gamePiece={GAME_PIECES.ALGAE}
+                    location={LOCATIONS.NET}
+                    isAuto={context.matchState === MATCH_STATES.AUTO}
+                    label="Net Miss"
+                    disabled={checkIsDisabled(isDisabled) || hasAlgae === false}
+                    onClick={() => {
+                      setHasAlgae(false);
+                    }}
+                  />
+                </div>
+                <div
+                  className={cn(
+                    "flex flex-col gap-4",
+                    getFlexDirection(
+                      context.uiOrientation,
+                      context.allianceColour
+                    ).col
+                  )}
+                >
+                  <ScoutActionButton
+                    className="text-xl font-bold w-44 h-16 bg-amber-400 text-black text-wrap"
+                    actionName={ACTION_NAMES.OUTTAKE}
+                    gamePiece={GAME_PIECES.ALGAE}
+                    location={LOCATIONS.GROUND}
+                    label="Algae Outtake"
+                    isAuto={context.matchState === MATCH_STATES.AUTO}
+                    disabled={checkIsDisabled(isDisabled) || hasAlgae === false}
+                    onClick={() => {
+                      setHasAlgae(false);
+                    }}
+                  />
+                  <ScoutActionButton
+                    className="dark:bg-teal-400 text-xl font-bold w-44 h-16 text-black"
+                    actionName={ACTION_NAMES.SCORE}
+                    gamePiece={GAME_PIECES.ALGAE}
+                    location={LOCATIONS.PROCESSOR}
+                    label="Processor Score"
+                    isAuto={context.matchState === MATCH_STATES.AUTO}
+                    disabled={checkIsDisabled(isDisabled) || hasAlgae === false}
+                    onClick={() => {
+                      setHasAlgae(false);
+                    }}
+                  />
+                </div>
               </div>
-              <ScoutActionButton
-                className="dark:bg-teal-400 text-xl font-bold w-44 h-16 text-black"
-                actionName={ACTION_NAMES.SCORE}
-                gamePiece={GAME_PIECES.ALGAE}
-                location={LOCATIONS.PROCESSOR}
-                label="Processor Score"
-                isAuto={context.matchState === MATCH_STATES.AUTO}
-                disabled={checkIsDisabled(isDisabled) || hasAlgae === false}
-                onClick={() => {
-                  setHasAlgae(false);
-                }}
-              />
-            </div>
-            <div className="flex flex-col mx-3 justify-between items-center my-4">
-              <div className="flex flex-col gap-5 justify-center">
-                <ScoutActionButton
-                  className="text-xl font-bold w-44 h-16 bg-white text-black text-wrap"
-                  actionName={ACTION_NAMES.INTAKE}
-                  gamePiece={GAME_PIECES.CORAL}
-                  location={LOCATIONS.OPPONENT_HALF}
-                  label="Opponent Side Coral Intake"
-                  isAuto={context.matchState === MATCH_STATES.AUTO}
-                  disabled={checkIsDisabled(isDisabled) || hasCoral == true}
-                  onClick={() => {
-                    setHasCoral(true);
-                  }}
-                />
-                <ScoutActionButton
-                  className="text-xl font-bold w-44 h-16 bg-teal-400 text-black text-wrap"
-                  actionName={ACTION_NAMES.INTAKE}
-                  gamePiece={GAME_PIECES.ALGAE}
-                  location={LOCATIONS.OPPONENT_HALF}
-                  label="Opponent Side Algae Intake"
-                  isAuto={context.matchState === MATCH_STATES.AUTO}
-                  disabled={checkIsDisabled(isDisabled) || hasAlgae == true}
-                  onClick={() => {
-                    setHasAlgae(true);
-                  }}
-                />
-              </div>
-              <ScoutActionButton
-                className="text-xl font-bold w-44 h-16 bg-teal-400 text-black text-wrap"
-                actionName={ACTION_NAMES.OUTTAKE}
-                gamePiece={GAME_PIECES.ALGAE}
-                location={LOCATIONS.GROUND}
-                label="Algae Outtake"
-                isAuto={context.matchState === MATCH_STATES.AUTO}
-                disabled={checkIsDisabled(isDisabled) || hasAlgae === false}
-                onClick={() => {
-                  setHasAlgae(false);
-                }}
-              />
             </div>
           </div>
         </FieldImage>

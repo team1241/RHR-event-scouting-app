@@ -64,6 +64,7 @@ export const LOCATIONS = {
     L2: "reef-L2",
     L3: "reef-L3",
     L4: "reef-L4",
+    BASE: "reef",
   },
   BARGE: {
     OUTER: "outer-barge",

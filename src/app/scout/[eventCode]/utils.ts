@@ -32,13 +32,18 @@ export const capitalize = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-export const getHasCoralOrAlgae = (hasCoral: boolean, hasAlgae: boolean) => {
+export const getHasCoralOrAlgae = (
+  hasCoral: boolean,
+  hasAlgae: boolean,
+  isDefending: boolean
+) => {
+  const defending = isDefending ? " - Defending" : "";
   if (hasCoral && hasAlgae == false) {
-    return "Has coral";
+    return `Has coral${defending}`;
   } else if (hasAlgae && hasCoral == false) {
-    return "Has algae";
+    return `Has algae${defending}`;
   } else if (hasCoral && hasAlgae) {
-    return "Has coral and algae";
+    return `Has coral and algae${defending}`;
   }
-  return "Has no game piece";
+  return `Has no game piece${defending}`;
 };
