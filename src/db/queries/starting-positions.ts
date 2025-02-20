@@ -4,9 +4,20 @@ import { Prisma } from "@prisma/client";
 import { formatISO } from "date-fns";
 import prisma from "~/db";
 
-export async function getStartingPositionsForEvent(
-  eventKey: string
-): Promise<Prisma.StartingPositionsSelect[] | undefined> {
+export async function getStartingPositionsForEvent(eventKey: string): Promise<
+  | {
+      id: number;
+      eventId: number;
+      scouterId: string;
+      matchNumber: string;
+      teamNumber: number;
+      startingPosition: string;
+      hasPreload: boolean;
+      showedUp: boolean;
+      timestamp: string;
+    }[]
+  | undefined
+> {
   try {
     const event = await prisma.events.findFirst({
       where: {

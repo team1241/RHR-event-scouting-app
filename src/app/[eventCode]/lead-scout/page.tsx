@@ -12,6 +12,19 @@ import {
   MatchScheduleType,
   fetchMatchScheduleByYearAndEventCode,
 } from "~/server/http/frc-events";
+import { useMemo } from "react";
+
+type StartingPosition = {
+  id: number;
+  eventId: number;
+  scouterId: string;
+  matchNumber: string;
+  teamNumber: number;
+  startingPosition: string;
+  hasPreload: boolean;
+  showedUp: boolean;
+  timestamp: string;
+};
 
 export default function LeadScoutPage() {
   const { eventCode } = useParams<{ eventCode: string }>();
@@ -47,23 +60,34 @@ export default function LeadScoutPage() {
     useQuery({
       enabled: !!eventCode,
       queryKey: ["startingPositions", eventCode],
-      queryFn: async () => {
-        const positions = await getStartingPositionsForEvent(eventName);
-        return Object.groupBy(positions, ({ matchNumber }) => matchNumber);
+      queryFn: async (): Promise<StartingPosition[]> => {
+        const startingPositions = await getStartingPositionsForEvent(eventName);
+        if (!startingPositions) return [];
+        return startingPositions;
       },
     });
 
-  // function startingPositionSelected({
-  //   teamNumber,
-  //   matchNumber,
-  // }: {
-  //   teamNumber: number;
-  //   matchNumber: number;
-  // }) {
-  //   if (startingPositionsData) {
-  //     startingPositionsData[matchNumber][0].
-  //   }
-  // }
+  const groupedStartingPositionsByMatchNumber = useMemo<
+    | {
+        [key: string]: StartingPosition[];
+      }
+    | object
+  >(() => {
+    if (!startingPositionsData) return {};
+    return Object.groupBy(
+      startingPositionsData,
+      ({ matchNumber }) => matchNumber
+    );
+  }, [startingPositionsData]);
+
+  // THis is an example of how to use the grouped data
+  Object.entries(groupedStartingPositionsByMatchNumber).map(
+    ([matchNumber, positions]) => {
+      console.log(matchNumber);
+      console.log(positions);
+    }
+  );
+
   console.log(startingPositionsData);
 
   return (
