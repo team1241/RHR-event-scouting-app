@@ -64,7 +64,7 @@ export const MatchScoutingLayout = ({
   return (
     <div>
       <p className="text-3xl font-bold my-1">
-        {getHasCoralOrAlgae(hasCoral, hasAlgae)}
+        {getHasCoralOrAlgae(hasCoral, hasAlgae, context.isDefending)}
       </p>
       <div>
         <FieldImage imageSize="100%" fieldSize="half">
