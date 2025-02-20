@@ -7,6 +7,7 @@ import PageHeading from "~/components/common/page-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { getStartingPositionsForEvent } from "~/db/queries/starting-positions";
 import { getUserByClerkId } from "~/db/queries/user";
+import { X, Check } from "lucide-react";
 import {
   MatchScheduleType,
   fetchMatchScheduleByYearAndEventCode,
@@ -52,6 +53,17 @@ export default function LeadScoutPage() {
       },
     });
 
+  // function startingPositionSelected({
+  //   teamNumber,
+  //   matchNumber,
+  // }: {
+  //   teamNumber: number;
+  //   matchNumber: number;
+  // }) {
+  //   if (startingPositionsData) {
+  //     startingPositionsData[matchNumber][0].
+  //   }
+  // }
   console.log(startingPositionsData);
 
   return (
@@ -59,15 +71,59 @@ export default function LeadScoutPage() {
       <PageHeading>Lead scout page</PageHeading>
       {matchScheduleData &&
         matchScheduleData.map((match) => (
+          // eslint-disable-next-line react/jsx-key
           <Card>
             <CardHeader>
               <CardTitle></CardTitle>
               <CardContent>
-                <div className="flex flex-row">
-                  <div className="flex justify-start">
-                    Qual `${match.matchNumber}`
+                <div className="flex flex-row justify-between">
+                  <div className=" justify-start">
+                    <a className="text-2xl font-semibold">
+                      Qualification {match.matchNumber}
+                    </a>
                   </div>
-                  <div className=""></div>
+
+                  <div className="flex flex-row space-x-10">
+                    <div className="flex flex-col align-middle">
+                      <p className="text-2xl font-semibold">
+                        {match.teams[0].teamNumber}
+                      </p>
+                      <X className="size-10 text-red-700 " />
+                    </div>
+                    <div className="flex flex-col align-middle">
+                      <p className="text-2xl font-semibold">
+                        {match.teams[1].teamNumber}
+                      </p>
+                      <X className="size-10 text-red-700 " />
+                    </div>
+                    <div className="flex flex-col align-middle">
+                      <p className="text-2xl font-semibold">
+                        {match.teams[2].teamNumber}
+                      </p>
+                      <X className="size-10 text-red-700 " />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-row space-x-10">
+                    <div className="flex flex-col align-middle">
+                      <p className="text-2xl font-semibold">
+                        {match.teams[3].teamNumber}
+                      </p>
+                      <X className="size-10 text-red-700" />
+                    </div>
+                    <div className="flex flex-col align-middle">
+                      <p className="text-2xl font-semibold">
+                        {match.teams[4].teamNumber}
+                      </p>
+                      <X className="size-10 text-red-700 " />
+                    </div>
+                    <div className="flex flex-col">
+                      <p className="text-2xl font-semibold">
+                        {match.teams[5].teamNumber}
+                      </p>
+                      <X className="size-10 text-red-700 " />
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </CardHeader>
