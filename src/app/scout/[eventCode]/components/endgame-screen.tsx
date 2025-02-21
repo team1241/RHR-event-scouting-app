@@ -76,7 +76,7 @@ export default function EndgameScreen() {
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
               gamePiece={GAME_PIECES.CAGE.DEEP}
               location={hangPositionSelected}
-              className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
+              className={"mb-1 h-16 w-40 font-bold text-xl bg-pink-600"}
               onClick={() => {
                 setActionDone(true);
                 context.setPreviousEndgameAction({
@@ -103,7 +103,7 @@ export default function EndgameScreen() {
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
               gamePiece={GAME_PIECES.CAGE.SHALLOW}
               location={hangPositionSelected}
-              className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
+              className={"mb-1 h-16 w-40 font-bold text-xl bg-pink-600"}
               onClick={() => {
                 setActionDone(true);
                 context.setPreviousEndgameAction({
@@ -130,7 +130,7 @@ export default function EndgameScreen() {
               actionName={ACTION_NAMES.PARK}
               gamePiece={GAME_PIECES.NOGAMEPIECE}
               location={hangPositionSelected}
-              className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
+              className={"mb-1 h-16 w-40 font-bold text-xl bg-pink-600"}
               onClick={() => {
                 setActionDone(true);
                 context.setPreviousEndgameAction({
@@ -157,9 +157,7 @@ export default function EndgameScreen() {
               actionName={ACTION_NAMES.CLIMB.FAIL}
               gamePiece={GAME_PIECES.CAGE.DEEP}
               location={hangPositionSelected}
-              className={
-                "mb-1 h-16 w-40 font-bold text-xl !bg-red-500 text-black"
-              }
+              className={"mb-1 h-16 w-40 font-bold text-xl bg-pink-600"}
               onClick={() => {
                 setActionDone(true);
                 context.setPreviousEndgameAction({
@@ -186,9 +184,7 @@ export default function EndgameScreen() {
               actionName={ACTION_NAMES.CLIMB.FAIL}
               gamePiece={GAME_PIECES.CAGE.SHALLOW}
               location={hangPositionSelected}
-              className={
-                "mb-1 h-16 w-40 font-bold text-xl !bg-red-500 text-black"
-              }
+              className={"mb-1 h-16 w-40 font-bold text-xl bg-pink-600"}
               onClick={() => {
                 setActionDone(true);
                 context.setPreviousEndgameAction({
