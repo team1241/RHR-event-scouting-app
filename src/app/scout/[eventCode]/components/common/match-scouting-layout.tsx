@@ -15,9 +15,9 @@ import ScoutActionButton from "./scout-action-button";
 import { toast } from "sonner";
 
 export const MatchScoutingLayout = ({
-  isDisabled,
+  isDisabled = false,
 }: {
-  isDisabled: boolean;
+  isDisabled?: boolean;
 }) => {
   const context = useContext(ScoutDataContext);
   const hasCoral = context.gamePieceState[0].count > 0;

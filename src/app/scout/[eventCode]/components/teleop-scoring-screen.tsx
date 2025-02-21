@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
 import PageHeading from "~/components/common/page-heading";
 import MatchScoutingLayout from "./common/match-scouting-layout";
@@ -15,8 +15,6 @@ import { toast } from "sonner";
 const TeleopScoringScreen = () => {
   const context = useContext(ScoutDataContext);
   const screenContext = useContext(ScoutScreenContext);
-  const [brownOutLabel, setBrownOutLabel] = useState("BROWNOUT");
-  const [screenDisabled, setScreenDisabled] = useState(false);
 
   return (
     <>
@@ -33,7 +31,7 @@ const TeleopScoringScreen = () => {
           />
         </div>
       </div>
-      <MatchScoutingLayout isDisabled={screenDisabled} />
+      <MatchScoutingLayout isDisabled={context.isBrownedOut} />
       <div className="flex flex-row gap-3 justify-end w-full">
         <Button
           className={cn(
@@ -69,20 +67,21 @@ const TeleopScoringScreen = () => {
 
         <ScoutActionButton
           className="bg-red-500 flex items-center justify-center text-black font-bold text-xl h-20 w-64 px-4 py-2"
-          actionName={ACTION_NAMES.BROWN_OUT}
+          actionName={
+            context.isBrownedOut
+              ? ACTION_NAMES.BROWN_OUT_END
+              : ACTION_NAMES.BROWN_OUT
+          }
           gamePiece="null"
           location="null"
-          label={brownOutLabel}
+          label={context.isBrownedOut ? "ROBOT RESTARTED" : "BROWNOUT"}
           onClick={() => {
-            if (screenDisabled == false) {
-              setScreenDisabled(true);
-              toast.error("Robot has stopped. Screen disabled!");
-              setBrownOutLabel("ROBOT RESTARTED");
-            } else {
-              setScreenDisabled(false);
-              toast.error("Robot has restarted. Screen enabled!");
-              setBrownOutLabel("BROWNOUT");
-            }
+            toast.error(
+              context.isBrownedOut
+                ? "Robot has restarted. Screen enabled!"
+                : "Robot has stopped. Screen disabled!"
+            );
+            context.setIsBrownedOut(!context.isBrownedOut);
           }}
         />
 

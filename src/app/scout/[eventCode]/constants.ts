@@ -20,7 +20,8 @@ export const ACTION_NAMES = {
   MATCH_START: "match-start",
   AUTO_COMPLETE: "auto-complete",
   TELEOP_START: "teleop-start",
-  BROWN_OUT: "brown_out",
+  BROWN_OUT: "brown-out",
+  BROWN_OUT_END: "brown-out-end",
   UNDO: "undo",
   OUTTAKE: "outtake",
   DISLODGE: "dislodge",
@@ -72,6 +73,7 @@ export const LOCATIONS = {
     OUTER: "outer-barge",
     MIDDLE: "middle-barge",
     INNER: "inner-barge",
+    BASE: "barge",
   },
 };
 

@@ -17,6 +17,7 @@ const ScoutActionButton = ({
   label,
   onClick,
   disabled,
+  shouldBeHidden = true,
 }: {
   actionName: string;
   gamePiece?: string;
@@ -26,6 +27,7 @@ const ScoutActionButton = ({
   label: string;
   onClick?: () => void;
   disabled?: boolean;
+  shouldBeHidden?: boolean;
 }) => {
   const scoutDataContext = useContext(ScoutDataContext);
   const isBlueAlliance =
@@ -67,8 +69,11 @@ const ScoutActionButton = ({
       className={cn(
         "text-white font-bold",
         isBlueAlliance ? "bg-blue-300/50" : "bg-red-300/50",
-        scoutDataContext.isDefending || scoutDataContext.isAutoStopped
-          ? "disabled:opacity-10"
+        scoutDataContext.isDefending ||
+          scoutDataContext.isAutoStopped ||
+          scoutDataContext.isBrownedOut ||
+          !shouldBeHidden
+          ? "disabled:opacity-20"
           : "disabled:opacity-0",
         className
       )}
