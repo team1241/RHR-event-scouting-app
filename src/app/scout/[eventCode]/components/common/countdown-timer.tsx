@@ -1,6 +1,5 @@
 "use client";
 
-import NumberFlow, { NumberFlowGroup } from "@number-flow/react";
 import React, { useContext, useEffect, useState } from "react";
 import { MATCH_STATES } from "~/app/scout/[eventCode]/constants";
 import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
@@ -12,8 +11,6 @@ const CountdownTimer = () => {
   const [seconds, setSeconds] = useState(0);
   const minutesRemaining = Math.floor((seconds % 3600) / 60);
   const secondsRemaining = seconds % 60;
-
-  
 
   useEffect(() => {
     if (matchState === MATCH_STATES.PRE_START) return;
@@ -50,24 +47,21 @@ const CountdownTimer = () => {
 
   return (
     <div>
-      <NumberFlowGroup>
-        <div
-          className={cn(
-            "flex flex-row justify-between font-bold text-xl",
-            minutesRemaining < 1 ? "min-w-24" : "min-w-36",
-            secondsRemaining < 10 && minutesRemaining < 1 && 
-              "animate-pulse bg-yellow-500 rounded-sm py-0.5 px-2 text-black"
-          )}
-        >
-          <p>{matchState[0].toUpperCase().concat(matchState.substring(1))}:</p>
-          <div className="flex flex-row gap-2">
-            {minutesRemaining >= 1 && (
-              <NumberFlow value={minutesRemaining} trend={-1} suffix="m" />
-            )}
-            <NumberFlow value={secondsRemaining % 60} trend={-1} suffix="s" />
-          </div>
+      <div
+        className={cn(
+          "flex flex-row justify-between font-bold text-xl",
+          minutesRemaining < 1 ? "min-w-24" : "min-w-36",
+          secondsRemaining < 10 &&
+            minutesRemaining < 1 &&
+            "animate-pulse bg-yellow-500 rounded-sm py-0.5 px-2 text-black"
+        )}
+      >
+        <p>{matchState[0].toUpperCase().concat(matchState.substring(1))}:</p>
+        <div className="flex flex-row gap-2">
+          {minutesRemaining >= 1 && <p>{`${minutesRemaining}m`}</p>}
+          <p>{`${secondsRemaining}s`}</p>
         </div>
-      </NumberFlowGroup>
+      </div>
     </div>
   );
 };
