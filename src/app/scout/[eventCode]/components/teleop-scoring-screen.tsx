@@ -10,6 +10,7 @@ import ScoutActionButton from "./common/scout-action-button";
 import { ACTION_NAMES, GAME_PIECES, LOCATIONS } from "../constants";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
+import { toast } from "sonner";
 
 const TeleopScoringScreen = () => {
   const context = useContext(ScoutDataContext);
@@ -30,7 +31,7 @@ const TeleopScoringScreen = () => {
           />
         </div>
       </div>
-      <MatchScoutingLayout isDisabled={false} />
+      <MatchScoutingLayout isDisabled={context.isBrownedOut} />
       <div className="flex flex-row gap-3 justify-end w-full">
         <Button
           className={cn(
@@ -61,6 +62,26 @@ const TeleopScoringScreen = () => {
             } else {
               context.setIsDefending(true);
             }
+          }}
+        />
+
+        <ScoutActionButton
+          className="bg-red-500 flex items-center justify-center text-black font-bold text-xl h-20 w-64 px-4 py-2"
+          actionName={
+            context.isBrownedOut
+              ? ACTION_NAMES.BROWN_OUT_END
+              : ACTION_NAMES.BROWN_OUT
+          }
+          gamePiece="null"
+          location="null"
+          label={context.isBrownedOut ? "ROBOT RESTARTED" : "BROWNOUT"}
+          onClick={() => {
+            toast.error(
+              context.isBrownedOut
+                ? "Robot has restarted. Screen enabled!"
+                : "Robot has stopped. Screen disabled!"
+            );
+            context.setIsBrownedOut(!context.isBrownedOut);
           }}
         />
 

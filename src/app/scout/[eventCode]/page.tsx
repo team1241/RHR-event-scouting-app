@@ -94,6 +94,7 @@ const ScoutPage = () => {
   const [isDefending, setIsDefending] = useState(false);
   const [hasLeftStartingLine, setHasLeftStartingLine] = useState(false);
   const [isAutoStopped, setIsAutoStopped] = useState(false);
+  const [isBrownedOut, setIsBrownedOut] = useState(false);
   const [matchSchedule, setMatchSchedule] = useState<MatchScheduleType[]>([]);
   const [currentMatch, setCurrentMatch] = useState<MatchScheduleType>();
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
@@ -283,6 +284,8 @@ const ScoutPage = () => {
           setHasLeftStartingLine,
           isAutoStopped,
           setIsAutoStopped,
+          isBrownedOut,
+          setIsBrownedOut,
         }}
       >
         <ScoutingInfoHeader />

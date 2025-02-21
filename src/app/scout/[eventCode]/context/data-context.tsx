@@ -98,6 +98,8 @@ interface ScoutDataContextType {
   setHasLeftStartingLine: (hasLeftStartingLine: boolean) => void;
   isAutoStopped: boolean;
   setIsAutoStopped: (isAutoStopped: boolean) => void;
+  isBrownedOut: boolean;
+  setIsBrownedOut: (isBrownedOut: boolean) => void;
 }
 export const ScoutDataContext = createContext<ScoutDataContextType>(
   {} as ScoutDataContextType
