@@ -163,7 +163,9 @@ const FinalizationScreen = () => {
                 Auto
               </TabsTrigger>
               <TabsTrigger value="teleop">Teleop</TabsTrigger>
-              <TabsTrigger value="total">Total</TabsTrigger>
+              <TabsTrigger value="total" disabled={context.isAlternateScout}>
+                Total
+              </TabsTrigger>
             </TabsList>
             <Card>
               <CardContent>

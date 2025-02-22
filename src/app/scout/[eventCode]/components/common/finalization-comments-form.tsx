@@ -36,7 +36,7 @@ export function CommentsForm() {
           name="comment"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Comments</FormLabel>
+              <FormLabel>Comments(Optional)</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Type comments here"
