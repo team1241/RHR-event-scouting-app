@@ -22,25 +22,6 @@ export default function AutonomousScreen() {
           <PageHeading>Autonomous</PageHeading>
           <UndoActionButton className="text-2xl font-bold w-36 h-16 dark:bg-red-600" />
           <div className="flex grow justify-end items-center gap-2">
-            <ScoutActionButton
-              disabled={context.hasLeftStartingLine}
-              className={cn(
-                "bg-amber-500 flex items-center justify-center text-black font-bold text-xl h-16 w-64 px-4 py-2",
-                context.hasLeftStartingLine && "bg-green-400"
-              )}
-              actionName={ACTION_NAMES.LEAVE}
-              label={
-                context.hasLeftStartingLine
-                  ? "Robot Leave Successful"
-                  : "Left starting line?"
-              }
-              location="null"
-              gamePiece="null"
-              isAuto
-              onClick={() => {
-                context.setHasLeftStartingLine(!context.hasLeftStartingLine);
-              }}
-            />
           </div>
         </div>
       </div>

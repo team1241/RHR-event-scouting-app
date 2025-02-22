@@ -132,7 +132,8 @@ export const MatchScoutingLayout = ({
               />
             </div>
             <div className="flex flex-col items-center justify-center h-full gap-3">
-              <div className="flex flex-col mt-3 gap-3">
+              <div className="flex flex-col gap-16 mt-28 items-center">
+                <div className="flex flex-col gap-3">
                 <ScoutActionButton
                   actionName={ACTION_NAMES.DISLODGE}
                   gamePiece={GAME_PIECES.ALGAE}
@@ -144,7 +145,7 @@ export const MatchScoutingLayout = ({
                   onClick={() => {
                     toast.info("Algae dislodged from reef!");
                   }}
-                />
+                  />
                 <ScoutActionButton
                   actionName={ACTION_NAMES.INTAKE}
                   gamePiece={GAME_PIECES.ALGAE}
@@ -156,6 +157,28 @@ export const MatchScoutingLayout = ({
                     setHasAlgae(true);
                   }}
                   disabled={checkIsDisabled(isDisabled) || hasAlgae}
+                  />
+                  </div>
+                <ScoutActionButton
+                  disabled={context.hasLeftStartingLine || context.matchState !== MATCH_STATES.AUTO}
+                  className={cn(
+                    "bg-amber-500 flex items-center justify-center text-black font-bold text-xl h-16 w-64 px-4 py-2 my-1",
+                    context.hasLeftStartingLine && "bg-green-400"
+                  )}
+                  actionName={ACTION_NAMES.LEAVE}
+                  label={
+                    context.hasLeftStartingLine
+                      ? "Robot Leave Successful"
+                      : "Left starting line?"
+                  }
+                  location="null"
+                  gamePiece="null"
+                  isAuto
+                  onClick={() => {
+                    context.setHasLeftStartingLine(
+                      !context.hasLeftStartingLine
+                    );
+                  }}
                 />
               </div>
             </div>
