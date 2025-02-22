@@ -40,6 +40,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { submitScoutDataForTeamAtEvent } from "~/db/queries/actions";
 import { submitAlternateScoutDataForMatch } from "~/db/queries/alternate-scout";
 import { cn } from "~/lib/utils";
+import { CommentsForm } from "./finalization-comments-form";
 
 const FinalizationScreen = () => {
   const context = useContext(ScoutDataContext);
@@ -90,10 +91,7 @@ const FinalizationScreen = () => {
       totalCoralMissed++;
     }
   });
-  console.log(totalAlgaeScored);
-  console.log(totalAlgaeMissed);
-  console.log(totalCoralScored);
-  console.log(totalCoralMissed);
+
   const saveDataMutation = useMutation({
     mutationKey: [
       "submit-match-data",
@@ -275,23 +273,23 @@ const FinalizationScreen = () => {
 
                 <TabsContent value="total" className="h-[300px] w-full">
                   <div className="flex flex-col">
-                    <div className="flex flex-row text-xl font-bold h-16 w-full justify-between">
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
                       <p className="align-start">Total Coral Scored:</p>
                       <p className="text-3xl">{totalCoralScored}</p>
                     </div>
-                    <div className="flex flex-row text-xl font-bold h-16 w-full justify-between">
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
                       <p className="align-start">Total Coral Missed:</p>
                       <p className="text-3xl">{totalCoralMissed}</p>
                     </div>
-                    <div className="flex flex-row text-xl font-bold h-16 w-full justify-between">
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
                       <p className="align-start">Total Algae Scored:</p>
                       <p className="text-3xl">{totalAlgaeScored}</p>
                     </div>
-                    <div className="flex flex-row text-xl font-bold h-16 w-full justify-between">
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
                       <p className="align-start">Total Algae Missed:</p>
                       <p className="text-3xl">{totalAlgaeMissed}</p>
                     </div>
-                    <div className="flex flex-row text-xl font-bold h-16 w-full justify-between">
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
                       <p className="align-start">Endgame Status: </p>
                       <p className="text-xl">
                         {context.previousEndgameAction.actionMessage}
@@ -383,6 +381,7 @@ const FinalizationScreen = () => {
               )}
             </CardContent>
           </Card>
+          <CommentsForm />
           <div className="flex flex-row gap-4 items-center mt-4">
             <Checkbox
               id="wasFogHorned"
