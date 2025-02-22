@@ -95,7 +95,7 @@ export default function LeadScoutPage() {
         currentMatchNumber
       )
     ) {
-      return <X className="size-10 text-red-700 " />;
+      return <X className="size-12 text-red-700 " />;
     }
 
     const startingPositionsForMatch =
@@ -111,32 +111,31 @@ export default function LeadScoutPage() {
       }
     );
     if (found) {
-      return <Check className="size-10 text-green-600" />;
+      return <Check className="size-12 text-green-600" />;
     } else {
-      return <X className="size-10 text-red-700 " />;
+      return <X className="size-12 text-red-700 " />;
     }
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <PageHeading>Lead Scout Page</PageHeading>
       {matchScheduleData &&
         matchScheduleData.map((match, index) => {
           return (
             <Card key={`match-card-${index}`}>
               <CardHeader>
-                <CardTitle></CardTitle>
-                <CardContent>
+                <CardContent className="p-0">
                   <div className="flex flex-row justify-between">
-                    <div className=" justify-start my-5">
-                      <a className="text-2xl font-bold">
+                    <div className="flex flex-col  justify-center">
+                      <a className="text-3xl font-bold">
                         Qualification {match.matchNumber}
                       </a>
                     </div>
 
-                    <div className="flex flex-row space-x-10">
-                      <div className="flex flex-col align-middle">
-                        <p className="text-3xl my-5 font-semibold bg-blue-600 dark:ring-4 ring-blue-900 ">
+                    <div className="flex flex-row gap-4">
+                      <div className="w-24 flex flex-col justify-between items-center">
+                        <p className="w-24 text-3xl font-semibold bg-blue-600 text-center p-2 rounded-md">
                           {match.teams[0].teamNumber}
                         </p>
                         {wasTeamScouted(
@@ -144,8 +143,8 @@ export default function LeadScoutPage() {
                           match.teams[0].teamNumber
                         )}
                       </div>
-                      <div className="flex flex-col align-middle">
-                        <p className="text-3xl my-5 font-semibold bg-blue-600 dark:ring-4 ring-blue-900 ">
+                      <div className="w-24 flex flex-col justify-between items-center">
+                        <p className="w-24 text-3xl font-semibold bg-blue-600 text-center p-2 rounded-md ">
                           {match.teams[1].teamNumber}
                         </p>
                         {wasTeamScouted(
@@ -153,8 +152,8 @@ export default function LeadScoutPage() {
                           match.teams[1].teamNumber
                         )}
                       </div>
-                      <div className="flex flex-col align-middle">
-                        <p className="text-3xl my-5 font-semibold bg-blue-600 dark:ring-4 ring-blue-900 ">
+                      <div className="w-24 flex flex-col justify-between items-center">
+                        <p className="w-24 text-3xl font-semibold bg-blue-600 text-center p-2 rounded-md ">
                           {match.teams[2].teamNumber}
                         </p>
                         {wasTeamScouted(
@@ -164,9 +163,9 @@ export default function LeadScoutPage() {
                       </div>
                     </div>
 
-                    <div className="flex flex-row space-x-10">
-                      <div className="flex flex-col align-middle">
-                        <p className="text-3xl my-5 font-semibold bg-red-600 dark:ring-4 ring-red-900 ">
+                    <div className="flex flex-row gap-4">
+                      <div className="w-24 flex flex-col justify-between items-center">
+                        <p className="w-24 text-3xl font-semibold bg-red-600 text-center p-2 rounded-md ">
                           {match.teams[3].teamNumber}
                         </p>
                         {wasTeamScouted(
@@ -174,8 +173,8 @@ export default function LeadScoutPage() {
                           match.teams[3].teamNumber
                         )}
                       </div>
-                      <div className="flex flex-col align-middle">
-                        <p className="text-3xl my-5 font-semibold bg-red-600 dark:ring-4 ring-red-900 ">
+                      <div className="w-24 flex flex-col justify-between items-center">
+                        <p className="w-24 text-3xl font-semibold bg-red-600 text-center p-2 rounded-md ">
                           {match.teams[4].teamNumber}
                         </p>
                         {wasTeamScouted(
@@ -183,8 +182,8 @@ export default function LeadScoutPage() {
                           match.teams[4].teamNumber
                         )}
                       </div>
-                      <div className="flex flex-col">
-                        <p className="text-3xl my-5 font-semibold bg-red-600 dark:ring-4 ring-red-900 ">
+                      <div className="w-24 flex flex-col justify-between items-center">
+                        <p className="w-24 text-3xl font-semibold bg-red-600 text-center p-2 rounded-md ">
                           {match.teams[5].teamNumber}
                         </p>
                         {wasTeamScouted(
