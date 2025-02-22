@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useUser } from "@clerk/nextjs";
@@ -81,78 +83,123 @@ export default function LeadScoutPage() {
   }, [startingPositionsData]);
 
   // THis is an example of how to use the grouped data
-  Object.entries(groupedStartingPositionsByMatchNumber).map(
-    ([matchNumber, positions]) => {
-      console.log(matchNumber);
-      console.log(positions);
-    }
-  );
+  function wasTeamScouted(
+    currentMatchNumber: string,
+    teamNumberToLookFor: number
+  ) {
+    let found = false;
+    currentMatchNumber = "Q" + parseInt(currentMatchNumber);
 
-  console.log(startingPositionsData);
+    if (
+      !Object.keys(groupedStartingPositionsByMatchNumber).includes(
+        currentMatchNumber
+      )
+    ) {
+      return <X className="size-10 text-red-700 " />;
+    }
+    const startingPositionsForMatch =
+      groupedStartingPositionsByMatchNumber[currentMatchNumber];
+
+    startingPositionsForMatch.forEach(
+      (startingPosition: { teamNumber: any }) => {
+        const team = startingPosition.teamNumber;
+        if (team === teamNumberToLookFor) {
+          found = true;
+        }
+      }
+    );
+    if (found) {
+      return <Check className="size-10 text-green-600" />;
+    } else {
+      return <X className="size-10 text-red-700 " />;
+    }
+  }
+
+  console.log(groupedStartingPositionsByMatchNumber);
+  console.log(wasTeamScouted("1", 5036));
 
   return (
     <div>
       <PageHeading>Lead scout page</PageHeading>
       {matchScheduleData &&
-        matchScheduleData.map((match) => (
-          // eslint-disable-next-line react/jsx-key
-          <Card>
-            <CardHeader>
-              <CardTitle></CardTitle>
-              <CardContent>
-                <div className="flex flex-row justify-between">
-                  <div className=" justify-start">
-                    <a className="text-2xl font-semibold">
-                      Qualification {match.matchNumber}
-                    </a>
-                  </div>
+        matchScheduleData.map((match, index) => {
+          return (
+            <Card key={`match-card-${index}`}>
+              <CardHeader>
+                <CardTitle></CardTitle>
+                <CardContent>
+                  <div className="flex flex-row justify-between">
+                    <div className=" justify-start">
+                      <a className="text-2xl font-semibold">
+                        Qualification {match.matchNumber}
+                      </a>
+                    </div>
 
-                  <div className="flex flex-row space-x-10">
-                    <div className="flex flex-col align-middle">
-                      <p className="text-2xl font-semibold">
-                        {match.teams[0].teamNumber}
-                      </p>
-                      <X className="size-10 text-red-700 " />
+                    <div className="flex flex-row space-x-10">
+                      <div className="flex flex-col align-middle">
+                        <p className="text-3xl font-semibold bg-blue-600 dark:ring-4 ring-blue-900 ">
+                          {match.teams[0].teamNumber}
+                        </p>
+                        {wasTeamScouted(
+                          match.matchNumber.toString(),
+                          match.teams[0].teamNumber
+                        )}
+                      </div>
+                      <div className="flex flex-col align-middle">
+                        <p className="text-3xl font-semibold bg-blue-600 dark:ring-4 ring-blue-900 ">
+                          {match.teams[1].teamNumber}
+                        </p>
+                        {wasTeamScouted(
+                          match.matchNumber.toString(),
+                          match.teams[1].teamNumber
+                        )}
+                      </div>
+                      <div className="flex flex-col align-middle">
+                        <p className="text-3xl font-semibold bg-blue-600 dark:ring-4 ring-blue-900 ">
+                          {match.teams[2].teamNumber}
+                        </p>
+                        {wasTeamScouted(
+                          match.matchNumber.toString(),
+                          match.teams[2].teamNumber
+                        )}
+                      </div>
                     </div>
-                    <div className="flex flex-col align-middle">
-                      <p className="text-2xl font-semibold">
-                        {match.teams[1].teamNumber}
-                      </p>
-                      <X className="size-10 text-red-700 " />
-                    </div>
-                    <div className="flex flex-col align-middle">
-                      <p className="text-2xl font-semibold">
-                        {match.teams[2].teamNumber}
-                      </p>
-                      <X className="size-10 text-red-700 " />
-                    </div>
-                  </div>
 
-                  <div className="flex flex-row space-x-10">
-                    <div className="flex flex-col align-middle">
-                      <p className="text-2xl font-semibold">
-                        {match.teams[3].teamNumber}
-                      </p>
-                      <X className="size-10 text-red-700" />
-                    </div>
-                    <div className="flex flex-col align-middle">
-                      <p className="text-2xl font-semibold">
-                        {match.teams[4].teamNumber}
-                      </p>
-                      <X className="size-10 text-red-700 " />
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="text-2xl font-semibold">
-                        {match.teams[5].teamNumber}
-                      </p>
-                      <X className="size-10 text-red-700 " />
+                    <div className="flex flex-row space-x-10">
+                      <div className="flex flex-col align-middle">
+                        <p className="text-3xl font-semibold bg-red-600 dark:ring-4 ring-red-900 ">
+                          {match.teams[3].teamNumber}
+                        </p>
+                        {wasTeamScouted(
+                          match.matchNumber.toString(),
+                          match.teams[3].teamNumber
+                        )}
+                      </div>
+                      <div className="flex flex-col align-middle">
+                        <p className="text-3xl font-semibold bg-red-600 dark:ring-4 ring-red-900 ">
+                          {match.teams[4].teamNumber}
+                        </p>
+                        {wasTeamScouted(
+                          match.matchNumber.toString(),
+                          match.teams[4].teamNumber
+                        )}
+                      </div>
+                      <div className="flex flex-col">
+                        <p className="text-3xl font-semibold bg-red-600 dark:ring-4 ring-red-900 ">
+                          {match.teams[5].teamNumber}
+                        </p>
+                        {wasTeamScouted(
+                          match.matchNumber.toString(),
+                          match.teams[5].teamNumber
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </CardHeader>
-          </Card>
-        ))}
+                </CardContent>
+              </CardHeader>
+            </Card>
+          );
+        })}
     </div>
   );
 }
