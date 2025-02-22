@@ -83,7 +83,7 @@ export default function LeadScoutPage() {
   }, [startingPositionsData]);
 
   // THis is an example of how to use the grouped data
-  function wasTeamScouted(
+  function renderTeamScouted(
     currentMatchNumber: string,
     teamNumberToLookFor: number
   ) {
@@ -138,7 +138,7 @@ export default function LeadScoutPage() {
                         <p className="w-24 text-3xl font-semibold bg-blue-600 text-center p-2 rounded-md">
                           {match.teams[0].teamNumber}
                         </p>
-                        {wasTeamScouted(
+                        {renderTeamScouted(
                           match.matchNumber.toString(),
                           match.teams[0].teamNumber
                         )}
@@ -147,7 +147,7 @@ export default function LeadScoutPage() {
                         <p className="w-24 text-3xl font-semibold bg-blue-600 text-center p-2 rounded-md ">
                           {match.teams[1].teamNumber}
                         </p>
-                        {wasTeamScouted(
+                        {renderTeamScouted(
                           match.matchNumber.toString(),
                           match.teams[1].teamNumber
                         )}
@@ -156,7 +156,7 @@ export default function LeadScoutPage() {
                         <p className="w-24 text-3xl font-semibold bg-blue-600 text-center p-2 rounded-md ">
                           {match.teams[2].teamNumber}
                         </p>
-                        {wasTeamScouted(
+                        {renderTeamScouted(
                           match.matchNumber.toString(),
                           match.teams[2].teamNumber
                         )}
@@ -168,7 +168,7 @@ export default function LeadScoutPage() {
                         <p className="w-24 text-3xl font-semibold bg-red-600 text-center p-2 rounded-md ">
                           {match.teams[3].teamNumber}
                         </p>
-                        {wasTeamScouted(
+                        {renderTeamScouted(
                           match.matchNumber.toString(),
                           match.teams[3].teamNumber
                         )}
@@ -177,7 +177,7 @@ export default function LeadScoutPage() {
                         <p className="w-24 text-3xl font-semibold bg-red-600 text-center p-2 rounded-md ">
                           {match.teams[4].teamNumber}
                         </p>
-                        {wasTeamScouted(
+                        {renderTeamScouted(
                           match.matchNumber.toString(),
                           match.teams[4].teamNumber
                         )}
@@ -186,7 +186,7 @@ export default function LeadScoutPage() {
                         <p className="w-24 text-3xl font-semibold bg-red-600 text-center p-2 rounded-md ">
                           {match.teams[5].teamNumber}
                         </p>
-                        {wasTeamScouted(
+                        {renderTeamScouted(
                           match.matchNumber.toString(),
                           match.teams[5].teamNumber
                         )}
