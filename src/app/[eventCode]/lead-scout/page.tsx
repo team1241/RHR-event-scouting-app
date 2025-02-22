@@ -97,7 +97,9 @@ export default function LeadScoutPage() {
     ) {
       return <X className="size-10 text-red-700 " />;
     }
+
     const startingPositionsForMatch =
+      //@ts-expect-error we know the type (sources: just trust me)
       groupedStartingPositionsByMatchNumber[currentMatchNumber];
 
     startingPositionsForMatch.forEach(
