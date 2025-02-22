@@ -9,7 +9,6 @@ import UndoActionButton from "./common/undo-action-button";
 import MatchScoutingLayout from "~/app/scout/[eventCode]/components/common/match-scouting-layout";
 import { useContext } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
-import { cn } from "~/lib/utils";
 
 export default function AutonomousScreen() {
   const context = useContext(ScoutDataContext);
