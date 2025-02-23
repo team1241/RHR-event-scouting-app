@@ -30,7 +30,7 @@ export function CommentsForm() {
   form.setValue("comment", context.comment);
   return (
     <Form {...form}>
-      <form className="w-2/3 space-y-6">
+      <form className="w-full space-y-6">
         <FormField
           control={form.control}
           name="comment"
@@ -40,7 +40,7 @@ export function CommentsForm() {
               <FormControl>
                 <Textarea
                   placeholder="Type comments here"
-                  className="resize-none w-96 h-28"
+                  className="resize-none w-full h-28"
                   {...field}
                   onSelect={() => context.setComment(field.value)}
                 />
