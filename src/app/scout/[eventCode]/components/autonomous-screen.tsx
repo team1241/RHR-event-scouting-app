@@ -72,6 +72,7 @@ export default function AutonomousScreen() {
             screenContext.nextScreen();
           }}
           disabled={context.isTimerRunning}
+          shouldShowIcon
         />
       </div>
     </>

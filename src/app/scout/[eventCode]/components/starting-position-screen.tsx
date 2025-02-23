@@ -243,6 +243,7 @@ export default function StartingPositionScreen() {
               });
             }}
             disabled={isContinueDisabled()}
+            label="START MATCH"
           />
         </div>
       </div>

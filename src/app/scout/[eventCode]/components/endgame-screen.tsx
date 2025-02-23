@@ -341,6 +341,7 @@ export default function EndgameScreen() {
           onClick={() => {
             screenContext.nextScreen();
           }}
+          shouldShowIcon
         />
       </div>
     </>

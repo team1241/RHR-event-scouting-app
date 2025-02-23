@@ -92,6 +92,7 @@ const TeleopScoringScreen = () => {
               context.setWasDefended(false);
               screenContext.nextScreen();
             }}
+            shouldShowIcon
           />
         </div>
       </div>

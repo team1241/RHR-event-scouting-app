@@ -133,6 +133,7 @@ export default function MatchSelectionScreen() {
               screenContext.nextScreen();
             }
           }}
+          shouldShowIcon
         />
       </div>
     </>
