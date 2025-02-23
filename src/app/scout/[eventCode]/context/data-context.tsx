@@ -100,6 +100,8 @@ interface ScoutDataContextType {
   setIsAutoStopped: (isAutoStopped: boolean) => void;
   isBrownedOut: boolean;
   setIsBrownedOut: (isBrownedOut: boolean) => void;
+  comment: string;
+  setComment: (comment: string) => void;
 }
 export const ScoutDataContext = createContext<ScoutDataContextType>(
   {} as ScoutDataContextType

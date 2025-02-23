@@ -112,7 +112,7 @@ const ScoutPage = () => {
     positionSelected: "",
     actionMessage: "",
   });
-
+  const [comment, setComment] = useState("");
   const [scouterDetails, setScouterDetails] = useState({
     name: "",
     clerkId: "",
@@ -286,6 +286,8 @@ const ScoutPage = () => {
           setIsAutoStopped,
           isBrownedOut,
           setIsBrownedOut,
+          comment,
+          setComment,
         }}
       >
         <ScoutingInfoHeader />

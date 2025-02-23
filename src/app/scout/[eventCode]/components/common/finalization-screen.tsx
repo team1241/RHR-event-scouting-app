@@ -40,6 +40,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { submitScoutDataForTeamAtEvent } from "~/db/queries/actions";
 import { submitAlternateScoutDataForMatch } from "~/db/queries/alternate-scout";
 import { cn } from "~/lib/utils";
+import { CommentsForm } from "./finalization-comments-form";
 
 const FinalizationScreen = () => {
   const context = useContext(ScoutDataContext);
@@ -65,12 +66,29 @@ const FinalizationScreen = () => {
 
   const teleopActions: ScoutAction[] = [];
   const autoActions: ScoutAction[] = [];
-
+  let totalAlgaeScored: number = 0;
+  let totalAlgaeMissed: number = 0;
+  let totalCoralScored: number = 0;
+  let totalCoralMissed: number = 0;
   context.actions.forEach((action) => {
     if (!action.isAuto) {
       teleopActions.push(action);
     } else {
       autoActions.push(action);
+    }
+    if (action.gamePiece === "algae" && action.actionName === "score") {
+      totalAlgaeScored++;
+    }
+
+    if (action.gamePiece === "algae" && action.actionName === "miss") {
+      totalAlgaeMissed++;
+    }
+    if (action.gamePiece === "coral" && action.actionName === "score") {
+      totalCoralScored++;
+    }
+
+    if (action.gamePiece === "coral" && action.actionName === "miss") {
+      totalCoralMissed++;
     }
   });
 
@@ -140,11 +158,14 @@ const FinalizationScreen = () => {
         <div className="w-full flex flex-col gap-2 items-start">
           <h2 className="text-2xl font-semibold">Actions:</h2>
           <Tabs defaultValue="teleop" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-2">
+            <TabsList className="grid w-full grid-cols-3 mb-2">
               <TabsTrigger value="auto" disabled={context.isAlternateScout}>
                 Auto
               </TabsTrigger>
               <TabsTrigger value="teleop">Teleop</TabsTrigger>
+              <TabsTrigger value="total" disabled={context.isAlternateScout}>
+                Total
+              </TabsTrigger>
             </TabsList>
             <Card>
               <CardContent>
@@ -251,9 +272,37 @@ const FinalizationScreen = () => {
                     </ScrollArea>
                   )}
                 </TabsContent>
+
+                <TabsContent value="total" className="h-[300px] w-full">
+                  <div className="flex flex-col">
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
+                      <p className="align-start">Total Coral Scored:</p>
+                      <p className="text-3xl">{totalCoralScored}</p>
+                    </div>
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
+                      <p className="align-start">Total Coral Missed:</p>
+                      <p className="text-3xl">{totalCoralMissed}</p>
+                    </div>
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
+                      <p className="align-start">Total Algae Scored:</p>
+                      <p className="text-3xl">{totalAlgaeScored}</p>
+                    </div>
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
+                      <p className="align-start">Total Algae Missed:</p>
+                      <p className="text-3xl">{totalAlgaeMissed}</p>
+                    </div>
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
+                      <p className="align-start">Endgame Status: </p>
+                      <p className="text-xl">
+                        {context.previousEndgameAction.actionMessage}
+                      </p>
+                    </div>
+                  </div>
+                </TabsContent>
               </CardContent>
             </Card>
           </Tabs>
+
           <div className="flex flex-col gap-2 items-start">
             <div className="flex flex-row gap-2 items-center">
               <UndoIcon />
@@ -334,6 +383,7 @@ const FinalizationScreen = () => {
               )}
             </CardContent>
           </Card>
+          <CommentsForm />
           <div className="flex flex-row gap-4 items-center mt-4">
             <Checkbox
               id="wasFogHorned"
