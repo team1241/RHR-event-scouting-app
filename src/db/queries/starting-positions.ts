@@ -1,6 +1,5 @@
 "use server";
 
-import { Prisma } from "@prisma/client";
 import { formatISO } from "date-fns";
 import prisma from "~/db";
 
