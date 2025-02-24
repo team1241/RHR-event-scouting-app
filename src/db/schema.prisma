@@ -43,6 +43,7 @@ model Users {
   Actions          Actions[]
 
   AlternateScoutData AlternateScoutData[]
+  MatchComments      MatchComments[]
 }
 
 model Seasons {
@@ -97,6 +98,7 @@ model Events {
   startingPositions StartingPositions[]
 
   AlternateScoutData AlternateScoutData[]
+  MatchComments      MatchComments[]
 }
 
 model StartingPositions {
@@ -142,4 +144,18 @@ model AlternateScoutData {
   timestamp   String
 
   @@unique([eventId, matchNumber])
+}
+
+model MatchComments {
+  id          Int    @id @default(autoincrement())
+  event       Events @relation(fields: [eventId], references: [id])
+  eventId     Int
+  scout       Users  @relation(fields: [scoutId], references: [id])
+  scoutId     Int
+  teamNumber  Int
+  matchNumber String
+  comment     String
+  timestamp   String
+
+  @@unique([eventId, matchNumber, teamNumber])
 }

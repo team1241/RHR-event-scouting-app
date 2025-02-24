@@ -36,8 +36,6 @@ export default function EndgameScreen() {
     setActionDone(context.previousEndgameAction.actionDone);
   }, []);
 
-  console.log(context.actions);
-
   return (
     <>
       <div className="flex flex-row">

@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
+import { useDebounceValue } from "usehooks-ts";
 import { useMutation } from "@tanstack/react-query";
 import { differenceInSeconds } from "date-fns";
 import { Loader2Icon, ShieldIcon, UndoIcon } from "lucide-react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import BackButton from "~/app/scout/[eventCode]/components/common/back-button";
 import ContinueButton from "~/app/scout/[eventCode]/components/common/continue-button";
@@ -40,7 +42,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { submitScoutDataForTeamAtEvent } from "~/db/queries/actions";
 import { submitAlternateScoutDataForMatch } from "~/db/queries/alternate-scout";
 import { cn } from "~/lib/utils";
-import { CommentsForm } from "./finalization-comments-form";
+import { Textarea } from "~/components/ui/text-area";
+import { saveMatchCommentsForTeam } from "~/db/queries/match-comments";
 
 const FinalizationScreen = () => {
   const context = useContext(ScoutDataContext);
@@ -48,6 +51,8 @@ const FinalizationScreen = () => {
 
   const [isFogHornedSelected, setIsFogHornedSelected] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+
+  const [debouncedValue, setValue] = useDebounceValue(context.comment, 500);
 
   const getMatchInfoTitleText = () => {
     let text = "";
@@ -122,6 +127,27 @@ const FinalizationScreen = () => {
     },
   });
 
+  const saveCommentsMutation = useMutation({
+    mutationKey: [
+      "submit-match-comments",
+      context.eventCode,
+      context.matchNumber,
+      context.teamToScout,
+    ],
+    mutationFn: async () => {
+      if (!context.teamToScout) return;
+      await saveMatchCommentsForTeam(context.eventCode.substring(4), {
+        scoutId: context.scouterDetails.id,
+        matchNumber: context.matchNumber,
+        teamNumber:
+          typeof context.teamToScout === "string"
+            ? parseInt(context!.teamToScout)
+            : context!.teamToScout,
+        comments: context.comment,
+      });
+    },
+  });
+
   const renderActionList = (actions: ScoutAction[]) => {
     if (actions.length === 0) return [];
     let timeRemaining = actions[0].isAuto ? 15 : 135;
@@ -150,6 +176,10 @@ const FinalizationScreen = () => {
       );
     });
   };
+
+  useEffect(() => {
+    context.setComment(debouncedValue);
+  }, [debouncedValue]);
 
   return (
     <>
@@ -383,7 +413,19 @@ const FinalizationScreen = () => {
               )}
             </CardContent>
           </Card>
-          <CommentsForm />
+          <div className="flex flex-col gap-2 w-full">
+            <p className="text-xl">
+              <span className="font-semibold">Comments</span> (Optional)
+            </p>
+            <Textarea
+              defaultValue={debouncedValue}
+              placeholder="Type comments here"
+              className="resize-none w-full h-28"
+              onChange={(event) => {
+                setValue(event.target.value);
+              }}
+            />
+          </div>
           <div className="flex flex-row gap-4 items-center mt-4">
             <Checkbox
               id="wasFogHorned"
@@ -438,6 +480,9 @@ const FinalizationScreen = () => {
                   e.preventDefault();
                   try {
                     if (!isFogHornedSelected) {
+                      if (context.comment) {
+                        await saveCommentsMutation.mutateAsync();
+                      }
                       if (context.isAlternateScout) {
                         await alternateScoutDateMutation.mutateAsync();
                       } else {
