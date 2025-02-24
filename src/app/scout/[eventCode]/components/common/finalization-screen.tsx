@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
+import { useDebounceValue } from "usehooks-ts";
 import { useMutation } from "@tanstack/react-query";
 import { differenceInSeconds } from "date-fns";
 import { Loader2Icon, ShieldIcon, UndoIcon } from "lucide-react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import BackButton from "~/app/scout/[eventCode]/components/common/back-button";
 import ContinueButton from "~/app/scout/[eventCode]/components/common/continue-button";
@@ -40,6 +42,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { submitScoutDataForTeamAtEvent } from "~/db/queries/actions";
 import { submitAlternateScoutDataForMatch } from "~/db/queries/alternate-scout";
 import { cn } from "~/lib/utils";
+import { Textarea } from "~/components/ui/text-area";
+import { saveMatchCommentsForTeam } from "~/db/queries/match-comments";
 
 const FinalizationScreen = () => {
   const context = useContext(ScoutDataContext);
@@ -47,6 +51,8 @@ const FinalizationScreen = () => {
 
   const [isFogHornedSelected, setIsFogHornedSelected] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+
+  const [debouncedValue, setValue] = useDebounceValue(context.comment, 500);
 
   const getMatchInfoTitleText = () => {
     let text = "";
@@ -65,12 +71,29 @@ const FinalizationScreen = () => {
 
   const teleopActions: ScoutAction[] = [];
   const autoActions: ScoutAction[] = [];
-
+  let totalAlgaeScored: number = 0;
+  let totalAlgaeMissed: number = 0;
+  let totalCoralScored: number = 0;
+  let totalCoralMissed: number = 0;
   context.actions.forEach((action) => {
     if (!action.isAuto) {
       teleopActions.push(action);
     } else {
       autoActions.push(action);
+    }
+    if (action.gamePiece === "algae" && action.actionName === "score") {
+      totalAlgaeScored++;
+    }
+
+    if (action.gamePiece === "algae" && action.actionName === "miss") {
+      totalAlgaeMissed++;
+    }
+    if (action.gamePiece === "coral" && action.actionName === "score") {
+      totalCoralScored++;
+    }
+
+    if (action.gamePiece === "coral" && action.actionName === "miss") {
+      totalCoralMissed++;
     }
   });
 
@@ -104,6 +127,27 @@ const FinalizationScreen = () => {
     },
   });
 
+  const saveCommentsMutation = useMutation({
+    mutationKey: [
+      "submit-match-comments",
+      context.eventCode,
+      context.matchNumber,
+      context.teamToScout,
+    ],
+    mutationFn: async () => {
+      if (!context.teamToScout) return;
+      await saveMatchCommentsForTeam(context.eventCode.substring(4), {
+        scoutId: context.scouterDetails.id,
+        matchNumber: context.matchNumber,
+        teamNumber:
+          typeof context.teamToScout === "string"
+            ? parseInt(context!.teamToScout)
+            : context!.teamToScout,
+        comments: context.comment,
+      });
+    },
+  });
+
   const renderActionList = (actions: ScoutAction[]) => {
     if (actions.length === 0) return [];
     let timeRemaining = actions[0].isAuto ? 15 : 135;
@@ -133,6 +177,10 @@ const FinalizationScreen = () => {
     });
   };
 
+  useEffect(() => {
+    context.setComment(debouncedValue);
+  }, [debouncedValue]);
+
   return (
     <>
       <PageHeading>Match Finalization</PageHeading>
@@ -140,11 +188,14 @@ const FinalizationScreen = () => {
         <div className="w-full flex flex-col gap-2 items-start">
           <h2 className="text-2xl font-semibold">Actions:</h2>
           <Tabs defaultValue="teleop" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-2">
+            <TabsList className="grid w-full grid-cols-3 mb-2">
               <TabsTrigger value="auto" disabled={context.isAlternateScout}>
                 Auto
               </TabsTrigger>
               <TabsTrigger value="teleop">Teleop</TabsTrigger>
+              <TabsTrigger value="total" disabled={context.isAlternateScout}>
+                Total
+              </TabsTrigger>
             </TabsList>
             <Card>
               <CardContent>
@@ -251,9 +302,37 @@ const FinalizationScreen = () => {
                     </ScrollArea>
                   )}
                 </TabsContent>
+
+                <TabsContent value="total" className="h-[300px] w-full">
+                  <div className="flex flex-col">
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
+                      <p className="align-start">Total Coral Scored:</p>
+                      <p className="text-3xl">{totalCoralScored}</p>
+                    </div>
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
+                      <p className="align-start">Total Coral Missed:</p>
+                      <p className="text-3xl">{totalCoralMissed}</p>
+                    </div>
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
+                      <p className="align-start">Total Algae Scored:</p>
+                      <p className="text-3xl">{totalAlgaeScored}</p>
+                    </div>
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
+                      <p className="align-start">Total Algae Missed:</p>
+                      <p className="text-3xl">{totalAlgaeMissed}</p>
+                    </div>
+                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
+                      <p className="align-start">Endgame Status: </p>
+                      <p className="text-xl">
+                        {context.previousEndgameAction.actionMessage}
+                      </p>
+                    </div>
+                  </div>
+                </TabsContent>
               </CardContent>
             </Card>
           </Tabs>
+
           <div className="flex flex-col gap-2 items-start">
             <div className="flex flex-row gap-2 items-center">
               <UndoIcon />
@@ -334,6 +413,19 @@ const FinalizationScreen = () => {
               )}
             </CardContent>
           </Card>
+          <div className="flex flex-col gap-2 w-full">
+            <p className="text-xl">
+              <span className="font-semibold">Comments</span> (Optional)
+            </p>
+            <Textarea
+              defaultValue={debouncedValue}
+              placeholder="Type comments here"
+              className="resize-none w-full h-28"
+              onChange={(event) => {
+                setValue(event.target.value);
+              }}
+            />
+          </div>
           <div className="flex flex-row gap-4 items-center mt-4">
             <Checkbox
               id="wasFogHorned"
@@ -388,6 +480,9 @@ const FinalizationScreen = () => {
                   e.preventDefault();
                   try {
                     if (!isFogHornedSelected) {
+                      if (context.comment) {
+                        await saveCommentsMutation.mutateAsync();
+                      }
                       if (context.isAlternateScout) {
                         await alternateScoutDateMutation.mutateAsync();
                       } else {
