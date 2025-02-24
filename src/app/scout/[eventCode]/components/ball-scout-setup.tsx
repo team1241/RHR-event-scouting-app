@@ -144,6 +144,7 @@ export default function BallScoutSetup() {
             redHumanPlayerSelected === "" || blueHumanPlayerSelected === ""
           }
           onClick={() => screenContext.nextScreen()}
+          shouldShowIcon
         />
       </div>
     </>
