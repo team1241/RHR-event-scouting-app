@@ -30,7 +30,7 @@ export async function completeUserRegistration(
   grade: string,
   team: string
 ) {
-  const teamEnum = team === Team.THEORY ? Team.THEORY : Team.BANG;
+  const teamEnum = team === Team.THEORY ? Team.THEORY : Team.BIRDS;
   return await prisma.users.update({
     where: { clerkId },
     data: {

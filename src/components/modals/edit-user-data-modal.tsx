@@ -59,7 +59,7 @@ export default function EditUserDataModal({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const editUserDataSchema = z.object({
-    team: z.enum([Team.BANG, Team.THEORY]).nullable(),
+    team: z.enum([Team.BIRDS, Team.THEORY]).nullable(),
     grade: z.string().nullable(),
     isActive: z.boolean(),
   });
@@ -71,7 +71,7 @@ export default function EditUserDataModal({
     values: {
       grade,
       isActive,
-      team: team ? (team === Team.THEORY ? Team.THEORY : Team.BANG) : null,
+      team: team ? (team === Team.THEORY ? Team.THEORY : Team.BIRDS) : null,
     },
   });
 
@@ -114,7 +114,7 @@ export default function EditUserDataModal({
                 team:
                   editUserDataForm.getValues("team") === Team.THEORY
                     ? Team.THEORY
-                    : Team.BANG,
+                    : Team.BIRDS,
                 grade: editUserDataForm.getValues("grade"),
                 isActive: editUserDataForm.getValues("isActive"),
               })

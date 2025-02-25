@@ -12,6 +12,6 @@ export const ROLE_OPTIONS = [
 ];
 
 export const TEAM_OPTIONS = [
-  { label: "BANG", value: "BANG" },
+  { label: "BIRDS", value: "BIRDS" },
   { label: "THEORY", value: "THEORY" },
 ];
