@@ -66,10 +66,11 @@ export default function AutonomousScreen() {
                 location: "None",
                 isAuto: false,
                 timestamp: formatISO(new Date()),
-              }
+              },
             );
             context.setMatchState(MATCH_STATES.TELEOP);
             screenContext.nextScreen();
+            context.setIsAutoStopped(false)
           }}
           disabled={context.isTimerRunning}
           shouldShowIcon
