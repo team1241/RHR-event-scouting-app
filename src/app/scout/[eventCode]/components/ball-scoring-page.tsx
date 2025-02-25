@@ -260,6 +260,7 @@ export default function BallScoringScreen() {
       <div className="flex flex-row justify-end mt-8">
         <ContinueButton
           onClick={() => screenContext.goToScreen(SCREEN_NAMES.FINALIZE)}
+          shouldShowIcon
         />
       </div>
     </>
