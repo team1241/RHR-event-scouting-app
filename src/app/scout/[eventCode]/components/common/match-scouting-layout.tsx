@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { cn } from "~/lib/utils";
 import {
   ACTION_NAMES,
@@ -22,6 +22,8 @@ export const MatchScoutingLayout = ({
   const context = useContext(ScoutDataContext);
   const hasCoral = context.gamePieceState[0].count > 0;
   const hasAlgae = context.gamePieceState[1].count > 0;
+
+  const [isDislodgeDisabled, setIsDislodgeDisabled] = useState(false);
 
   const setHasCoral = (hasCoral: boolean) => {
     if (hasCoral) {
@@ -60,6 +62,7 @@ export const MatchScoutingLayout = ({
       return false;
     }
   };
+
 
   return (
     <div>
@@ -134,33 +137,40 @@ export const MatchScoutingLayout = ({
             <div className="flex flex-col items-center justify-center h-full gap-3">
               <div className="flex flex-col gap-16 mt-28 items-center">
                 <div className="flex flex-col gap-3">
-                <ScoutActionButton
-                  actionName={ACTION_NAMES.DISLODGE}
-                  gamePiece={GAME_PIECES.ALGAE}
-                  location={LOCATIONS.REEF.BASE}
-                  className="dark:bg-teal-400 text-xl font-bold h-16 w-40 text-black"
-                  label="Algae Dislodge"
-                  isAuto={context.matchState === MATCH_STATES.AUTO}
-                  disabled={checkIsDisabled(isDisabled) || hasAlgae}
-                  onClick={() => {
-                    toast.info("Algae dislodged from reef!");
-                  }}
+                  <ScoutActionButton
+                    actionName={ACTION_NAMES.DISLODGE}
+                    gamePiece={GAME_PIECES.ALGAE}
+                    location={LOCATIONS.REEF.BASE}
+                    className="dark:bg-teal-400 text-xl font-bold h-16 w-40 text-black"
+                    label="Algae Dislodge"
+                    isAuto={context.matchState === MATCH_STATES.AUTO}
+                    disabled={checkIsDisabled(isDisabled) || hasAlgae || isDislodgeDisabled}
+                    onClick={() => {
+                      toast.info("Algae dislodged from reef!");
+                      setIsDislodgeDisabled(true);
+                      setTimeout(() => {
+                        setIsDislodgeDisabled(false);
+                      }, 1250);
+                    }}
                   />
-                <ScoutActionButton
-                  actionName={ACTION_NAMES.INTAKE}
-                  gamePiece={GAME_PIECES.ALGAE}
-                  location={LOCATIONS.REEF.BASE}
-                  className="dark:bg-teal-400 text-xl font-bold h-16 w-40 text-black text-wrap"
-                  label="Intake Algae From Reef"
-                  isAuto={context.matchState === MATCH_STATES.AUTO}
-                  onClick={() => {
-                    setHasAlgae(true);
-                  }}
-                  disabled={checkIsDisabled(isDisabled) || hasAlgae}
+                  <ScoutActionButton
+                    actionName={ACTION_NAMES.INTAKE}
+                    gamePiece={GAME_PIECES.ALGAE}
+                    location={LOCATIONS.REEF.BASE}
+                    className="dark:bg-teal-400 text-xl font-bold h-16 w-40 text-black text-wrap"
+                    label="Intake Algae From Reef"
+                    isAuto={context.matchState === MATCH_STATES.AUTO}
+                    onClick={() => {
+                      setHasAlgae(true);
+                    }}
+                    disabled={checkIsDisabled(isDisabled) || hasAlgae}
                   />
-                  </div>
+                </div>
                 <ScoutActionButton
-                  disabled={context.hasLeftStartingLine || context.matchState !== MATCH_STATES.AUTO}
+                  disabled={
+                    context.hasLeftStartingLine ||
+                    context.matchState !== MATCH_STATES.AUTO
+                  }
                   className={cn(
                     "bg-amber-500 flex items-center justify-center text-black font-bold text-xl h-16 w-64 px-4 py-2 my-1",
                     context.hasLeftStartingLine && "bg-green-400"
