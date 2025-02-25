@@ -102,6 +102,8 @@ interface ScoutDataContextType {
   setIsBrownedOut: (isBrownedOut: boolean) => void;
   comment: string;
   setComment: (comment: string) => void;
+  flashScoutLayout: boolean;
+  setFlashScoutLayout: (flashScoutLayout: boolean) => void;
 }
 export const ScoutDataContext = createContext<ScoutDataContextType>(
   {} as ScoutDataContextType
