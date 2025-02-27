@@ -103,6 +103,7 @@ export async function saveStartingPositionForTeamAtEvent(
         startingPosition: startingPosition.startingPosition,
         hasPreload: startingPosition.hasPreload,
         showedUp: startingPosition.showedUp,
+        scouterId: startingPosition.scouterId,
         timestamp,
       },
     });
