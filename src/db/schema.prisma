@@ -100,6 +100,7 @@ model Events {
 
   AlternateScoutData AlternateScoutData[]
   MatchComments      MatchComments[]
+  MatchSchedule      MatchSchedule[]
 }
 
 model StartingPositions {
@@ -162,12 +163,11 @@ model MatchComments {
 }
 
 model MatchSchedule {
-  id          Int    @id @default(autoincrement())
-  matchNumber String
-  blue1       String
-  blue2       String
-  blue3       String
-  red1        String
-  red2        String
-  red3        String
+  id            Int    @id @default(autoincrement())
+  event         Events @relation(fields: [eventId], references: [id])
+  eventId       Int
+  matchNumber   String
+  teamNumber    Int
+  driverStation Int
+  colour        String
 }
