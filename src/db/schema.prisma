@@ -160,3 +160,14 @@ model MatchComments {
 
   @@unique([eventId, matchNumber, teamNumber])
 }
+
+model MatchSchedule {
+  id          Int    @id @default(autoincrement())
+  matchNumber String
+  blue1       String
+  blue2       String
+  blue3       String
+  red1        String
+  red2        String
+  red3        String
+}
