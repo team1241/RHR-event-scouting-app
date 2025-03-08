@@ -27,6 +27,10 @@ const UndoActionButton = ({
     setGamePieceState,
     setHasLeftStartingLine,
     setIsAutoStopped,
+    setIsInactive,
+    setIsBrownedOut,
+    setIsStuck,
+    setIsDislodgeDisabled,
   } = useContext(ScoutDataContext);
 
   const onUndoClick = () => {
@@ -56,6 +60,29 @@ const UndoActionButton = ({
 
     if (lastAction?.actionName === ACTION_NAMES.A_STOP) {
       setIsAutoStopped(false);
+    }
+
+    if (lastAction?.actionName === ACTION_NAMES.DISLODGE) {
+      setGamePieceState([
+        gamePieceState[0],
+        { type: GAME_PIECES.ALGAE, count: 0},
+      ]);
+    }
+
+    if (lastAction?.actionName === ACTION_NAMES.BROWN_OUT || ACTION_NAMES.STUCK ){
+      setIsInactive(false);
+      setIsBrownedOut(false);
+      setIsStuck(false);
+    }
+
+    if (lastAction?.actionName === ACTION_NAMES.BROWN_OUT_END){
+      setIsInactive(true);
+      setIsBrownedOut(true); 
+    }
+
+    if (lastAction?.actionName === ACTION_NAMES.STUCK_END){
+      setIsInactive(true);
+      setIsStuck(true); 
     }
 
     setActions(actionsCopy);

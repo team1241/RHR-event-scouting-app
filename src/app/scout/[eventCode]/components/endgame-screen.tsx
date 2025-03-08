@@ -17,6 +17,7 @@ import BackButton from "./common/back-button";
 import UndoActionButton from "./common/undo-action-button";
 import { getFlexDirection } from "../utils";
 import { toast } from "sonner";
+import { Popover, PopoverTrigger, PopoverContent } from "@radix-ui/react-popover";
 
 export default function EndgameScreen() {
   const context = useContext(ScoutDataContext);
@@ -92,7 +93,7 @@ export default function EndgameScreen() {
               disabled={
                 checkActionButtonDisabled() ||
                 !climbStarted ||
-                context.isBrownedOut
+                context.isInactive
               }
               label="Deep Hang"
               shouldBeHidden={false}
@@ -118,7 +119,7 @@ export default function EndgameScreen() {
               disabled={
                 checkActionButtonDisabled() ||
                 !climbStarted ||
-                context.isBrownedOut
+                context.isInactive
               }
               label="Shallow Hang"
               shouldBeHidden={false}
@@ -145,7 +146,7 @@ export default function EndgameScreen() {
               disabled={
                 checkActionButtonDisabled() ||
                 climbStarted ||
-                context.isBrownedOut
+                context.isInactive
               }
               label="Park"
               shouldBeHidden={false}
@@ -174,7 +175,7 @@ export default function EndgameScreen() {
               disabled={
                 checkActionButtonDisabled() ||
                 climbStarted === false ||
-                context.isBrownedOut
+                context.isInactive
               }
               label="Failed Deep"
               shouldBeHidden={false}
@@ -203,7 +204,7 @@ export default function EndgameScreen() {
               disabled={
                 checkActionButtonDisabled() ||
                 climbStarted === false ||
-                context.isBrownedOut
+                context.isInactive
               }
               label="Failed Shallow"
               shouldBeHidden={false}
@@ -226,7 +227,7 @@ export default function EndgameScreen() {
               label="Start Climb"
               shouldBeHidden={false}
               disabled={
-                !positionSelected || !!currentAction || context.isBrownedOut
+                !positionSelected || !!currentAction || context.isInactive
               }
             />
             <ScoutActionButton
@@ -238,7 +239,7 @@ export default function EndgameScreen() {
                 climbStarted ||
                 positionSelected ||
                 actionDone ||
-                context.isBrownedOut
+                context.isInactive
               }
               onClick={() => {
                 setActionDone(true);
@@ -272,7 +273,7 @@ export default function EndgameScreen() {
                 setPositionSelected(true);
                 setHangPositionSelected(LOCATIONS.BARGE.OUTER);
               }}
-              disabled={actionDone || context.isBrownedOut}
+              disabled={actionDone || context.isInactive}
             >
               Far Cage
             </Button>
@@ -286,7 +287,7 @@ export default function EndgameScreen() {
                 setHangPositionSelected(LOCATIONS.BARGE.MIDDLE);
                 setPositionSelected(true);
               }}
-              disabled={actionDone || context.isBrownedOut}
+              disabled={actionDone || context.isInactive}
             >
               Middle Cage
             </Button>
@@ -300,7 +301,7 @@ export default function EndgameScreen() {
                 setPositionSelected(true);
                 setHangPositionSelected(LOCATIONS.BARGE.INNER);
               }}
-              disabled={actionDone || context.isBrownedOut}
+              disabled={actionDone || context.isInactive}
             >
               Near Cage
             </Button>
@@ -314,25 +315,77 @@ export default function EndgameScreen() {
           }}
         />
 
-        <ScoutActionButton
-          className="bg-red-500 flex items-center justify-center text-black font-bold text-xl h-20 w-64 px-4 py-2"
-          actionName={
-            context.isBrownedOut
-              ? ACTION_NAMES.BROWN_OUT_END
-              : ACTION_NAMES.BROWN_OUT
-          }
-          gamePiece="null"
-          location="null"
-          label={context.isBrownedOut ? "ROBOT RESTARTED" : "BROWNOUT"}
-          onClick={() => {
-            toast.error(
-              context.isBrownedOut
-                ? "Robot has restarted. Screen enabled!"
-                : "Robot has stopped. Screen disabled!"
-            );
-            context.setIsBrownedOut(!context.isBrownedOut);
-          }}
-        />
+        <Popover
+        modal={true}
+        open={context.showPopover}
+        >
+          <PopoverTrigger>
+            <ScoutActionButton
+              className={
+                context.isInactive
+                ? "bg-red-500 flex items-center justify-center text-black font-bold text-xl h-20 w-64 px-4 py-2"
+                : "bg-green-500 flex items-center justify-center text-black font-bold text-xl h-20 w-64 px-4 py-2"
+              }
+              actionName={
+                context.isBrownedOut
+                  ? ACTION_NAMES.BROWN_OUT_END
+                  : context.isStuck ? ACTION_NAMES.STUCK_END
+                  : ACTION_NAMES.INACTIVE_PRESSED
+              }
+              gamePiece={GAME_PIECES.NOGAMEPIECE}
+              location="null"
+              label={context.isInactive ? "ROBOT INACTIVE" : "ROBOT ACTIVE"}
+              onClick={() => {
+                context.isInactive
+                ? toast.error("Robot has restarted. Screen enabled!")
+                : context.setShowPopover(!context.showPopover)
+                context.isBrownedOut
+                  ?  context.setIsBrownedOut(!context.isBrownedOut)
+                  : context.isStuck ? context.setIsStuck(!context.isStuck)
+                  : null
+                context.setIsInactive(!context.isInactive);
+              }}
+            />
+          </PopoverTrigger>
+
+          <PopoverContent 
+          className="flex flex-row justify-between my-4 opacity:1">
+            
+            <ScoutActionButton
+              className={
+                "bg-red-500 flex items-center justify-center text-white font-bold text-xl h-20 w-48 px-4 py-2"
+              }
+              actionName={ACTION_NAMES.BROWN_OUT}        
+              gamePiece={GAME_PIECES.NOGAMEPIECE}
+              location="null"
+              label={"BROWNOUT"}
+              onClick={() => {
+                toast.error(
+                  "Robot has stopped. Screen disabled!"
+                );
+                context.setIsBrownedOut(!context.isBrownedOut);
+                context.setShowPopover(!context.showPopover);
+              }}
+            />
+
+            <ScoutActionButton
+              className={
+                "bg-red-500 flex items-center justify-center text-white font-bold text-xl h-20 w-48 px-4 py-2"
+              }
+              actionName={ACTION_NAMES.STUCK}
+              gamePiece={GAME_PIECES.NOGAMEPIECE}
+              location="null"
+              label={"ROBOT STUCK"}
+              onClick={() => {
+                toast.error(
+                  "Robot has gotten stuck. Screen disabled!"
+                );
+                context.setIsStuck(!context.isStuck);
+                context.setShowPopover(!context.showPopover);
+              }}
+            />
+          </PopoverContent>
+        </Popover>
 
         <ContinueButton
           // disabled={currentAction === "" || context.isTimerRunning}

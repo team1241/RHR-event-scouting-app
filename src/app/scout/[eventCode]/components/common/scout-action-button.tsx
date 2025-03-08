@@ -72,6 +72,7 @@ const ScoutActionButton = ({
         scoutDataContext.isDefending ||
           scoutDataContext.isAutoStopped ||
           scoutDataContext.isBrownedOut ||
+          scoutDataContext.isStuck ||
           !shouldBeHidden
           ? "disabled:opacity-20"
           : "disabled:opacity-0",
