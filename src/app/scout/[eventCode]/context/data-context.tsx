@@ -99,9 +99,17 @@ interface ScoutDataContextType {
   isAutoStopped: boolean;
   setIsAutoStopped: (isAutoStopped: boolean) => void;
   isBrownedOut: boolean;
-  setIsBrownedOut: (isBrownedOut: boolean) => void;
+  setIsBrownedOut: (isBrownedOut: boolean) => void; 
   comment: string;
   setComment: (comment: string) => void;
+  isInactive: boolean;
+  setIsInactive: (isInactive: boolean) => void;
+  isStuck: boolean;
+  setIsStuck: (isStuck: boolean) => void;
+  showPopover: boolean;
+  setShowPopover: (showPopover: boolean) => void;
+  isDislodgeDisabled: boolean;
+  setIsDislodgeDisabled: (isDislodgeDisabled: boolean) => void;
 }
 export const ScoutDataContext = createContext<ScoutDataContextType>(
   {} as ScoutDataContextType

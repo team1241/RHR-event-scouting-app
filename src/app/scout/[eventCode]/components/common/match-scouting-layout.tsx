@@ -23,7 +23,6 @@ export const MatchScoutingLayout = ({
   const hasCoral = context.gamePieceState[0].count > 0;
   const hasAlgae = context.gamePieceState[1].count > 0;
 
-  const [isDislodgeDisabled, setIsDislodgeDisabled] = useState(false);
 
   const setHasCoral = (hasCoral: boolean) => {
     if (hasCoral) {
@@ -56,7 +55,7 @@ export const MatchScoutingLayout = ({
   const checkIsDisabled = (isDisabled: boolean) => {
     if (context.isDefending) {
       return true;
-    } else if (isDisabled) {
+    } else if (isDisabled || context.isInactive) {
       return true;
     } else {
       return false;
@@ -144,12 +143,12 @@ export const MatchScoutingLayout = ({
                     className="dark:bg-teal-400 text-xl font-bold h-16 w-40 text-black"
                     label="Algae Dislodge"
                     isAuto={context.matchState === MATCH_STATES.AUTO}
-                    disabled={checkIsDisabled(isDisabled) || hasAlgae || isDislodgeDisabled}
+                    disabled={checkIsDisabled(isDisabled) || hasAlgae || context.isDislodgeDisabled}
                     onClick={() => {
                       toast.info("Algae dislodged from reef!");
-                      setIsDislodgeDisabled(true);
+                      context.setIsDislodgeDisabled(true); 
                       setTimeout(() => {
-                        setIsDislodgeDisabled(false);
+                        context.setIsDislodgeDisabled(false);
                       }, 1250);
                     }}
                   />
