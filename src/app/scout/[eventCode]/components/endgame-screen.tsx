@@ -353,7 +353,7 @@ export default function EndgameScreen() {
             
             <ScoutActionButton
               className={
-                "bg-red-500 flex items-center justify-center text-white font-bold text-xl h-20 w-48 px-4 py-2"
+                "bg-red-500 flex items-center justify-center text-white font-bold text-xl h-20 w-48 px-4 py-2 mx-4"
               }
               actionName={ACTION_NAMES.BROWN_OUT}        
               gamePiece={GAME_PIECES.NOGAMEPIECE}
@@ -370,7 +370,7 @@ export default function EndgameScreen() {
 
             <ScoutActionButton
               className={
-                "bg-red-500 flex items-center justify-center text-white font-bold text-xl h-20 w-48 px-4 py-2"
+                "bg-red-500 flex items-center justify-center text-white font-bold text-xl h-20 w-48 px-4 py-2 mx-4"
               }
               actionName={ACTION_NAMES.STUCK}
               gamePiece={GAME_PIECES.NOGAMEPIECE}

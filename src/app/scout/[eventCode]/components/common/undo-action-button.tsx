@@ -30,7 +30,6 @@ const UndoActionButton = ({
     setIsInactive,
     setIsBrownedOut,
     setIsStuck,
-    setIsDislodgeDisabled,
   } = useContext(ScoutDataContext);
 
   const onUndoClick = () => {
