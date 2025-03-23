@@ -3,5 +3,5 @@ export default function PageHeading({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <h1 className="text-3xl font-semibold">{children}</h1>;
+  return <h1 className="text-2xl md:text-3xl font-semibold">{children}</h1>;
 }

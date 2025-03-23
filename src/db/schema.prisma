@@ -57,6 +57,7 @@ model Seasons {
   updatedAt   String
   fieldImages FieldImages[]
 
+  PitScouting    PitScouting[]
   PitScoutImages PitScoutImages[]
 }
 
@@ -70,6 +71,29 @@ model FieldImages {
   updatedAt String
 
   @@unique([seasonId, type])
+}
+
+model PitScouting {
+  id                  Int     @id @default(autoincrement())
+  season              Seasons @relation(fields: [seasonId], references: [id])
+  seasonId            Int
+  event               Events  @relation(fields: [eventId], references: [id])
+  eventId             Int
+  teamNumber          Int
+  length              String
+  width               String
+  weight              String
+  driveBase           String
+  gamepieceIntake     String
+  autonomous          String
+  teleop              String
+  endgame             String
+  gameSpecificJson    String
+  driveteamExperience String
+  generalComments     String
+  createdAt           String
+
+  @@unique([seasonId, eventId, teamNumber])
 }
 
 model PitScoutImages {
@@ -101,6 +125,7 @@ model Events {
   AlternateScoutData AlternateScoutData[]
   MatchComments      MatchComments[]
   MatchSchedule      MatchSchedule[]
+  PitScouting        PitScouting[]
 }
 
 model StartingPositions {
