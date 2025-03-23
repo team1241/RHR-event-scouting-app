@@ -12,6 +12,7 @@ import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 import PageHeading from "~/components/common/page-heading";
 import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { Textarea } from "~/components/ui/text-area";
 
@@ -46,17 +47,17 @@ export default function PitScoutingForm() {
         </div>
         <div className="flex flex-col gap-2">
           <p className="text-2xl font-semibold">Robot's length and width?</p>
-          <Textarea
+          <Input
             placeholder="Enter dimensions here"
             className="resize-y w-3/4"
-          ></Textarea>
+          />
         </div>
         <div className="flex flex-col gap-2">
           <p className="text-2xl font-semibold">Robot's weight?</p>
-          <Textarea
+          <Input
             placeholder="Enter weight here"
             className="resize-y w-3/4"
-          ></Textarea>
+          />
         </div>
         <div className="flex flex-col gap-2">
           <p className="text-2xl font-semibold">Drive base?</p>
@@ -240,26 +241,26 @@ export default function PitScoutingForm() {
         </div>
         <div className="flex flex-col gap-2">
           <p className="text-2xl font-semibold">What can they do in autos?</p>
-          <Textarea
+          <Input
             placeholder="Enter autonomous cycles here"
             className="resize-y w-3/4"
-          ></Textarea>
+          />
         </div>
         <div className="flex flex-col gap-2">
           <p className="text-2xl font-semibold">Drive team experience?</p>
-          <Textarea
+          <Input
             placeholder="Enter drive team experience here"
             className="resize-y w-3/4"
-          ></Textarea>
+          />
         </div>
         <div className="flex flex-col gap-2">
           <p className="text-2xl font-semibold">
             Anything else notable about the robot?
           </p>
-          <Textarea
+          <Input
             placeholder="Enter comments here"
             className="resize-y w-3/4"
-          ></Textarea>
+          />
         </div>
         <div className="flex flex-col gap-2">
           <p className="text-2xl font-semibold">Upload image of robot:</p>
