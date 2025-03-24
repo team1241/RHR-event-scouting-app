@@ -400,30 +400,53 @@ export default function PitScoutingForm() {
                   control={pitScoutingForm.control}
                   render={({ field }) => (
                     <RadioGroup onChange={() => console.log(field.value)}>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-2 ">
                         <RadioGroupItem
-                          value="Swerve"
-                          id="r1"
+                          value="Net"
+                          id="r12"
                           className="size-5"
                           onClick={(event) => {
                             field.onChange(event.target.value);
                           }}
                         />
-                        <Label htmlFor="r1" className="text-xl">
-                          Swerve
+                        <Label htmlFor="r12" className="text-xl">
+                          Net
                         </Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem
-                          value="Tank"
-                          id="r2"
+                          value="Processor"
+                          id="r13"
                           className="size-5"
                           onClick={(event) => {
                             field.onChange(event.target.value);
                           }}
                         />
-                        <Label htmlFor="r2" className="text-xl">
-                          Tank
+                        <Label htmlFor="r13" className="text-xl">
+                          Processor
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="Both"
+                          id="r14"
+                          className="size-5"
+                          onClick={(event) => {
+                            field.onChange(event.target.value);
+                          }}
+                        />
+                        <Label htmlFor="r14" className="text-xl">
+                          Both
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="None"
+                          id="r15"
+                          className="size-5"
+                        />
+                        <Label htmlFor="r15" className="text-xl">
+                          None
                         </Label>
                       </div>
                     </RadioGroup>
@@ -432,131 +455,261 @@ export default function PitScoutingForm() {
               </form>
             </FormProvider>
           </Form>
+        </div>
 
-          <RadioGroup>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Net" id="r12" className="size-5" />
-              <Label htmlFor="r12" className="text-xl">
-                Net
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Processor" id="r13" className="size-5" />
-              <Label htmlFor="r13" className="text-xl">
-                Processor
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Both" id="r14" className="size-5" />
-              <Label htmlFor="r14" className="text-xl">
-                Both
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="None" id="r15" className="size-5" />
-              <Label htmlFor="r15" className="text-xl">
-                None
-              </Label>
-            </div>
-          </RadioGroup>
-        </div>
-        {/*Coral scoring capability radio group */}
+        {/*Coral scoring capability checkbox group */}
         <div className="flex flex-col gap-2">
-          <p className="text-2xl font-semibold">Coral scoring capability?</p>
-          <div className="flex items-center space-x-2">
-            <Checkbox id="c1" className="size-5" />
-            <Label htmlFor="c1" className="text-xl">
-              L1
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox id="c2" className="size-5" />
-            <Label htmlFor="c2" className="text-xl">
-              L2
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox id="c3" className="size-5" />
-            <Label htmlFor="c3" className="text-xl">
-              L3
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox id="c4" className="size-5" />
-            <Label htmlFor="c4" className="text-xl">
-              L4
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox id="c5" className="size-5" />
-            <Label htmlFor="c5" className="text-xl">
-              All Levels
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox id="c6" className="size-5" />
-            <Label htmlFor="c6" className="text-xl">
-              None
-            </Label>
-          </div>
+          <Form {...pitScoutingForm}>
+            <FormProvider {...pitScoutingForm}>
+              <form>
+                <FormLabel className="text-2xl font-semibold">
+                  Coral scoring capability?
+                </FormLabel>
+                <FormField
+                  name="coralScoringCapability"
+                  control={pitScoutingForm.control}
+                  render={({ field }) => (
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="c1"
+                          className="size-5 bg-white rounded-sm"
+                          onCheckedChange={(checked) => {
+                            field.onChange(checked ? "L1" : "");
+                          }}
+                          onChange={() => console.log(field.value)}
+                        />
+                        <Label htmlFor="c1" className="text-xl">
+                          L1
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="c2"
+                          className="size-5 bg-white rounded-sm"
+                          onCheckedChange={(checked) => {
+                            field.onChange(checked ? "L2" : "");
+                          }}
+                          onChange={() => console.log(field.value)}
+                        />
+                        <Label htmlFor="c2" className="text-xl">
+                          L2
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="c3"
+                          className="size-5 bg-white rounded-sm"
+                          onCheckedChange={(checked) => {
+                            field.onChange(checked ? "L3" : "");
+                          }}
+                          onChange={() => console.log(field.value)}
+                        />
+                        <Label htmlFor="c3" className="text-xl">
+                          L3
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="c4"
+                          className="size-5 bg-white rounded-sm"
+                          onCheckedChange={(checked) => {
+                            field.onChange(checked ? "L4" : "");
+                          }}
+                          onChange={() => console.log(field.value)}
+                        />
+                        <Label htmlFor="c4" className="text-xl">
+                          L4
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="c5"
+                          className="size-5 bg-white rounded-sm"
+                          onCheckedChange={(checked) => {
+                            field.onChange(checked ? "All Levels" : "");
+                          }}
+                          onChange={() => console.log(field.value)}
+                        />
+                        <Label htmlFor="c5" className="text-xl">
+                          All Levels
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="c6"
+                          className="size-5 bg-white rounded-sm"
+                          onCheckedChange={(checked) => {
+                            field.onChange(checked ? "None" : "");
+                          }}
+                          onChange={() => console.log(field.value)}
+                        />
+                        <Label htmlFor="c6" className="text-xl">
+                          None
+                        </Label>
+                      </div>
+                    </div>
+                  )}
+                />
+              </form>
+            </FormProvider>
+          </Form>
         </div>
+
         {/*Endgame scoring capability radio group */}
         <div className="flex flex-col gap-2">
-          <p className="text-2xl font-semibold">Endgame scoring capability?</p>
-          <RadioGroup>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Park" id="r16" className="size-5" />
-              <Label htmlFor="r16" className="text-xl">
-                Park
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem
-                value="Shallow Hang"
-                id="r17"
-                className="size-5"
-              />
-              <Label htmlFor="r17" className="text-xl">
-                Shallow Hang
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Deep Hang" id="r17" className="size-5" />
-              <Label htmlFor="r17" className="text-xl">
-                Deep Hang
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="All" id="r18" className="size-5" />
-              <Label htmlFor="r18" className="text-xl">
-                Shallow and Deep
-              </Label>
-            </div>
-          </RadioGroup>
+          <Form {...pitScoutingForm}>
+            <FormProvider {...pitScoutingForm}>
+              <form>
+                <FormLabel className="text-2xl font-semibold">
+                  Endgame scoring capability?
+                </FormLabel>
+                <FormField
+                  name="endGameScoringCapability"
+                  control={pitScoutingForm.control}
+                  render={({ field }) => (
+                    <RadioGroup onChange={() => console.log(field.value)}>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="Park"
+                          id="r16"
+                          className="size-5"
+                          onClick={(event) => {
+                            field.onChange(event.target.value);
+                          }}
+                        />
+                        <Label htmlFor="r16" className="text-xl">
+                          Park
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="Shallow Hang"
+                          id="r17"
+                          className="size-5"
+                          onClick={(event) => {
+                            field.onChange(event.target.value);
+                          }}
+                        />
+                        <Label htmlFor="r17" className="text-xl">
+                          Shallow Hang
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="Deep Hang"
+                          id="r17"
+                          className="size-5"
+                          onClick={(event) => {
+                            field.onChange(event.target.value);
+                          }}
+                        />
+                        <Label htmlFor="r17" className="text-xl">
+                          Deep Hang
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="All"
+                          id="r18"
+                          className="size-5"
+                          onClick={(event) => {
+                            field.onChange(event.target.value);
+                          }}
+                        />
+                        <Label htmlFor="r18" className="text-xl">
+                          Shallow and Deep
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                  )}
+                ></FormField>
+              </form>
+            </FormProvider>
+          </Form>
         </div>
         {/*Autonomous scoring capability\*/}
         <div className="flex flex-col gap-2">
-          <p className="text-2xl font-semibold">What can they do in autos?</p>
-          <Input
-            placeholder="Enter autonomous cycles here"
-            className="resize-y w-3/4"
-          />
+          <Form {...pitScoutingForm}>
+            <FormProvider {...pitScoutingForm}>
+              <form>
+                <FormLabel className="text-2xl font-semibold">
+                  What can they do in autos?
+                </FormLabel>
+                <FormField
+                  name="driveTeamCapability"
+                  control={pitScoutingForm.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Enter autonomous cycles here"
+                          className="resize-y w-3/4"
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </FormProvider>
+          </Form>
         </div>
         {/*Drive team experience\*/}
         <div className="flex flex-col gap-2">
-          <p className="text-2xl font-semibold">Drive team experience?</p>
-          <Input
-            placeholder="Enter drive team experience here"
-            className="resize-y w-3/4"
-          />
+          <Form {...pitScoutingForm}>
+            <FormProvider {...pitScoutingForm}>
+              <form>
+                <FormLabel className="text-2xl font-semibold">
+                  Drive team experience?
+                </FormLabel>
+                <FormField
+                  name="driveTeamCapability"
+                  control={pitScoutingForm.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Enter drive team experience here"
+                          className="resize-y w-3/4"
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </FormProvider>
+          </Form>
         </div>
         {/*Comments*/}
         <div className="flex flex-col gap-2">
-          <p className="text-2xl font-semibold">
-            Anything else notable about the robot?
-          </p>
-          <Input placeholder="Enter comments here" className="resize-y w-3/4" />
+          <Form {...pitScoutingForm}>
+            <FormProvider {...pitScoutingForm}>
+              <form>
+                <FormLabel className="text-2xl font-semibold">
+                  Anything else notable about the robot?
+                </FormLabel>
+                <FormField
+                  name="comments"
+                  control={pitScoutingForm.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Enter comments here"
+                          className="resize-y w-3/4"
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </FormProvider>
+          </Form>
         </div>
+
         <div className="flex flex-col gap-2">
           <p className="text-2xl font-semibold">Upload image of robot:</p>
         </div>
