@@ -6,7 +6,8 @@ import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
 import { cn } from "~/lib/utils";
 
 const CountdownTimer = () => {
-  const { matchState, setIsTimerRunning } = useContext(ScoutDataContext);
+  const { matchState, setIsTimerRunning, setFlashScoutLayout } =
+    useContext(ScoutDataContext);
 
   const [seconds, setSeconds] = useState(0);
   const minutesRemaining = Math.floor((seconds % 3600) / 60);
@@ -16,10 +17,12 @@ const CountdownTimer = () => {
     if (matchState === MATCH_STATES.PRE_START) return;
     if (matchState === MATCH_STATES.FINISHED) return;
     if (matchState === MATCH_STATES.AUTO) {
+      setFlashScoutLayout(false);
       setIsTimerRunning(true);
       setSeconds(15);
     }
     if (matchState === MATCH_STATES.TELEOP) {
+      setFlashScoutLayout(false);
       setIsTimerRunning(true);
       setSeconds(135);
     }
@@ -32,8 +35,12 @@ const CountdownTimer = () => {
   }, [matchState]);
 
   useEffect(() => {
-    if (seconds === 0) {
+    if (
+      seconds <= 0 &&
+      (matchState === MATCH_STATES.AUTO || matchState === MATCH_STATES.TELEOP)
+    ) {
       setIsTimerRunning(false);
+      setFlashScoutLayout(true);
     }
   }, [seconds]);
 

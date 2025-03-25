@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import PitScoutCard from "~/app/pits/[eventCode]/components/pit-scout-card";
+import PitScoutCard from "~/app/[eventCode]/pits/components/pit-scout-card";
 import { TeamTypeWithImages } from "~/server/http/frc-events";
 
 const RobotImageGrid = ({

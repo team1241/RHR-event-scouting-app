@@ -84,7 +84,7 @@ export default function Navbar() {
   if (pathname.includes("sign-in") || pathname.includes("sign-in")) return null;
 
   return (
-    <div className="sticky top-0 z-10 left-0 w-screen h-10 px-4 grid grid-cols-2 gap-4 shadow-md border-b bg-slate-950 border-slate-900">
+    <div className="sticky top-0 z-10 left-0 w-screen h-10 px-4 grid grid-cols-3 md:grid-cols-2 gap-4 shadow-md border-b bg-slate-950 border-slate-900">
       <div className="flex flex-row gap-2 items-center justify-self-start col-span-2 md:col-span-1">
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
@@ -99,7 +99,7 @@ export default function Navbar() {
           </SheetTrigger>
           <SheetContent
             side="left"
-            className="flex flex-col gap-0 border-slate-950 w-1/3"
+            className="flex flex-col gap-0 border-slate-950 w-1/2 md:w-1/3"
           >
             <SheetHeader className="font-semibold text-xl text-left mb-4">
               Menu

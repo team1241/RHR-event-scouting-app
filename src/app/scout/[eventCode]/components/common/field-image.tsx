@@ -14,7 +14,7 @@ const FieldImage = ({
   fieldSize?: "full" | "half";
   children?: React.ReactNode;
 }) => {
-  const { uiOrientation, allianceColour, fieldImages } =
+  const { uiOrientation, allianceColour, fieldImages, flashScoutLayout } =
     useContext(ScoutDataContext);
 
   const normalImages = fieldImages?.filter(
@@ -60,9 +60,16 @@ const FieldImage = ({
       <div className="[grid-area:stack]">
         {fieldImages && <Image src={getImageUrl()} alt="Field Image" fill />}
       </div>
-      <div className={cn("z-50 [grid-area:stack]", getImageSize())}>
+      <div className={cn("z-40 [grid-area:stack]", getImageSize())}>
         {children}
       </div>
+      <div
+        className={cn(
+          "z-60 [grid-area:stack] h-full",
+          getImageSize(),
+          flashScoutLayout ? "animate-pulse bg-red-700" : ""
+        )}
+      />
     </div>
   );
 };

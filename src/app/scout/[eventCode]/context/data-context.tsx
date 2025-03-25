@@ -110,6 +110,8 @@ interface ScoutDataContextType {
   setShowPopover: (showPopover: boolean) => void;
   isDislodgeDisabled: boolean;
   setIsDislodgeDisabled: (isDislodgeDisabled: boolean) => void;
+  flashScoutLayout: boolean;
+  setFlashScoutLayout: (flashScoutLayout: boolean) => void;
 }
 export const ScoutDataContext = createContext<ScoutDataContextType>(
   {} as ScoutDataContextType

@@ -1,7 +1,11 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
+import { MoveRightIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { toast } from "sonner";
+import { Button } from "~/components/ui/button";
 import {
   Card,
   CardContent,
@@ -27,11 +31,15 @@ const PitScoutCard = ({
   team: TeamTypeWithImages;
   eventCode: string;
 }) => {
+  const pathname = usePathname();
+
   const uploadRobotImageMutation = useMutation({
     mutationKey: ["uploadRobotImage", team?.teamNumber],
     mutationFn: async (updateData: { imageUrl: string; teamNumber: number }) =>
       upsertRobotImage({ ...updateData, revalidateUrl: `/pits` }),
   });
+
+  console.log(pathname);
 
   return (
     <Card>
@@ -83,7 +91,15 @@ const PitScoutCard = ({
           {team?.nameShort}
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex flex-col gap-4 items-center mt-2">
+        <Button asChild>
+          <div>
+            <Link href={`${pathname}/${team.teamNumber}`}>
+              Pit scouting form
+            </Link>
+            <MoveRightIcon />
+          </div>
+        </Button>
         <UploadButton
           endpoint="imageUploader"
           className="w-full"

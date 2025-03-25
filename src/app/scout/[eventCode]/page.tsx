@@ -92,6 +92,7 @@ const ScoutPage = () => {
   const [undoOccurred, setUndoOccurred] = useState(false);
   const [wasDefended, setWasDefended] = useState(false);
   const [isDefending, setIsDefending] = useState(false);
+  const [flashScoutLayout, setFlashScoutLayout] = useState(false);
   const [hasLeftStartingLine, setHasLeftStartingLine] = useState(false);
   const [isAutoStopped, setIsAutoStopped] = useState(false);
   const [isBrownedOut, setIsBrownedOut] = useState(false);
@@ -300,6 +301,8 @@ const ScoutPage = () => {
           setIsDislodgeDisabled,
           comment,
           setComment,
+          flashScoutLayout,
+          setFlashScoutLayout,
         }}
       >
         <ScoutingInfoHeader />
