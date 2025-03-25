@@ -29,7 +29,7 @@ export default async function Dashboard() {
   return (
     <div>
       <PageHeading>Events</PageHeading>
-      <div className="grid grid-cols-2 grid-flow-row gap-4 mt-2">
+      <div className="grid grid-cols-1 min-[600px]:grid-cols-2 grid-flow-row gap-4 mt-2">
         {!events && (
           <h1 className="text-4xl font-bold">
             Check back when events are added!
@@ -37,9 +37,9 @@ export default async function Dashboard() {
         )}
         {events?.length > 0 &&
           events.map((event) => (
-            <Card className="border-2" key={`dashbaord-card-${event.eventKey}`}>
+            <Card className="border-2" key={`dashboard-card-${event.eventKey}`}>
               <CardHeader>
-                <CardTitle className="line-clamp-1">{event.name}</CardTitle>
+                <CardTitle className="line-clamp-2">{event.name}</CardTitle>
                 <CardDescription>
                   {event.eventKey.toUpperCase()}
                 </CardDescription>
@@ -50,7 +50,12 @@ export default async function Dashboard() {
                   {parseISO(event.endDate).toDateString()}
                 </p>
               </CardContent>
-              <CardFooter className="gap-8 justify-end">
+              <CardFooter className="grid min-[1035px]:flex min-[1035px]:justify-end gap-4 min-[1035px]:flex-row min-[1035px]:gap-8">
+                <Button variant="outline" asChild>
+                  <Link href={`/${season.year}${event.eventKey}/pits`}>
+                    Pit Scouting
+                  </Link>
+                </Button>
                 <Button variant="outline" asChild>
                   <Link
                     href={`/scout/${season.year}${event.eventKey}?type=practice`}
