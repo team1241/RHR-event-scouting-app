@@ -543,7 +543,7 @@ export default function PitScoutingForm() {
               What can they do in autos?
             </FormLabel>
             <FormField
-              name="driveTeamCapability"
+              name="autonomousCapability"
               control={pitScoutingForm.control}
               render={({ field }) => (
                 <FormItem>
