@@ -66,7 +66,7 @@ export default function PitScoutingForm() {
 
   return (
     <>
-      <PageHeading>Pit Scouting Form</PageHeading>
+      {/* <PageHeading>Pit Scouting Form</PageHeading> */}
       <Form {...pitScoutingForm}>
         <form
           onSubmit={
