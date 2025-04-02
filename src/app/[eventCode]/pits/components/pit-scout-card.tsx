@@ -19,6 +19,8 @@ import {
   SliderMainItem,
   CarouselThumbsContainer,
   CarouselIndicator,
+  CarouselPrevious,
+  CarouselNext,
 } from "~/components/ui/carousel-v2";
 import { upsertRobotImage } from "~/db/queries/robot-images";
 import { UploadButton } from "~/lib/uploadthing";
@@ -38,8 +40,6 @@ const PitScoutCard = ({
     mutationFn: async (updateData: { imageUrl: string; teamNumber: number }) =>
       upsertRobotImage({ ...updateData, revalidateUrl: `/pits` }),
   });
-
-  console.log(pathname);
 
   return (
     <Card>
@@ -68,16 +68,22 @@ const PitScoutCard = ({
                   ))}
               </CarouselMainContainer>
               {team.fieldImages && team.fieldImages?.length > 1 && (
-                <div className="absolute -bottom-4 left-1/2 -translate-x-1/2">
-                  <CarouselThumbsContainer className="gap-x-1 -bottom-5">
-                    {team.fieldImages.map((_, index) => (
-                      <CarouselIndicator
-                        key={index}
-                        index={index}
-                        className="h-2 w-8"
-                      />
-                    ))}
-                  </CarouselThumbsContainer>
+                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2">
+                  <div className="flex justify-evenly">
+                    <CarouselPrevious className="-left-10 size-7" />
+
+                    <CarouselThumbsContainer className="gap-x-1 -bottom-5">
+                      {team.fieldImages.map((_, index) => (
+                        <CarouselIndicator
+                          key={index}
+                          index={index}
+                          className="h-2 w-8"
+                        />
+                      ))}
+                    </CarouselThumbsContainer>
+
+                    <CarouselNext className="-right-10 size-7" />
+                  </div>
                 </div>
               )}
             </div>
@@ -85,7 +91,7 @@ const PitScoutCard = ({
         </div>
       )}
 
-      <CardHeader className="pt-4 pb-2">
+      <CardHeader className="pt-12 pb-2">
         <CardTitle className="font-bold text-2xl">{team?.teamNumber}</CardTitle>
         <CardDescription className="font-semibold text-xl line-clamp-1">
           {team?.nameShort}
