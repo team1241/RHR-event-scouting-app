@@ -98,14 +98,12 @@ const PitScoutCard = ({
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4 items-center mt-2">
-        <Button asChild>
-          <div>
-            <Link href={`${pathname}/${team.teamNumber}`}>
-              Pit scouting form
-            </Link>
+        <Link href={`${pathname}/${team.teamNumber}`}>
+          <Button>
+            Pit scouting form
             <MoveRightIcon />
-          </div>
-        </Button>
+          </Button>
+        </Link>
         <UploadButton
           endpoint="imageUploader"
           className="w-full"
