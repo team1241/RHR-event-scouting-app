@@ -52,14 +52,25 @@ export default function EditUserDataModal({
   id: number;
   firstName: string | null;
   grade: string | null;
-  team: string | null;
+  team: Team | null;
   isActive: boolean;
   setIsDropdownOpen: (isOpen: boolean) => void;
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const editUserDataSchema = z.object({
-    team: z.enum([Team.BIRDS, Team.THEORY]).nullable(),
+    team: z
+      .enum([
+        Team.BIRDS,
+        Team.BANG,
+        Team.THEORY,
+        Team.MERGE,
+        Team.KNIGHTS,
+        Team.BLACKOUT,
+        Team.THUNDERSTAMPS,
+        Team.FIREBIRDS,
+      ])
+      .nullable(),
     grade: z.string().nullable(),
     isActive: z.boolean(),
   });
@@ -71,7 +82,7 @@ export default function EditUserDataModal({
     values: {
       grade,
       isActive,
-      team: team ? (team === Team.THEORY ? Team.THEORY : Team.BIRDS) : null,
+      team: team || null,
     },
   });
 
@@ -111,10 +122,7 @@ export default function EditUserDataModal({
           <form
             onSubmit={editUserDataForm.handleSubmit(async () =>
               updateUserData.mutate({
-                team:
-                  editUserDataForm.getValues("team") === Team.THEORY
-                    ? Team.THEORY
-                    : Team.BIRDS,
+                team: editUserDataForm.getValues("team"),
                 grade: editUserDataForm.getValues("grade"),
                 isActive: editUserDataForm.getValues("isActive"),
               })
@@ -139,7 +147,11 @@ export default function EditUserDataModal({
                       </FormControl>
                       <SelectContent>
                         {GRADE_OPTIONS.map((grade) => (
-                          <SelectItem key={grade.value} value={grade.value}>
+                          <SelectItem
+                            key={grade.value}
+                            value={grade.value}
+                            className="hover:bg-slate-900 cursor-pointer"
+                          >
                             {grade.label}
                           </SelectItem>
                         ))}
@@ -166,7 +178,11 @@ export default function EditUserDataModal({
                       </FormControl>
                       <SelectContent>
                         {TEAM_OPTIONS.map((team) => (
-                          <SelectItem key={team.value} value={team.value}>
+                          <SelectItem
+                            key={team.value}
+                            value={team.value}
+                            className="hover:bg-slate-900 cursor-pointer"
+                          >
                             {team.label}
                           </SelectItem>
                         ))}

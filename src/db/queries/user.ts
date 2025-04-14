@@ -28,14 +28,13 @@ export async function updateUser(
 export async function completeUserRegistration(
   clerkId: string,
   grade: string,
-  team: string
+  team: Team
 ) {
-  const teamEnum = team === Team.THEORY ? Team.THEORY : Team.BIRDS;
   return await prisma.users.update({
     where: { clerkId },
     data: {
       grade,
-      team: teamEnum,
+      team,
       isSignupComplete: true,
       updatedAt: formatISO(new Date()),
     },

@@ -18,6 +18,11 @@ enum Team {
   THEORY
   BANG
   BIRDS
+  MERGE
+  KNIGHTS
+  BLACKOUT
+  THUNDERSTAMPS
+  FIREBIRDS
 }
 
 enum FieldImageType {

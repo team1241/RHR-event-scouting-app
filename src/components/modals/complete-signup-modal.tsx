@@ -25,6 +25,7 @@ import {
   GRADE_OPTIONS,
   TEAM_OPTIONS,
 } from "~/components/common/dropdown-values";
+import { Team } from "@prisma/client";
 
 export default function CompleteProfileModal({ clerkId }: { clerkId: string }) {
   const [isDialogOpen, setIsDialogOpen] = useState(true);
@@ -32,22 +33,18 @@ export default function CompleteProfileModal({ clerkId }: { clerkId: string }) {
 
   const [grade, setGrade] = useState("");
   const [gradeError, setGradeError] = useState(false);
-  const [team, setTeam] = useState("");
+  const [team, setTeam] = useState<Team>();
   const [teamError, setTeamError] = useState(false);
 
   const onSubmit = async () => {
     setIsSubmitting(true);
-    let error = false;
     if (!grade) {
       setGradeError(true);
-      error = true;
+      setIsSubmitting(false);
+      return;
     }
     if (!team) {
       setTeamError(true);
-      error = true;
-    }
-
-    if (error) {
       setIsSubmitting(false);
       return;
     }
@@ -85,7 +82,11 @@ export default function CompleteProfileModal({ clerkId }: { clerkId: string }) {
               </SelectTrigger>
               <SelectContent>
                 {GRADE_OPTIONS.map((grade) => (
-                  <SelectItem key={grade.value} value={grade.value}>
+                  <SelectItem
+                    key={grade.value}
+                    value={grade.value}
+                    className="hover:bg-slate-900 cursor-pointer"
+                  >
                     {grade.label}
                   </SelectItem>
                 ))}
@@ -104,7 +105,7 @@ export default function CompleteProfileModal({ clerkId }: { clerkId: string }) {
             <Label className="text-md font-semibold">Team</Label>
             <Select
               onValueChange={(value) => {
-                setTeam(value);
+                setTeam(value as Team);
                 setTeamError(false);
               }}
             >
@@ -113,7 +114,11 @@ export default function CompleteProfileModal({ clerkId }: { clerkId: string }) {
               </SelectTrigger>
               <SelectContent>
                 {TEAM_OPTIONS.map((team) => (
-                  <SelectItem key={team.value} value={team.value}>
+                  <SelectItem
+                    key={team.value}
+                    value={team.value}
+                    className="hover:bg-slate-900 cursor-pointer"
+                  >
                     {team.label}
                   </SelectItem>
                 ))}

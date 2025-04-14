@@ -1,3 +1,5 @@
+import { Team } from "@prisma/client";
+
 export const GRADE_OPTIONS = [
   { label: "9", value: "9" },
   { label: "10", value: "10" },
@@ -12,6 +14,11 @@ export const ROLE_OPTIONS = [
 ];
 
 export const TEAM_OPTIONS = [
-  { label: "BIRDS", value: "BIRDS" },
-  { label: "THEORY", value: "THEORY" },
+  { label: "781 - KINETIC KNIGHTS", value: Team.KNIGHTS },
+  { label: "1241 - THEORY6", value: Team.THEORY },
+  { label: "1285 - THE BIGGEST BIRDS", value: Team.BIRDS },
+  { label: "2200 - BCR BLACKOUT", value: Team.BLACKOUT },
+  { label: "2706 - MERGE ROBOTICS", value: Team.MERGE },
+  { label: "4907 - THUNDERSTAMPS", value: Team.THUNDERSTAMPS },
+  { label: "7902 - FIREBIRDS", value: Team.FIREBIRDS },
 ];
