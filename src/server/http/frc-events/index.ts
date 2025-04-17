@@ -90,7 +90,25 @@ export async function fetchTeamsForEvent(
   );
 
   const teamData = await response.json();
-  return teamData.teams;
+  const allTeams = [...teamData.teams];
+
+  const hasMultiplePages = teamData.pageTotal > 1;
+
+  if (hasMultiplePages) {
+    const totalPages = teamData.pageTotal;
+    for (let i = 2; i <= totalPages; i++) {
+      const response = await fetchFrcEvents(
+        `/${year}/teams/?eventCode=${eventCode}&page=${i}`,
+        "GET"
+      );
+      const teamData = await response.json();
+      teamData.teams.forEach((team) => {
+        allTeams.push(team);
+      });
+    }
+  }
+
+  return allTeams;
 }
 
 export type MatchScheduleTeamType = {
