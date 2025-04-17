@@ -102,9 +102,24 @@ export async function fetchTeamsForEvent(
         "GET"
       );
       const teamData = await response.json();
-      teamData.teams.forEach((team) => {
-        allTeams.push(team);
-      });
+      teamData.teams.forEach(
+        (team: {
+          teamNumber: string;
+          nameFull: string;
+          nameShort: string;
+          city: string;
+          stateProv: string;
+          country: string;
+          rookieYear: string;
+          robotName: string;
+          districtCode: string;
+          schoolName: string;
+          website: string;
+          homeCMP: string;
+        }) => {
+          allTeams.push(team);
+        }
+      );
     }
   }
 
