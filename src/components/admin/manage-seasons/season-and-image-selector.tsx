@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldImageType } from "@prisma/client";
 import { Loader2, TriangleAlert } from "lucide-react";
-import { useMemo, useState } from "react";
+import { use, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -51,12 +51,14 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 
 export default function SeasonAndImageSelector({
-  seasons,
+  seasonsPromise,
 }: {
-  seasons: SeasonWithEventsAndImages[];
+  seasonsPromise: Promise<SeasonWithEventsAndImages[]>;
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+
+  const seasons = use(seasonsPromise);
 
   const activeSeason = seasons.find((season) => season.isActive)!;
 

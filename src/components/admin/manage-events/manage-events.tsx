@@ -1,4 +1,4 @@
-import { getSeasons, SeasonWithEventsAndImages } from "~/db/queries/season";
+import { SeasonWithEventsAndImages } from "~/db/queries/season";
 import { TriangleAlert } from "lucide-react";
 import AddEventCard from "~/components/admin/manage-events/add-event-card";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
@@ -10,9 +10,14 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import EventCard from "~/components/admin/manage-events/event-card";
+import { use } from "react";
 
-export default async function ManageEvents() {
-  const seasons = await getSeasons();
+export default function ManageEvents({
+  seasonsPromise,
+}: {
+  seasonsPromise: Promise<SeasonWithEventsAndImages[]>;
+}) {
+  const seasons = use(seasonsPromise);
 
   const activeSeason: SeasonWithEventsAndImages | undefined = seasons.find(
     (season) => season.isActive

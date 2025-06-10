@@ -1,4 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
 const isProtectedRoute = createRouteMatcher([
   "/admin(.*)",
@@ -8,7 +9,11 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware((auth, req) => {
+  const newHeaders = new Headers();
+  newHeaders.set("x-url", req.url);
   if (isProtectedRoute(req)) auth().protect();
+
+  return NextResponse.next({ request: { headers: newHeaders } });
 });
 
 export const config = {
