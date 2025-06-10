@@ -42,7 +42,7 @@ export default function ManageEvents({
             </AlertDescription>
           </Alert>
         ) : (
-          <div className="flex flex-row flex-wrap gap-4 justify-center lg:justify-start min-h-fit">
+          <div className="flex flex-row flex-wrap gap-4 justify-center min-h-fit">
             <AddEventCard activeSeason={activeSeason} />
             {activeSeason &&
               activeSeason.events &&
