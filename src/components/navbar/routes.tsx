@@ -1,4 +1,4 @@
-import { CalendarRange, LeafIcon, UsersIcon } from "lucide-react";
+import { CalendarRange, KeyRoundIcon, LeafIcon, UsersIcon } from "lucide-react";
 
 const PUBLIC_NAVIGATION_ROUTES = [
   {
@@ -22,14 +22,19 @@ const ADMIN_SUB_NAVIGATION_ROUTES = [
     icon: <LeafIcon className="size-4" />,
   },
   {
+    href: "/admin/events",
+    label: "Events",
+    icon: <CalendarRange className="size-4" />,
+  },
+  {
     href: "/admin/users",
     label: "Users",
     icon: <UsersIcon className="size-4" />,
   },
   {
-    href: "/admin/events",
-    label: "Events",
-    icon: <CalendarRange className="size-4" />,
+    href: "/admin/keys",
+    label: "API Keys",
+    icon: <KeyRoundIcon className="size-4" />,
   },
 ];
 

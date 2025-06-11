@@ -10,7 +10,7 @@ export default function AdminSidebar() {
 
   return (
     <div className="shrink-0 w-36 flex flex-col gap-1">
-      <p className="dark:text-zinc-400 text-sm font-semibold">Sublinks</p>
+      <p className="dark:text-zinc-400 text-sm font-semibold">Manage</p>
       {ADMIN_SUB_NAVIGATION_ROUTES.map((subRoute) => (
         <Link
           key={`admin-sub-nav-${subRoute.label}`}

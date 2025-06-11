@@ -27,23 +27,28 @@ export default function AdminLayout({
   const pathName = usePathname();
 
   const splitPath = pathName.split("/");
+  const adminPageName = splitPath[splitPath.length - 1].toLowerCase();
+
+  const mappedPathName = mapPathName(adminPageName);
+
+  const shouldShowAlert = ["events", "seasons"].includes(adminPageName);
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-8">
         <AdminSidebar />
         <div className="grow flex flex-col gap-4 mb-20">
-          <PageHeading>
-            {mapPathName(splitPath[splitPath.length - 1].toLowerCase())}
-          </PageHeading>
-          <Alert variant="info">
-            <Info className="size-6" />
-            <AlertTitle className="font-semibold">Heads up!</AlertTitle>
-            <AlertDescription>
-              These settings should only be modified at the beginning of a new
-              competition season.
-            </AlertDescription>
-          </Alert>
+          <PageHeading>{mappedPathName}</PageHeading>
+          {shouldShowAlert && (
+            <Alert variant="info">
+              <Info className="size-6" />
+              <AlertTitle className="font-semibold">Heads up!</AlertTitle>
+              <AlertDescription>
+                These settings should only be modified at the beginning of a new
+                competition season.
+              </AlertDescription>
+            </Alert>
+          )}
           {children}
         </div>
       </div>
