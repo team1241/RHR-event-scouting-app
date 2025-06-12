@@ -11,6 +11,7 @@ import { ACTION_NAMES, GAME_PIECES, LOCATIONS } from "../constants";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import { toast } from "sonner";
+import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 
 const TeleopScoringScreen = () => {
   const context = useContext(ScoutDataContext);
@@ -31,7 +32,7 @@ const TeleopScoringScreen = () => {
           />
         </div>
       </div>
-      <MatchScoutingLayout isDisabled={context.isBrownedOut} />
+      <MatchScoutingLayout isDisabled={context.isInactive} />
       <div className="flex flex-row gap-3 justify-end w-full">
         <Button
           className={cn(
@@ -64,26 +65,78 @@ const TeleopScoringScreen = () => {
             }
           }}
         />
+        
+        <Popover
+        modal={true}
+        open={context.showPopover}
+        >
+          <PopoverTrigger>
+            <ScoutActionButton
+              className={
+                context.isInactive
+                ? "bg-red-500 flex items-center justify-center text-black font-bold text-xl h-20 w-64 px-4 py-2"
+                : "bg-green-500 flex items-center justify-center text-black font-bold text-xl h-20 w-64 px-4 py-2"
+              }
+              actionName={
+                context.isBrownedOut
+                  ? ACTION_NAMES.BROWN_OUT_END
+                  : context.isStuck ? ACTION_NAMES.STUCK_END
+                  : ACTION_NAMES.INACTIVE_PRESSED
+              }
+              gamePiece={GAME_PIECES.NOGAMEPIECE}
+              location="null"
+              label={context.isInactive ? "ROBOT INACTIVE" : "ROBOT ACTIVE"}
+              onClick={() => {
+                context.isInactive
+                ? toast.error("Robot has restarted. Screen enabled!")
+                : context.setShowPopover(!context.showPopover)
+                context.isBrownedOut
+                  ?  context.setIsBrownedOut(!context.isBrownedOut)
+                  : context.isStuck ? context.setIsStuck(!context.isStuck)
+                  : null
+                context.setIsInactive(!context.isInactive);
+              }}
+            />
+          </PopoverTrigger>
 
-        <ScoutActionButton
-          className="bg-red-500 flex items-center justify-center text-black font-bold text-xl h-20 w-64 px-4 py-2"
-          actionName={
-            context.isBrownedOut
-              ? ACTION_NAMES.BROWN_OUT_END
-              : ACTION_NAMES.BROWN_OUT
-          }
-          gamePiece="null"
-          location="null"
-          label={context.isBrownedOut ? "ROBOT RESTARTED" : "BROWNOUT"}
-          onClick={() => {
-            toast.error(
-              context.isBrownedOut
-                ? "Robot has restarted. Screen enabled!"
-                : "Robot has stopped. Screen disabled!"
-            );
-            context.setIsBrownedOut(!context.isBrownedOut);
-          }}
-        />
+          <PopoverContent 
+          className="flex flex-row justify-between my-4 opacity:1">
+            
+            <ScoutActionButton
+              className={
+                "bg-red-500 flex items-center justify-center text-white font-bold text-xl h-20 w-48 px-4 py-2 mx-4"
+              }
+              actionName={ACTION_NAMES.BROWN_OUT}        
+              gamePiece={GAME_PIECES.NOGAMEPIECE}
+              location="null"
+              label={"BROWNOUT"}
+              onClick={() => {
+                toast.error(
+                  "Robot has stopped. Screen disabled!"
+                );
+                context.setIsBrownedOut(!context.isBrownedOut);
+                context.setShowPopover(!context.showPopover);
+              }}
+            />
+
+            <ScoutActionButton
+              className={
+                "bg-red-500 flex items-center justify-center text-white font-bold text-xl h-20 w-48 px-4 py-2 mx-4"
+              }
+              actionName={ACTION_NAMES.STUCK}
+              gamePiece={GAME_PIECES.NOGAMEPIECE}
+              location="null"
+              label={"ROBOT STUCK"}
+              onClick={() => {
+                toast.error(
+                  "Robot has gotten stuck. Screen disabled!"
+                );
+                context.setIsStuck(!context.isStuck);
+                context.setShowPopover(!context.showPopover);
+              }}
+            />
+          </PopoverContent>
+        </Popover>
 
         <div className="flex grow justify-end">
           <ContinueButton
