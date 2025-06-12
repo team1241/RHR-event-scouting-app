@@ -14,6 +14,8 @@ const mapPathName = (pathname: string) => {
       return "Season Settings";
     case "events":
       return "Event Settings";
+    case "keys":
+      return "API Keys";
     default:
       return "Admin";
   }
