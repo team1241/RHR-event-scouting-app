@@ -1,5 +1,3 @@
-import { Users } from "@prisma/client";
-import { use } from "react";
 import { manageUsersColumns } from "~/components/admin/manage-users/table-columns";
 import {
   Card,
@@ -9,13 +7,10 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import DataTable from "~/components/ui/datatable";
+import { getAllUsers } from "~/db/queries/user";
 
-export default function ManageUsers({
-  usersPromise,
-}: {
-  usersPromise: Promise<Users[]>;
-}) {
-  const users = use(usersPromise);
+export default async function ManageUsers() {
+  const users = await getAllUsers();
 
   return (
     <Card>
