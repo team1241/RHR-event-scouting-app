@@ -481,14 +481,14 @@ const FinalizationScreen = () => {
                   e.preventDefault();
                   try {
                     if (!isFogHornedSelected) {
-                      // if (context.comment) {
-                      //   await saveCommentsMutation.mutateAsync();
-                      // }
-                      // if (context.isAlternateScout) {
-                      //   await alternateScoutDateMutation.mutateAsync();
-                      // } else {
-                      //   await saveDataMutation.mutateAsync();
-                      // }
+                      if (context.comment) {
+                        await saveCommentsMutation.mutateAsync();
+                      }
+                      if (context.isAlternateScout) {
+                        await alternateScoutDateMutation.mutateAsync();
+                      } else {
+                        await saveDataMutation.mutateAsync();
+                      }
                       toast.success("Match data submitted!");
                     }
                     if (typeof window !== "undefined") {
