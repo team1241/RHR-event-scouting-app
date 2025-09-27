@@ -99,7 +99,7 @@ export default function StartingPositionScreen() {
         <Button
           className="font-bold text-2xl tracking-wide w-64 h-20 dark:bg-sky-400 dark:text-white"
           onClick={async () => {
-            await saveStartingPosition.mutateAsync();
+            // await saveStartingPosition.mutateAsync();
             toast.success("Starting position saved");
             localStorage.setItem(
               LOCAL_STORAGE_KEYS.STARTING_POSITION,
