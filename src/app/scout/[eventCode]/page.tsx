@@ -1,12 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { ScoutDataContext, ScoutScreenContext } from "./context";
+import {
+  ScoutDataContext,
+  ScoutScreenContext,
+} from "~/components/scout/context";
 import {
   AlternateScoutData,
   ScoutAction,
   StartingPositionDataType,
-} from "./context/data-context";
+} from "~/components/scout/context/data-context";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
 import { getUserByClerkId } from "~/db/queries/user";
@@ -15,7 +18,7 @@ import {
   MatchScheduleType,
 } from "~/server/http/frc-events";
 import { useParams, useSearchParams } from "next/navigation";
-import ScoutingInfoHeader from "~/app/scout/[eventCode]/components/common/scouting-info-header";
+import ScoutingInfoHeader from "~/components/scout/components/common/scouting-info-header";
 import { FieldImages } from "@prisma/client";
 import { getFieldImagesForActiveSeason } from "~/db/queries/field-images";
 import {
@@ -23,66 +26,14 @@ import {
   GAME_PIECES,
   LOCAL_STORAGE_KEYS,
   MATCH_STATES,
-  SCREEN_NAMES,
+  SCREENS,
 } from "~/app/scout/[eventCode]/constants";
-import BallScoutSetup from "./components/ball-scout-setup";
-import StartingPositionScreen from "./components/starting-position-screen";
-import BallScoringScreen from "./components/ball-scoring-page";
-import MatchSelectionScreen from "./components/match-selection-screen";
-import EndgameScreen from "./components/endgame-screen";
-import AutonomousScreen from "./components/autonomous-screen";
-import TeleopScoringScreen from "./components/teleop-scoring-screen";
-import FinalizationScreen from "~/app/scout/[eventCode]/components/common/finalization-screen";
 
 const ScoutPage = () => {
   const { eventCode } = useParams<{ eventCode: string }>();
   const eventType = useSearchParams().get("type");
   const eventYear = eventCode.substring(0, 4);
   const eventName = eventCode.substring(4);
-
-  // TODO: Update the components of each screen to be the actual screen once the dev for it is completed
-  const screens = [
-    {
-      component: <MatchSelectionScreen />,
-      name: SCREEN_NAMES.MATCH_SELECTION,
-      canGoBack: false,
-    },
-    {
-      component: <StartingPositionScreen />,
-      name: SCREEN_NAMES.STARTING_POSITIONS,
-      canGoBack: true,
-    },
-    {
-      component: <AutonomousScreen />,
-      name: SCREEN_NAMES.AUTO,
-      canGoBack: false,
-    },
-    {
-      component: <TeleopScoringScreen />,
-      name: SCREEN_NAMES.TELEOP,
-      canGoBack: false,
-    },
-    {
-      component: <EndgameScreen />,
-      name: SCREEN_NAMES.ENDGAME,
-      canGoBack: true,
-    },
-    {
-      component: <FinalizationScreen />,
-      name: SCREEN_NAMES.FINALIZE,
-      canGoBack: true,
-    },
-    {
-      component: <BallScoutSetup />,
-      name: SCREEN_NAMES.ALTERNATE_SCOUT.SETUP,
-      canGoBack: true,
-    },
-    {
-      component: <BallScoringScreen />,
-      name: SCREEN_NAMES.ALTERNATE_SCOUT.SCORING,
-      canGoBack: true,
-    },
-  ];
 
   const [matchState, setMatchState] = useState<MATCH_STATES>(
     MATCH_STATES.PRE_START
@@ -141,7 +92,7 @@ const ScoutPage = () => {
   const nextScreen = () => {
     typeof window !== "undefined" && window.scrollTo(0, 0);
     setCurrentScreenIndex(
-      currentScreenIndex < screens.length - 1
+      currentScreenIndex < SCREENS.length - 1
         ? currentScreenIndex + 1
         : currentScreenIndex
     );
@@ -149,14 +100,14 @@ const ScoutPage = () => {
 
   const prevScreen = () => {
     typeof window !== "undefined" && window.scrollTo(0, 0);
-    if (!screens[currentScreenIndex].canGoBack) return;
+    if (!SCREENS[currentScreenIndex].canGoBack) return;
     setCurrentScreenIndex(
       currentScreenIndex > 0 ? currentScreenIndex - 1 : currentScreenIndex
     );
   };
 
   const goToScreen = (screenName: string) => {
-    const screenIndex = screens.findIndex(
+    const screenIndex = SCREENS.findIndex(
       (screen) => screen.name === screenName
     );
     typeof window !== "undefined" && window.scrollTo(0, 0);
@@ -220,7 +171,7 @@ const ScoutPage = () => {
       LOCAL_STORAGE_KEYS.CURRENT_SCREEN,
       JSON.stringify({
         currentScreenIndex,
-        name: screens[currentScreenIndex].name,
+        name: SCREENS[currentScreenIndex].name,
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -231,7 +182,7 @@ const ScoutPage = () => {
   return (
     <ScoutScreenContext.Provider
       value={{
-        screens,
+        screens: SCREENS,
         nextScreen,
         prevScreen,
         goToScreen,
@@ -294,7 +245,7 @@ const ScoutPage = () => {
         }}
       >
         <ScoutingInfoHeader />
-        {screens[currentScreenIndex].component}
+        {SCREENS[currentScreenIndex].component}
       </ScoutDataContext.Provider>
     </ScoutScreenContext.Provider>
   );

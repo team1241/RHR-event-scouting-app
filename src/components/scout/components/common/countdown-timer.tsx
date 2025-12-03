@@ -2,7 +2,7 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import { MATCH_STATES } from "~/app/scout/[eventCode]/constants";
-import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
+import { ScoutDataContext } from "~/components/scout/context";
 import { cn } from "~/lib/utils";
 
 const CountdownTimer = () => {
