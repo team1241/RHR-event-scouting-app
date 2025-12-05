@@ -98,6 +98,7 @@ export const LOCAL_STORAGE_KEYS = {
   SCOUTER_DETAILS: "rhr_scouting:scouter_details",
   ACTIONS: "rhr_scouting:scouted_actions",
   CURRENT_SCREEN: "rhr_scouting:current_screen",
+  MATCH_SCHEDULE: "rhr_scouting:match_schedule",
 };
 
 export const SCREEN_NAMES = {

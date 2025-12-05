@@ -13,11 +13,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
 import { getUserByClerkId } from "~/db/queries/user";
-import {
-  fetchMatchScheduleByYearAndEventCode,
-  MatchScheduleType,
-} from "~/server/http/frc-events";
-import { useParams, useSearchParams } from "next/navigation";
+import { MatchScheduleType } from "~/server/http/frc-events";
 import ScoutingInfoHeader from "~/components/scout/components/common/scouting-info-header";
 import { FieldImages } from "@prisma/client";
 import { getFieldImagesForActiveSeason } from "~/db/queries/field-images";
@@ -28,13 +24,11 @@ import {
   MATCH_STATES,
   SCREENS,
 } from "~/app/scout/[eventCode]/constants";
+import { useParams, useSearchParams } from "next/navigation";
 
 const ScoutPage = () => {
   const { eventCode } = useParams<{ eventCode: string }>();
   const eventType = useSearchParams().get("type");
-  const eventYear = eventCode.substring(0, 4);
-  const eventName = eventCode.substring(4);
-
   const [matchState, setMatchState] = useState<MATCH_STATES>(
     MATCH_STATES.PRE_START
   );
@@ -47,7 +41,15 @@ const ScoutPage = () => {
   const [hasLeftStartingLine, setHasLeftStartingLine] = useState(false);
   const [isAutoStopped, setIsAutoStopped] = useState(false);
   const [isBrownedOut, setIsBrownedOut] = useState(false);
-  const [matchSchedule, setMatchSchedule] = useState<MatchScheduleType[]>([]);
+
+  const localStorageKey = `${LOCAL_STORAGE_KEYS.MATCH_SCHEDULE}:${eventCode}:${
+    eventType === "practice" ? "P" : "Q"
+  }`;
+  const [matchSchedule, setMatchSchedule] = useState<MatchScheduleType[]>(
+    JSON.parse(
+      localStorage.getItem(localStorageKey) ?? "[]"
+    ) as MatchScheduleType[]
+  );
   const [currentMatch, setCurrentMatch] = useState<MatchScheduleType>();
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const [matchNumber, setMatchNumber] = useState("");
@@ -122,22 +124,6 @@ const ScoutPage = () => {
     queryFn: async () => getUserByClerkId(user!.id),
   });
 
-  const { data: matchScheduleData, isLoading: isMatchScheduleLoading } =
-    useQuery({
-      enabled: !!eventCode,
-      queryKey: [
-        "matchSchedule",
-        eventCode,
-        eventType === "practice" ? "P" : "Q",
-      ],
-      queryFn: async (): Promise<MatchScheduleType[]> =>
-        fetchMatchScheduleByYearAndEventCode(
-          eventYear,
-          eventName,
-          !!eventType ? "Practice" : "Qualification"
-        ),
-    });
-
   const { data: fieldImages } = useQuery({
     queryKey: ["fieldImages"],
     queryFn: async (): Promise<FieldImages[]> =>
@@ -159,12 +145,6 @@ const ScoutPage = () => {
       );
     }
   }, [userData]);
-
-  useEffect(() => {
-    if (matchScheduleData) {
-      setMatchSchedule(matchScheduleData);
-    }
-  }, [matchScheduleData]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -231,7 +211,6 @@ const ScoutPage = () => {
           setEndGameAction: "", // Add this line
           eventType: eventType || "Qualification",
           eventCode,
-          isMatchScheduleLoading,
           hasLeftStartingLine,
           setHasLeftStartingLine,
           isAutoStopped,
