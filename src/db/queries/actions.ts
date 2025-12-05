@@ -1,6 +1,6 @@
 "use server";
 import prisma from "~/db";
-import { ScoutAction } from "~/app/scout/[eventCode]/context/data-context";
+import { ScoutAction } from "~/components/scout/context/data-context";
 
 export async function submitScoutDataForTeamAtEvent(
   eventCode: string,

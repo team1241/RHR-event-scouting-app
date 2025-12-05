@@ -46,9 +46,11 @@ const ScoutPage = () => {
     eventType === "practice" ? "P" : "Q"
   }`;
   const [matchSchedule, setMatchSchedule] = useState<MatchScheduleType[]>(
-    JSON.parse(
-      localStorage.getItem(localStorageKey) ?? "[]"
-    ) as MatchScheduleType[]
+    typeof window !== "undefined"
+      ? (JSON.parse(
+          localStorage.getItem(localStorageKey) ?? "[]"
+        ) as MatchScheduleType[])
+      : []
   );
   const [currentMatch, setCurrentMatch] = useState<MatchScheduleType>();
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
