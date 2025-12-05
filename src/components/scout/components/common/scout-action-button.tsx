@@ -4,9 +4,12 @@ import React, { useContext } from "react";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import { ScoutDataContext } from "../../context";
-import { ALLIANCE_COLOURS, LOCAL_STORAGE_KEYS } from "../../constants";
+import {
+  ALLIANCE_COLOURS,
+  LOCAL_STORAGE_KEYS,
+} from "~/app/scout/[eventCode]/constants";
 import { formatISO } from "date-fns";
-import { ScoutAction } from "~/app/scout/[eventCode]/context/data-context";
+import { ScoutAction } from "~/components/scout/context/data-context";
 
 const ScoutActionButton = ({
   actionName,

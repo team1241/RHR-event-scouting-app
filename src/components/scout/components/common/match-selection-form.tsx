@@ -33,8 +33,10 @@ import { Checkbox } from "~/components/ui/checkbox";
 
 export default function MatchSelectionForm({
   setTeamSelectedEnabled: setTeamSelectedEnabled,
+  isMatchScheduleLoading,
 }: {
   setTeamSelectedEnabled: (value: boolean) => void;
+  isMatchScheduleLoading: boolean;
 }) {
   const context = useContext(ScoutDataContext);
   const [isMatchSelectionOpen, setIsMatchSelectionOpen] = useState(false);
@@ -107,17 +109,17 @@ export default function MatchSelectionForm({
                         className="h-16 text-xl"
                       />
                       <CommandList className="mb-4">
-                        {!context.isMatchScheduleLoading && (
+                        {isMatchScheduleLoading && (
                           <CommandEmpty>Nothing found</CommandEmpty>
                         )}
                         <CommandGroup>
-                          {context.isMatchScheduleLoading && (
+                          {isMatchScheduleLoading && (
                             <div className="mt-4 flex flex-row justify-start items-center gap-4">
                               <p>Loading match schedule...</p>
                               <Loader2Icon className="animate-spin" />
                             </div>
                           )}
-                          {!context.isMatchScheduleLoading &&
+                          {!isMatchScheduleLoading &&
                             context.matchSchedule.map((match, index) => (
                               <CommandItem
                                 className="h-16 text-lg"
