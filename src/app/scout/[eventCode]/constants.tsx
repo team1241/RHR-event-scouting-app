@@ -1,3 +1,12 @@
+import AutonomousScreen from "~/components/scout/components/autonomous-screen";
+import BallScoringScreen from "~/components/scout/components/ball-scoring-page";
+import BallScoutSetup from "~/components/scout/components/ball-scout-setup";
+import FinalizationScreen from "~/components/scout/components/common/finalization-screen";
+import EndgameScreen from "~/components/scout/components/endgame-screen";
+import MatchSelectionScreen from "~/components/scout/components/match-selection-screen";
+import StartingPositionScreen from "~/components/scout/components/starting-position-screen";
+import TeleopScoringScreen from "~/components/scout/components/starting-position-screen";
+
 export const ALLIANCE_COLOURS = {
   BLUE: "blue",
   RED: "red",
@@ -89,6 +98,7 @@ export const LOCAL_STORAGE_KEYS = {
   SCOUTER_DETAILS: "rhr_scouting:scouter_details",
   ACTIONS: "rhr_scouting:scouted_actions",
   CURRENT_SCREEN: "rhr_scouting:current_screen",
+  MATCH_SCHEDULE: "rhr_scouting:match_schedule",
 };
 
 export const SCREEN_NAMES = {
@@ -103,3 +113,46 @@ export const SCREEN_NAMES = {
     SCORING: "alternate-scout-scoring",
   },
 };
+
+export const SCREENS = [
+  {
+    component: <MatchSelectionScreen />,
+    name: SCREEN_NAMES.MATCH_SELECTION,
+    canGoBack: false,
+  },
+  {
+    component: <StartingPositionScreen />,
+    name: SCREEN_NAMES.STARTING_POSITIONS,
+    canGoBack: true,
+  },
+  {
+    component: <AutonomousScreen />,
+    name: SCREEN_NAMES.AUTO,
+    canGoBack: false,
+  },
+  {
+    component: <TeleopScoringScreen />,
+    name: SCREEN_NAMES.TELEOP,
+    canGoBack: false,
+  },
+  {
+    component: <EndgameScreen />,
+    name: SCREEN_NAMES.ENDGAME,
+    canGoBack: true,
+  },
+  {
+    component: <FinalizationScreen />,
+    name: SCREEN_NAMES.FINALIZE,
+    canGoBack: true,
+  },
+  {
+    component: <BallScoutSetup />,
+    name: SCREEN_NAMES.ALTERNATE_SCOUT.SETUP,
+    canGoBack: true,
+  },
+  {
+    component: <BallScoringScreen />,
+    name: SCREEN_NAMES.ALTERNATE_SCOUT.SCORING,
+    canGoBack: true,
+  },
+];

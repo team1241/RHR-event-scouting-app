@@ -8,7 +8,7 @@ import {
   GAME_PIECES,
   LOCAL_STORAGE_KEYS,
 } from "~/app/scout/[eventCode]/constants";
-import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
+import { ScoutDataContext } from "~/components/scout/context";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 

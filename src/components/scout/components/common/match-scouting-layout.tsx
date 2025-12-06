@@ -7,9 +7,12 @@ import {
   GAME_PIECES,
   LOCATIONS,
   MATCH_STATES,
-} from "../../constants";
+} from "~/app/scout/[eventCode]/constants";
 import { ScoutDataContext } from "../../context";
-import { getFlexDirection, getHasCoralOrAlgae } from "../../utils";
+import {
+  getFlexDirection,
+  getHasCoralOrAlgae,
+} from "~/app/scout/[eventCode]/utils";
 import FieldImage from "./field-image";
 import ScoutActionButton from "./scout-action-button";
 import { toast } from "sonner";
@@ -62,7 +65,6 @@ export const MatchScoutingLayout = ({
       return false;
     }
   };
-
 
   return (
     <div>
@@ -144,7 +146,11 @@ export const MatchScoutingLayout = ({
                     className="dark:bg-teal-400 text-xl font-bold h-16 w-40 text-black"
                     label="Algae Dislodge"
                     isAuto={context.matchState === MATCH_STATES.AUTO}
-                    disabled={checkIsDisabled(isDisabled) || hasAlgae || isDislodgeDisabled}
+                    disabled={
+                      checkIsDisabled(isDisabled) ||
+                      hasAlgae ||
+                      isDislodgeDisabled
+                    }
                     onClick={() => {
                       toast.info("Algae dislodged from reef!");
                       setIsDislodgeDisabled(true);

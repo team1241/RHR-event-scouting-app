@@ -8,12 +8,12 @@ import { ScoutDataContext } from "../context/data-context";
 import { Button } from "~/components/ui/button";
 import PageHeading from "~/components/common/page-heading";
 import { PlusIcon, MinusIcon } from "lucide-react";
-import FlipFieldButton from "~/app/scout/[eventCode]/components/common/flip-field-button";
+import FlipFieldButton from "~/components/scout/components/common/flip-field-button";
 import {
   FIELD_ORIENTATIONS,
   SCREEN_NAMES,
 } from "~/app/scout/[eventCode]/constants";
-import { ScoutScreenContext } from "~/app/scout/[eventCode]/context";
+import { ScoutScreenContext } from "~/components/scout/context";
 
 export default function BallScoringScreen() {
   const context = useContext(ScoutDataContext);

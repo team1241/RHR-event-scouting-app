@@ -93,7 +93,6 @@ interface ScoutDataContextType {
   }) => void;
   setEndGameAction: string;
   eventCode: string;
-  isMatchScheduleLoading: boolean;
   hasLeftStartingLine: boolean;
   setHasLeftStartingLine: (hasLeftStartingLine: boolean) => void;
   isAutoStopped: boolean;

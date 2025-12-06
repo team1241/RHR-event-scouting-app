@@ -15,7 +15,7 @@ import {
 import ContinueButton from "./common/continue-button";
 import BackButton from "./common/back-button";
 import UndoActionButton from "./common/undo-action-button";
-import { getFlexDirection } from "../utils";
+import { getFlexDirection } from "~/app/scout/[eventCode]/utils";
 import { toast } from "sonner";
 
 export default function EndgameScreen() {
