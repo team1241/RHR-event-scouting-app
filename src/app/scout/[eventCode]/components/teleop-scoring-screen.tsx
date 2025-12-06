@@ -7,11 +7,7 @@ import MatchScoutingLayout from "./common/match-scouting-layout";
 import UndoActionButton from "./common/undo-action-button";
 import ContinueButton from "./common/continue-button";
 import ScoutActionButton from "./common/scout-action-button";
-import {
-  ACTION_NAMES,
-  GAME_PIECES,
-  LOCATIONS,
-} from "~/app/scout/[eventCode]/constants";
+import { ACTION_NAMES, GAME_PIECES, LOCATIONS } from "../constants";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import { toast } from "sonner";

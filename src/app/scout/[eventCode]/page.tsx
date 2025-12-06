@@ -1,20 +1,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {
-  ScoutDataContext,
-  ScoutScreenContext,
-} from "~/components/scout/context";
+import { ScoutDataContext, ScoutScreenContext } from "./context";
 import {
   AlternateScoutData,
   ScoutAction,
   StartingPositionDataType,
-} from "~/components/scout/context/data-context";
+} from "./context/data-context";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
 import { getUserByClerkId } from "~/db/queries/user";
-import { MatchScheduleType } from "~/server/http/frc-events";
-import ScoutingInfoHeader from "~/components/scout/components/common/scouting-info-header";
+import {
+  fetchMatchScheduleByYearAndEventCode,
+  MatchScheduleType,
+} from "~/server/http/frc-events";
+import { useParams, useSearchParams } from "next/navigation";
+import ScoutingInfoHeader from "~/app/scout/[eventCode]/components/common/scouting-info-header";
 import { FieldImages } from "@prisma/client";
 import { getFieldImagesForActiveSeason } from "~/db/queries/field-images";
 import {
@@ -22,13 +23,67 @@ import {
   GAME_PIECES,
   LOCAL_STORAGE_KEYS,
   MATCH_STATES,
-  SCREENS,
+  SCREEN_NAMES,
 } from "~/app/scout/[eventCode]/constants";
-import { useParams, useSearchParams } from "next/navigation";
+import BallScoutSetup from "./components/ball-scout-setup";
+import StartingPositionScreen from "./components/starting-position-screen";
+import BallScoringScreen from "./components/ball-scoring-page";
+import MatchSelectionScreen from "./components/match-selection-screen";
+import EndgameScreen from "./components/endgame-screen";
+import AutonomousScreen from "./components/autonomous-screen";
+import TeleopScoringScreen from "./components/teleop-scoring-screen";
+import FinalizationScreen from "~/app/scout/[eventCode]/components/common/finalization-screen";
 
 const ScoutPage = () => {
   const { eventCode } = useParams<{ eventCode: string }>();
   const eventType = useSearchParams().get("type");
+  const eventYear = eventCode.substring(0, 4);
+  const eventName = eventCode.substring(4);
+
+  // TODO: Update the components of each screen to be the actual screen once the dev for it is completed
+  const screens = [
+    {
+      component: <MatchSelectionScreen />,
+      name: SCREEN_NAMES.MATCH_SELECTION,
+      canGoBack: false,
+    },
+    {
+      component: <StartingPositionScreen />,
+      name: SCREEN_NAMES.STARTING_POSITIONS,
+      canGoBack: true,
+    },
+    {
+      component: <AutonomousScreen />,
+      name: SCREEN_NAMES.AUTO,
+      canGoBack: false,
+    },
+    {
+      component: <TeleopScoringScreen />,
+      name: SCREEN_NAMES.TELEOP,
+      canGoBack: false,
+    },
+    {
+      component: <EndgameScreen />,
+      name: SCREEN_NAMES.ENDGAME,
+      canGoBack: true,
+    },
+    {
+      component: <FinalizationScreen />,
+      name: SCREEN_NAMES.FINALIZE,
+      canGoBack: true,
+    },
+    {
+      component: <BallScoutSetup />,
+      name: SCREEN_NAMES.ALTERNATE_SCOUT.SETUP,
+      canGoBack: true,
+    },
+    {
+      component: <BallScoringScreen />,
+      name: SCREEN_NAMES.ALTERNATE_SCOUT.SCORING,
+      canGoBack: true,
+    },
+  ];
+
   const [matchState, setMatchState] = useState<MATCH_STATES>(
     MATCH_STATES.PRE_START
   );
@@ -41,17 +96,7 @@ const ScoutPage = () => {
   const [hasLeftStartingLine, setHasLeftStartingLine] = useState(false);
   const [isAutoStopped, setIsAutoStopped] = useState(false);
   const [isBrownedOut, setIsBrownedOut] = useState(false);
-
-  const localStorageKey = `${LOCAL_STORAGE_KEYS.MATCH_SCHEDULE}:${eventCode}:${
-    eventType === "practice" ? "P" : "Q"
-  }`;
-  const [matchSchedule, setMatchSchedule] = useState<MatchScheduleType[]>(
-    typeof window !== "undefined"
-      ? (JSON.parse(
-          localStorage.getItem(localStorageKey) ?? "[]"
-        ) as MatchScheduleType[])
-      : []
-  );
+  const [matchSchedule, setMatchSchedule] = useState<MatchScheduleType[]>([]);
   const [currentMatch, setCurrentMatch] = useState<MatchScheduleType>();
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const [matchNumber, setMatchNumber] = useState("");
@@ -96,7 +141,7 @@ const ScoutPage = () => {
   const nextScreen = () => {
     typeof window !== "undefined" && window.scrollTo(0, 0);
     setCurrentScreenIndex(
-      currentScreenIndex < SCREENS.length - 1
+      currentScreenIndex < screens.length - 1
         ? currentScreenIndex + 1
         : currentScreenIndex
     );
@@ -104,14 +149,14 @@ const ScoutPage = () => {
 
   const prevScreen = () => {
     typeof window !== "undefined" && window.scrollTo(0, 0);
-    if (!SCREENS[currentScreenIndex].canGoBack) return;
+    if (!screens[currentScreenIndex].canGoBack) return;
     setCurrentScreenIndex(
       currentScreenIndex > 0 ? currentScreenIndex - 1 : currentScreenIndex
     );
   };
 
   const goToScreen = (screenName: string) => {
-    const screenIndex = SCREENS.findIndex(
+    const screenIndex = screens.findIndex(
       (screen) => screen.name === screenName
     );
     typeof window !== "undefined" && window.scrollTo(0, 0);
@@ -125,6 +170,22 @@ const ScoutPage = () => {
     queryKey: ["user"],
     queryFn: async () => getUserByClerkId(user!.id),
   });
+
+  const { data: matchScheduleData, isLoading: isMatchScheduleLoading } =
+    useQuery({
+      enabled: !!eventCode,
+      queryKey: [
+        "matchSchedule",
+        eventCode,
+        eventType === "practice" ? "P" : "Q",
+      ],
+      queryFn: async (): Promise<MatchScheduleType[]> =>
+        fetchMatchScheduleByYearAndEventCode(
+          eventYear,
+          eventName,
+          !!eventType ? "Practice" : "Qualification"
+        ),
+    });
 
   const { data: fieldImages } = useQuery({
     queryKey: ["fieldImages"],
@@ -149,11 +210,17 @@ const ScoutPage = () => {
   }, [userData]);
 
   useEffect(() => {
+    if (matchScheduleData) {
+      setMatchSchedule(matchScheduleData);
+    }
+  }, [matchScheduleData]);
+
+  useEffect(() => {
     localStorage.setItem(
       LOCAL_STORAGE_KEYS.CURRENT_SCREEN,
       JSON.stringify({
         currentScreenIndex,
-        name: SCREENS[currentScreenIndex].name,
+        name: screens[currentScreenIndex].name,
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -164,7 +231,7 @@ const ScoutPage = () => {
   return (
     <ScoutScreenContext.Provider
       value={{
-        screens: SCREENS,
+        screens,
         nextScreen,
         prevScreen,
         goToScreen,
@@ -213,6 +280,7 @@ const ScoutPage = () => {
           setEndGameAction: "", // Add this line
           eventType: eventType || "Qualification",
           eventCode,
+          isMatchScheduleLoading,
           hasLeftStartingLine,
           setHasLeftStartingLine,
           isAutoStopped,
@@ -226,7 +294,7 @@ const ScoutPage = () => {
         }}
       >
         <ScoutingInfoHeader />
-        {SCREENS[currentScreenIndex].component}
+        {screens[currentScreenIndex].component}
       </ScoutDataContext.Provider>
     </ScoutScreenContext.Provider>
   );

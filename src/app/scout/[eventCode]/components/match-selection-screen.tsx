@@ -3,51 +3,13 @@
 import PageHeading from "~/components/common/page-heading";
 import { Button } from "~/components/ui/button";
 import MatchSelectionForm from "./common/match-selection-form";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
 import { cn } from "~/lib/utils";
 import ContinueButton from "./common/continue-button";
-import { useQuery } from "@tanstack/react-query";
-import {
-  fetchMatchScheduleByYearAndEventCode,
-  MatchScheduleType,
-} from "~/server/http/frc-events";
-import { LOCAL_STORAGE_KEYS } from "~/app/scout/[eventCode]/constants";
 
 export default function MatchSelectionScreen() {
   const context = useContext(ScoutDataContext);
-  const screenContext = useContext(ScoutScreenContext);
-
-  const eventYear = context.eventCode.substring(0, 4);
-  const eventName = context.eventCode.substring(4);
-
-  const localStorageKey = `${LOCAL_STORAGE_KEYS.MATCH_SCHEDULE}:${
-    context.eventCode
-  }:${context.eventType === "practice" ? "P" : "Q"}`;
-
-  const hasMatchScheduleLocally = !!localStorage.getItem(localStorageKey);
-
-  const { data: matchScheduleData, isLoading: isMatchScheduleLoading } =
-    useQuery({
-      enabled: !!context.eventCode && !hasMatchScheduleLocally,
-      queryKey: [
-        "matchSchedule",
-        context.eventCode,
-        context.eventType === "practice" ? "P" : "Q",
-      ],
-      queryFn: async (): Promise<MatchScheduleType[]> => {
-        const schedule = await fetchMatchScheduleByYearAndEventCode(
-          eventYear,
-          eventName,
-          context.eventType === "practice" ? "Practice" : "Qualification"
-        );
-
-        localStorage.setItem(localStorageKey, JSON.stringify(schedule));
-
-        return schedule;
-      },
-    });
-
   const [isTeamSelectedEnabled, setTeamSelectedEnabled] = useState(
     !!context.teamToScout
   );
@@ -64,23 +26,14 @@ export default function MatchSelectionScreen() {
     }
     return value;
   });
-
-  useEffect(() => {
-    if (matchScheduleData) {
-      context.setMatchSchedule(matchScheduleData);
-    }
-  }, [matchScheduleData]);
-
+  const screenContext = useContext(ScoutScreenContext);
   return (
     <>
       {/* Match selection */}
       <PageHeading>Match Selection</PageHeading>
       <div className="flex justify-around gap-4">
         <div className="place-self-center">
-          <MatchSelectionForm
-            setTeamSelectedEnabled={setTeamSelectedEnabled}
-            isMatchScheduleLoading={isMatchScheduleLoading}
-          />
+          <MatchSelectionForm setTeamSelectedEnabled={setTeamSelectedEnabled} />
         </div>
         <div className="flex flex-col items-center justify-end gap-2">
           <div className="flex flex-row justify-end gap-2">

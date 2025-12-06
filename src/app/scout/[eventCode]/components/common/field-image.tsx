@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useContext } from "react";
-import { ScoutDataContext } from "~/components/scout/context";
+import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
 import { cn } from "~/lib/utils";
 
 const FieldImage = ({

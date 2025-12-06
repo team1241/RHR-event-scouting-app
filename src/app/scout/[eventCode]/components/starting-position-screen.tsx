@@ -16,10 +16,10 @@ import {
   MATCH_STATES,
   SCREEN_NAMES,
   STARTING_POSITIONS,
-} from "~/app/scout/[eventCode]/constants";
+} from "../constants";
 import { cn } from "~/lib/utils";
-import { getFlexDirection } from "~/app/scout/[eventCode]/utils";
-import FlipFieldButton from "~/components/scout/components/common/flip-field-button";
+import { getFlexDirection } from "../utils";
+import FlipFieldButton from "~/app/scout/[eventCode]/components/common/flip-field-button";
 import { useMutation } from "@tanstack/react-query";
 import { saveStartingPositionForTeamAtEvent } from "~/db/queries/starting-positions";
 import { toast } from "sonner";

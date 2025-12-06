@@ -5,7 +5,7 @@ import {
   FIELD_ORIENTATIONS,
   LOCAL_STORAGE_KEYS,
 } from "~/app/scout/[eventCode]/constants";
-import { ScoutDataContext } from "~/components/scout/context";
+import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
 import { Button } from "~/components/ui/button";
 
 const FlipFieldButton = () => {

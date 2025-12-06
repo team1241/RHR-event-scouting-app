@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useContext } from "react";
-import CountdownTimer from "~/components/scout/components/common/countdown-timer";
-import { ScoutDataContext } from "~/components/scout/context";
+import CountdownTimer from "~/app/scout/[eventCode]/components/common/countdown-timer";
+import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
 import { cn } from "~/lib/utils";
 
 const ScoutingInfoHeader = () => {

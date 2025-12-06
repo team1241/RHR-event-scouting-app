@@ -7,12 +7,14 @@ import { differenceInSeconds } from "date-fns";
 import { Loader2Icon, ShieldIcon, UndoIcon } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
-import BackButton from "~/components/scout/components/common/back-button";
-import ContinueButton from "~/components/scout/components/common/continue-button";
+import BackButton from "~/app/scout/[eventCode]/components/common/back-button";
+import ContinueButton from "~/app/scout/[eventCode]/components/common/continue-button";
 import { SCREEN_NAMES } from "~/app/scout/[eventCode]/constants";
-import { ScoutDataContext } from "~/components/scout/context/data-context";
-import { ScoutScreenContext } from "~/components/scout/context";
-import { ScoutAction } from "~/components/scout/context/data-context";
+import {
+  ScoutDataContext,
+  ScoutScreenContext,
+} from "~/app/scout/[eventCode]/context";
+import { ScoutAction } from "~/app/scout/[eventCode]/context/data-context";
 import { capitalize } from "~/app/scout/[eventCode]/utils";
 import PageHeading from "~/components/common/page-heading";
 import {
