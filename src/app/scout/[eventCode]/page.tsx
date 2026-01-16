@@ -96,6 +96,10 @@ const ScoutPage = () => {
   const [hasLeftStartingLine, setHasLeftStartingLine] = useState(false);
   const [isAutoStopped, setIsAutoStopped] = useState(false);
   const [isBrownedOut, setIsBrownedOut] = useState(false);
+  const [isStuck, setIsStuck] = useState(false);
+  const [isInactive, setIsInactive] = useState(false);
+  const [showPopover, setShowPopover] = useState(false);
+  const [isDislodgeDisabled, setIsDislodgeDisabled] = useState(false);
   const [matchSchedule, setMatchSchedule] = useState<MatchScheduleType[]>([]);
   const [currentMatch, setCurrentMatch] = useState<MatchScheduleType>();
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
@@ -287,6 +291,14 @@ const ScoutPage = () => {
           setIsAutoStopped,
           isBrownedOut,
           setIsBrownedOut,
+          isInactive,
+          setIsInactive,
+          showPopover,
+          setShowPopover,
+          isStuck,
+          setIsStuck,
+          isDislodgeDisabled,
+          setIsDislodgeDisabled,
           comment,
           setComment,
           flashScoutLayout,
