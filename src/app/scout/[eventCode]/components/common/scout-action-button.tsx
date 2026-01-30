@@ -24,7 +24,7 @@ const ScoutActionButton = ({
   location: string;
   isAuto?: boolean;
   className?: string;
-  label: string;
+  label: string | React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
   shouldBeHidden?: boolean;
@@ -54,7 +54,7 @@ const ScoutActionButton = ({
     scoutDataContext.setActions(updatedActionsList);
     localStorage.setItem(
       LOCAL_STORAGE_KEYS.ACTIONS,
-      JSON.stringify(updatedActionsList)
+      JSON.stringify(updatedActionsList),
     );
     scoutDataContext.setUndoOccurred(false);
     if (onClick) {
@@ -67,15 +67,15 @@ const ScoutActionButton = ({
       onClick={onActionClick}
       variant={"custom"}
       className={cn(
-        "text-white font-bold",
-        isBlueAlliance ? "bg-blue-300/50" : "bg-red-300/50",
+        "text-white font-bold transition-transform duration-100 ease-out active:scale-95",
+        isBlueAlliance ? "bg-blue-500/80" : "bg-red-500/80",
         scoutDataContext.isDefending ||
           scoutDataContext.isAutoStopped ||
           scoutDataContext.isBrownedOut ||
           !shouldBeHidden
           ? "disabled:opacity-20"
           : "disabled:opacity-0",
-        className
+        className,
       )}
       disabled={disabled}
     >

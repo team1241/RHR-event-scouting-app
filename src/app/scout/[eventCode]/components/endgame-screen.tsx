@@ -8,8 +8,8 @@ import { ScoutDataContext, ScoutScreenContext } from "../context";
 import { cn } from "~/lib/utils";
 import ScoutActionButton from "./common/scout-action-button";
 import {
-  GAME_PIECES,
-  LOCATIONS,
+  GAME_PIECES_2025,
+  LOCATIONS_2025,
   ACTION_NAMES,
 } from "~/app/scout/[eventCode]/constants";
 import ContinueButton from "./common/continue-button";
@@ -66,13 +66,13 @@ export default function EndgameScreen() {
         <div
           className={cn(
             "flex justify-evenly gap-20 h-full",
-            getFlexDirection(context.uiOrientation, context.allianceColour).row
+            getFlexDirection(context.uiOrientation, context.allianceColour).row,
           )}
         >
           <div className="flex flex-col justify-evenly h-full">
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
-              gamePiece={GAME_PIECES.CAGE.DEEP}
+              gamePiece={GAME_PIECES_2025.CAGE.DEEP}
               location={hangPositionSelected}
               className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
               onClick={() => {
@@ -99,7 +99,7 @@ export default function EndgameScreen() {
             />
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
-              gamePiece={GAME_PIECES.CAGE.SHALLOW}
+              gamePiece={GAME_PIECES_2025.CAGE.SHALLOW}
               location={hangPositionSelected}
               className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
               onClick={() => {
@@ -126,7 +126,7 @@ export default function EndgameScreen() {
 
             <ScoutActionButton
               actionName={ACTION_NAMES.PARK}
-              gamePiece={GAME_PIECES.NOGAMEPIECE}
+              gamePiece={GAME_PIECES_2025.NOGAMEPIECE}
               location={hangPositionSelected}
               className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
               onClick={() => {
@@ -153,7 +153,7 @@ export default function EndgameScreen() {
 
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.FAIL}
-              gamePiece={GAME_PIECES.CAGE.DEEP}
+              gamePiece={GAME_PIECES_2025.CAGE.DEEP}
               location={hangPositionSelected}
               className={
                 "mb-1 h-16 w-40 font-bold text-xl !bg-red-500 text-black"
@@ -182,7 +182,7 @@ export default function EndgameScreen() {
 
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.FAIL}
-              gamePiece={GAME_PIECES.CAGE.SHALLOW}
+              gamePiece={GAME_PIECES_2025.CAGE.SHALLOW}
               location={hangPositionSelected}
               className={
                 "mb-1 h-16 w-40 font-bold text-xl !bg-red-500 text-black"
@@ -213,7 +213,7 @@ export default function EndgameScreen() {
           <div className="flex flex-col justify-center h-full gap-4">
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.START}
-              gamePiece={GAME_PIECES.NOGAMEPIECE}
+              gamePiece={GAME_PIECES_2025.NOGAMEPIECE}
               location={hangPositionSelected}
               className={
                 "mb-1 h-16 w-40 font-bold text-xl !bg-green-700 !text-white"
@@ -231,8 +231,8 @@ export default function EndgameScreen() {
             />
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.NOTHING}
-              gamePiece={GAME_PIECES.NOGAMEPIECE}
-              location={LOCATIONS.BARGE.BASE}
+              gamePiece={GAME_PIECES_2025.NOGAMEPIECE}
+              location={LOCATIONS_2025.BARGE.BASE}
               className={"mb-1 h-16 w-40 font-bold text-xl bg-red-500"}
               disabled={
                 climbStarted ||
@@ -259,18 +259,18 @@ export default function EndgameScreen() {
             className={cn(
               "flex flex-col my-[3rem] gap-2",
               getFlexDirection(context.uiOrientation, context.allianceColour)
-                .col
+                .col,
             )}
           >
             <Button
               className={cn(
                 "h-12 w-40 font-bold text-xl !bg-white opacity-80",
-                hangPositionSelected === LOCATIONS.BARGE.OUTER &&
-                  "dark:ring-4 ring-red-500"
+                hangPositionSelected === LOCATIONS_2025.BARGE.OUTER &&
+                  "dark:ring-4 ring-red-500",
               )}
               onClick={() => {
                 setPositionSelected(true);
-                setHangPositionSelected(LOCATIONS.BARGE.OUTER);
+                setHangPositionSelected(LOCATIONS_2025.BARGE.OUTER);
               }}
               disabled={actionDone || context.isBrownedOut}
             >
@@ -278,12 +278,12 @@ export default function EndgameScreen() {
             </Button>
             <Button
               className={cn(
-                " h-12 w-40  font-bold text-xl !bg-white opacity-80",
-                hangPositionSelected === LOCATIONS.BARGE.MIDDLE &&
-                  "dark:ring-4 ring-red-500"
+                " h-12 w-40 font-bold text-xl !bg-white opacity-80",
+                hangPositionSelected === LOCATIONS_2025.BARGE.MIDDLE &&
+                  "dark:ring-4 ring-red-500",
               )}
               onClick={() => {
-                setHangPositionSelected(LOCATIONS.BARGE.MIDDLE);
+                setHangPositionSelected(LOCATIONS_2025.BARGE.MIDDLE);
                 setPositionSelected(true);
               }}
               disabled={actionDone || context.isBrownedOut}
@@ -293,12 +293,12 @@ export default function EndgameScreen() {
             <Button
               className={cn(
                 " mb-1 h-12 w-40  font-bold text-xl !bg-white opacity-80",
-                hangPositionSelected === LOCATIONS.BARGE.INNER &&
-                  "dark:ring-4 ring-red-500"
+                hangPositionSelected === LOCATIONS_2025.BARGE.INNER &&
+                  "dark:ring-4 ring-red-500",
               )}
               onClick={() => {
                 setPositionSelected(true);
-                setHangPositionSelected(LOCATIONS.BARGE.INNER);
+                setHangPositionSelected(LOCATIONS_2025.BARGE.INNER);
               }}
               disabled={actionDone || context.isBrownedOut}
             >
@@ -328,7 +328,7 @@ export default function EndgameScreen() {
             toast.error(
               context.isBrownedOut
                 ? "Robot has restarted. Screen enabled!"
-                : "Robot has stopped. Screen disabled!"
+                : "Robot has stopped. Screen disabled!",
             );
             context.setIsBrownedOut(!context.isBrownedOut);
           }}

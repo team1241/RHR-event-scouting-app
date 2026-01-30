@@ -2,7 +2,10 @@
 
 import { FieldImages } from "@prisma/client";
 import { createContext } from "react";
-import { MATCH_STATES } from "~/app/scout/[eventCode]/constants";
+import {
+  LOCATION_STATES,
+  MATCH_STATES,
+} from "~/app/scout/[eventCode]/constants";
 import { MatchScheduleType } from "~/server/http/frc-events";
 
 export type ScoutAction = {
@@ -66,8 +69,10 @@ interface ScoutDataContextType {
   setStartingPosition: (startingPosition: StartingPositionDataType) => void;
   gamePieceState: { type: string; count: number }[];
   setGamePieceState: (
-    gamePieceState: { type: string; count: number }[]
+    gamePieceState: { type: string; count: number }[],
   ) => void;
+  locationState: LOCATION_STATES;
+  setLocationState: (location: LOCATION_STATES) => void;
   actions: ScoutAction[];
   setActions: (actions: ScoutAction[]) => void;
   undoOccurred: boolean;
@@ -104,7 +109,11 @@ interface ScoutDataContextType {
   setComment: (comment: string) => void;
   flashScoutLayout: boolean;
   setFlashScoutLayout: (flashScoutLayout: boolean) => void;
+  isShooting: boolean;
+  setIsShooting: (isShooting: boolean) => void;
+  isFeeding: boolean;
+  setIsFeeding: (isFeeding: boolean) => void;
 }
 export const ScoutDataContext = createContext<ScoutDataContextType>(
-  {} as ScoutDataContextType
+  {} as ScoutDataContextType,
 );

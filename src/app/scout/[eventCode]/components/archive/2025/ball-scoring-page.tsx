@@ -1,10 +1,10 @@
 "use client";
 
 import { cn } from "~/lib/utils";
-import ContinueButton from "./common/continue-button";
-import FieldImage from "./common/field-image";
+import ContinueButton from "../../common/continue-button";
+import FieldImage from "../../common/field-image";
 import { useContext } from "react";
-import { ScoutDataContext } from "../context/data-context";
+import { ScoutDataContext } from "../../../context/data-context";
 import { Button } from "~/components/ui/button";
 import PageHeading from "~/components/common/page-heading";
 import { PlusIcon, MinusIcon } from "lucide-react";
@@ -31,7 +31,7 @@ export default function BallScoringScreen() {
               "flex justify-center mr-5",
               context.uiOrientation === FIELD_ORIENTATIONS.DEFAULT
                 ? "flex-col"
-                : "flex-col-reverse"
+                : "flex-col-reverse",
             )}
           >
             <div className="flex flex-col pb-2">
@@ -43,7 +43,7 @@ export default function BallScoringScreen() {
                     context.setAlternateScoutData
                   ) {
                     const currentMisses = Number(
-                      context.alternateScoutData?.scoring.blueMiss
+                      context.alternateScoutData?.scoring.blueMiss,
                     );
                     context.setAlternateScoutData({
                       ...context!.alternateScoutData,
@@ -72,7 +72,7 @@ export default function BallScoringScreen() {
                     context.setAlternateScoutData
                   ) {
                     const currentMisses = Number(
-                      context.alternateScoutData?.scoring.blueMiss
+                      context.alternateScoutData?.scoring.blueMiss,
                     );
                     context.setAlternateScoutData({
                       ...context!.alternateScoutData,
@@ -96,7 +96,7 @@ export default function BallScoringScreen() {
                     context.setAlternateScoutData
                   ) {
                     const currentMisses = Number(
-                      context.alternateScoutData?.scoring.redMiss
+                      context.alternateScoutData?.scoring.redMiss,
                     );
                     context.setAlternateScoutData({
                       ...context!.alternateScoutData,
@@ -124,7 +124,7 @@ export default function BallScoringScreen() {
                     context.setAlternateScoutData
                   ) {
                     const currentMisses = Number(
-                      context.alternateScoutData?.scoring.redMiss
+                      context.alternateScoutData?.scoring.redMiss,
                     );
                     context.setAlternateScoutData({
                       ...context!.alternateScoutData,
@@ -145,7 +145,7 @@ export default function BallScoringScreen() {
               "flex flex-col justify-center ml-5",
               context.uiOrientation === FIELD_ORIENTATIONS.DEFAULT
                 ? "flex-col"
-                : "flex-col-reverse"
+                : "flex-col-reverse",
             )}
           >
             <div className="flex flex-col pb-2">
@@ -157,7 +157,7 @@ export default function BallScoringScreen() {
                     context.setAlternateScoutData
                   ) {
                     const currentScores = Number(
-                      context.alternateScoutData?.scoring.blueScore
+                      context.alternateScoutData?.scoring.blueScore,
                     );
                     context.setAlternateScoutData({
                       ...context!.alternateScoutData,
@@ -187,7 +187,7 @@ export default function BallScoringScreen() {
                     context.setAlternateScoutData
                   ) {
                     const currentScores = Number(
-                      context.alternateScoutData?.scoring.blueScore
+                      context.alternateScoutData?.scoring.blueScore,
                     );
                     context.setAlternateScoutData({
                       ...context!.alternateScoutData,
@@ -211,7 +211,7 @@ export default function BallScoringScreen() {
                     context.setAlternateScoutData
                   ) {
                     const currentScores = Number(
-                      context.alternateScoutData?.scoring.redScore
+                      context.alternateScoutData?.scoring.redScore,
                     );
                     context.setAlternateScoutData({
                       ...context!.alternateScoutData,
@@ -239,7 +239,7 @@ export default function BallScoringScreen() {
                     context.setAlternateScoutData
                   ) {
                     const currentScores = Number(
-                      context.alternateScoutData?.scoring.redScore
+                      context.alternateScoutData?.scoring.redScore,
                     );
                     context.setAlternateScoutData({
                       ...context!.alternateScoutData,

@@ -6,10 +6,12 @@ import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
 import { cn } from "~/lib/utils";
 
 const FieldImage = ({
+  imageUrl,
   imageSize = "100%",
   fieldSize = "full",
   children,
 }: {
+  imageUrl?: string;
   imageSize?: "25%" | "50%" | "75%" | "100%";
   fieldSize?: "full" | "half";
   children?: React.ReactNode;
@@ -18,11 +20,11 @@ const FieldImage = ({
     useContext(ScoutDataContext);
 
   const normalImages = fieldImages?.filter(
-    (image) => !image.type.includes("FLIPPED")
+    (image) => !image.type.includes("FLIPPED"),
   );
 
   const flippedImages = fieldImages?.filter((image) =>
-    image.type.includes("FLIPPED")
+    image.type.includes("FLIPPED"),
   );
 
   const getImageSize = () => {
@@ -33,6 +35,8 @@ const FieldImage = ({
   };
 
   const getImageUrl = () => {
+    // Always return the passed in imageUrl if there is one - This acts as an override
+    if (imageUrl) return imageUrl;
     const imageList =
       uiOrientation === "flipped" ? flippedImages : normalImages;
 
@@ -43,7 +47,7 @@ const FieldImage = ({
     return imageList!.find(
       (image) =>
         image.type.includes("HALF") &&
-        image.type.toLowerCase().includes(allianceColour)
+        image.type.toLowerCase().includes(allianceColour),
     )!.imageUrl;
   };
 
@@ -54,7 +58,7 @@ const FieldImage = ({
       className={cn(
         "relative grid [grid-template-areas:'stack'] place-content-stretch my-3",
         height,
-        getImageSize()
+        getImageSize(),
       )}
     >
       <div className="[grid-area:stack]">
@@ -67,7 +71,7 @@ const FieldImage = ({
         className={cn(
           "z-60 [grid-area:stack] h-full",
           getImageSize(),
-          flashScoutLayout ? "animate-pulse bg-red-700" : ""
+          flashScoutLayout ? "animate-pulse bg-red-700" : "",
         )}
       />
     </div>

@@ -7,11 +7,11 @@ import {
   GAME_PIECES_2025,
   LOCATIONS_2025,
   MATCH_STATES,
-} from "../../constants";
-import { ScoutDataContext } from "../../context";
-import { getFlexDirection, getHasCoralOrAlgae } from "../../utils";
-import FieldImage from "./field-image";
-import ScoutActionButton from "./scout-action-button";
+} from "../../../constants";
+import { ScoutDataContext } from "../../../context";
+import { getFlexDirection, getHasCoralOrAlgae } from "../../../utils";
+import FieldImage from "../../common/field-image";
+import ScoutActionButton from "../../common/scout-action-button";
 import { toast } from "sonner";
 
 export const MatchScoutingLayout = ({
