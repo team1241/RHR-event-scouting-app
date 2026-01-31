@@ -1,4 +1,4 @@
-import { callMatchCard } from "~/db/supabase";
+import { callMatchCard } from "~/db/queries/match-card"
 
 export const dynamic = 'force-dynamic'
 
