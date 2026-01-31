@@ -50,3 +50,17 @@ export async function getRobotImagesForActiveSeason() {
 
   return images;
 }
+
+export async function getRobotImagesForTeams(teamNumbers: number[]) {
+  const images = await prisma.pitScoutImages.findMany({
+    where: {
+      teamNumber: {
+        in: teamNumbers
+      },
+      season: {
+        isActive: true
+      }
+    }
+  })
+  return images;
+}
