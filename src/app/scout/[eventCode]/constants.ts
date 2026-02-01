@@ -51,10 +51,11 @@ export const ACTION_NAMES = {
   DEFENDING: "defending",
   LEAVE: "left-starting-line",
   ZONE_TRANSITION: "zone-transition",
-  FEEDING: "feeding",
+  FEEDING: "feeding-start",
   FEEDING_END: "feeding-end",
-  SHOOTING: "shooting",
+  SHOOTING: "shooting-start",
   SHOOTING_END: "shooting-end",
+  SHOOTING_ACCURACY: "shooting-accuracy",
   CROSS_MID_LINE: "cross-mid-line"
 };
 
@@ -67,6 +68,12 @@ export const GAME_PIECES_2025 = {
   },
   NOGAMEPIECE: "no-game-piece",
 };
+
+export const GAME_PIECE = {
+  FUEL: "fuel",
+  TOWER: "tower",
+  NONE: "no-game-piece"
+}
 
 export const LOCATIONS_2025 = {
   OPPONENT_HALF: "opponent-half",
@@ -136,6 +143,13 @@ export const LOCATIONS = {
   MID_LINE: "mid-line"
 }
 
+export const SHOOTING_ACCURACY = {
+  ALL: 1,
+  MOST: 0.8,
+  HALF: 0.5,
+  FEW: 0.2,
+  NONE: 0
+}
 
 
 export const LOCAL_STORAGE_KEYS = {

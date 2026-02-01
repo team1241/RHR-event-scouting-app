@@ -1,7 +1,7 @@
 "use client";
 
 import { FieldImages } from "@prisma/client";
-import { createContext } from "react";
+import { createContext, Dispatch, SetStateAction } from "react";
 import {
   LOCATION_STATES,
   MATCH_STATES,
@@ -20,6 +20,11 @@ export type ScoutAction = {
   timestamp: string;
   hasUndo?: boolean;
   wasDefended?: boolean;
+  metadata?: {
+    durationSeconds?: number;
+    accuracy?: number;
+    feedingEndZone?: string;
+  };
 };
 
 export type StartingPositionDataType = {
@@ -74,7 +79,7 @@ interface ScoutDataContextType {
   locationState: LOCATION_STATES;
   setLocationState: (location: LOCATION_STATES) => void;
   actions: ScoutAction[];
-  setActions: (actions: ScoutAction[]) => void;
+  setActions: Dispatch<SetStateAction<ScoutAction[]>>;
   undoOccurred: boolean;
   setUndoOccurred: (undoOccurred: boolean) => void;
   wasDefended: boolean;
@@ -113,6 +118,8 @@ interface ScoutDataContextType {
   setIsShooting: (isShooting: boolean) => void;
   isFeeding: boolean;
   setIsFeeding: (isFeeding: boolean) => void;
+  feedingElapsedSeconds: number;
+  setFeedingElapsedSeconds: (feedingElapsedSeconds: number) => void;
 }
 export const ScoutDataContext = createContext<ScoutDataContextType>(
   {} as ScoutDataContextType,

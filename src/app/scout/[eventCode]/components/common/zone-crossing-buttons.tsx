@@ -2,14 +2,18 @@
 
 import { MoveLeftIcon, MoveRightIcon } from "lucide-react";
 import { useContext, useMemo } from "react";
+import { formatISO } from "date-fns";
 import ScoutActionButton from "~/app/scout/[eventCode]/components/common/scout-action-button";
 import {
   ACTION_NAMES,
   LOCATION_STATES,
   LOCATIONS,
+  LOCAL_STORAGE_KEYS,
   ZONE_CROSSING_ARROW_DIRECTION,
+  GAME_PIECE,
 } from "~/app/scout/[eventCode]/constants";
 import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
+import { ScoutAction } from "~/app/scout/[eventCode]/context/data-context";
 import {
   getFlexDirection,
   getZoneCrossingArrowDirection,
@@ -28,13 +32,30 @@ function RightArrow() {
 export default function ZoneCrossingButtons({
   type,
   isAuto = false,
+  disabled = false,
 }: {
   type: ZoneCrossingType;
   isAuto?: boolean;
+  disabled?: boolean;
 }) {
   const isAllianceCrossing = type === "alliance";
-  const { locationState, setLocationState, uiOrientation, allianceColour } =
-    useContext(ScoutDataContext);
+  const {
+    locationState,
+    setLocationState,
+    uiOrientation,
+    allianceColour,
+    setActions,
+    scouterDetails,
+    matchNumber,
+    teamToScout,
+    undoOccurred,
+    setUndoOccurred,
+    wasDefended,
+    isFeeding,
+    setIsFeeding,
+    feedingElapsedSeconds,
+    setFeedingElapsedSeconds,
+  } = useContext(ScoutDataContext);
 
   const { row, col: flexCol } = getFlexDirection(uiOrientation, allianceColour);
 
@@ -55,7 +76,42 @@ export default function ZoneCrossingButtons({
       <LeftArrow />
     );
 
+  const logFeedingEndIfNeeded = () => {
+    if (!isFeeding) return;
+
+    const timestamp = formatISO(new Date());
+    setActions((prevActions) => {
+      const updatedActionsList = [
+        ...prevActions,
+        {
+          scoutId: scouterDetails.id.toString(),
+          matchNumber,
+          teamNumber: teamToScout!,
+          eventCode: matchNumber,
+          hasUndo: undoOccurred,
+          wasDefended,
+          actionName: ACTION_NAMES.FEEDING_END,
+          gamePiece: GAME_PIECE.FUEL,
+          location: LOCATIONS.NEUTRAL_ZONE,
+          isAuto,
+          timestamp,
+          metadata: { durationSeconds: feedingElapsedSeconds },
+        } as ScoutAction,
+      ];
+      localStorage.setItem(
+        LOCAL_STORAGE_KEYS.ACTIONS,
+        JSON.stringify(updatedActionsList),
+      );
+      return updatedActionsList;
+    });
+    setUndoOccurred(false);
+    setIsFeeding(false);
+    setFeedingElapsedSeconds(0);
+  };
+
   const handleLocationUpdate = () => {
+    logFeedingEndIfNeeded();
+
     switch (locationState) {
       case LOCATION_STATES.ALLIANCE_ZONE:
       case LOCATION_STATES.OPPONENT_ZONE:
@@ -86,6 +142,7 @@ export default function ZoneCrossingButtons({
         actionName={ACTION_NAMES.ZONE_TRANSITION}
         label={arrow}
         isAuto={isAuto}
+        disabled={disabled}
       />
       <ScoutActionButton
         className={cn(
@@ -97,6 +154,7 @@ export default function ZoneCrossingButtons({
         actionName={ACTION_NAMES.ZONE_TRANSITION}
         label={arrow}
         isAuto={isAuto}
+        disabled={disabled}
       />
 
       <ScoutActionButton
@@ -109,6 +167,7 @@ export default function ZoneCrossingButtons({
         actionName={ACTION_NAMES.ZONE_TRANSITION}
         label={arrow}
         isAuto={isAuto}
+        disabled={disabled}
       />
       <ScoutActionButton
         className="h-16 w-20 bg-pink-800/90"
@@ -117,6 +176,7 @@ export default function ZoneCrossingButtons({
         actionName={ACTION_NAMES.ZONE_TRANSITION}
         label={arrow}
         isAuto={isAuto}
+        disabled={disabled}
       />
     </div>
   );

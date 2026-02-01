@@ -7,15 +7,25 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-
-export enum TimerButtonType {
-  Shooting = "shooting",
-  Feeding = "feeding",
-}
+import { cn } from "~/lib/utils";
 
 type TimerButtonProps = React.ComponentProps<typeof ScoutActionButton> & {
-  type: TimerButtonType;
   timerLabel?: string;
+  allowStopOnClick?: boolean;
+  popoverSide?: React.ComponentProps<typeof PopoverContent>["side"];
+  popoverAlign?: React.ComponentProps<typeof PopoverContent>["align"];
+  popoverSideOffset?: number;
+  popoverAlignOffset?: number;
+  popoverClassName?: string;
+  onStart?: () => void;
+  onStop?: () => void;
+  onElapsedSecondsChange?: (elapsedSeconds: number) => void;
+  getShouldLogAction?: (isRunning: boolean) => boolean;
+  renderPopoverContent?: (args: {
+    elapsedSeconds: number;
+    stopTimer: () => void;
+  }) => React.ReactNode;
+  shouldForceStop?: boolean;
 };
 
 const formatElapsed = (elapsedSeconds: number) => {
@@ -29,18 +39,21 @@ const formatElapsed = (elapsedSeconds: number) => {
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 };
 
-const getDefaultButtonLabel = (type: TimerButtonType) => {
-  switch (type) {
-    case TimerButtonType.Feeding:
-      return "FEEDING...";
-    case TimerButtonType.Shooting:
-      return "SHOOTING...";
-  }
-};
-
 export default function TimerButton({
-  type,
   onClick,
+  allowStopOnClick = true,
+  timerLabel,
+  onStart,
+  onStop,
+  onElapsedSecondsChange,
+  getShouldLogAction,
+  renderPopoverContent,
+  shouldForceStop,
+  popoverSide,
+  popoverAlign,
+  popoverSideOffset,
+  popoverAlignOffset,
+  popoverClassName,
   ...buttonProps
 }: TimerButtonProps) {
   const [isRunning, setIsRunning] = useState(false);
@@ -48,12 +61,28 @@ export default function TimerButton({
   const [isTimerVisible, setIsTimerVisible] = useState(false);
 
   const resolvedButtonLabel = useMemo(
-    () => getDefaultButtonLabel(type),
-    [type],
+    () => timerLabel ?? buttonProps.label,
+    [buttonProps.label, timerLabel],
   );
   const displayButtonLabel = isRunning
     ? resolvedButtonLabel
     : buttonProps.label;
+
+  const getActionExtras = () => {
+    if (!isRunning && elapsedSeconds === 0) return {};
+    return { metadata: { durationSeconds: elapsedSeconds } };
+  };
+
+  const shouldLogAction = getShouldLogAction
+    ? getShouldLogAction(isRunning)
+    : true;
+
+  const stopTimer = () => {
+    setIsRunning(false);
+    setElapsedSeconds(0);
+    setIsTimerVisible(false);
+    onStop?.();
+  };
 
   useEffect(() => {
     if (!isRunning) return;
@@ -65,17 +94,31 @@ export default function TimerButton({
     return () => clearInterval(intervalId);
   }, [isRunning]);
 
-  const handleClick = () => {
-    setIsRunning((prevRunning) => {
-      if (prevRunning) {
-        setElapsedSeconds(0);
-        setIsTimerVisible(false);
-        return false;
-      }
+  useEffect(() => {
+    onElapsedSecondsChange?.(elapsedSeconds);
+  }, [elapsedSeconds, onElapsedSecondsChange]);
 
-      setIsTimerVisible(true);
-      return true;
-    });
+  useEffect(() => {
+    if (!shouldForceStop || !isRunning) return;
+    stopTimer();
+  }, [shouldForceStop, isRunning]);
+
+  const handleClick = () => {
+    if (isRunning) {
+      if (allowStopOnClick) {
+        stopTimer();
+        if (onClick) {
+          onClick();
+        }
+      } else {
+        setIsTimerVisible(true);
+      }
+      return;
+    }
+
+    setIsTimerVisible(true);
+    setIsRunning(true);
+    onStart?.();
     if (onClick) {
       onClick();
     }
@@ -96,18 +139,30 @@ export default function TimerButton({
             {...buttonProps}
             label={displayButtonLabel}
             onClick={handleClick}
+            getActionExtras={getActionExtras}
+            shouldLogAction={shouldLogAction}
           />
         </span>
       </PopoverTrigger>
       {isTimerVisible && (
         <PopoverContent
-          align="center"
-          side="top"
-          sideOffset={8}
-          className="w-auto px-3 py-2 text-lg font-semibold"
+          align={popoverAlign ?? "center"}
+          alignOffset={popoverAlignOffset ?? 100}
+          side={popoverSide ?? "top"}
+          sideOffset={popoverSideOffset ?? 8}
+          className={cn(
+            "w-auto px-3 py-2 text-base font-semibold",
+            popoverClassName,
+          )}
         >
-          <div className="flex flex-col items-center gap-1">
-            <span className="font-mono">{formatElapsed(elapsedSeconds)}</span>
+          <div className="flex flex-col items-center gap-2">
+            <span className="font-mono text-lg">
+              {formatElapsed(elapsedSeconds)}
+            </span>
+            {renderPopoverContent?.({
+              elapsedSeconds,
+              stopTimer,
+            })}
           </div>
         </PopoverContent>
       )}

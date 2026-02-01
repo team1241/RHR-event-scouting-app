@@ -160,6 +160,7 @@ model Actions {
   gamePiece   String
   location    String
   timestamp   String
+  metadata    Json?
 }
 
 model AlternateScoutData {

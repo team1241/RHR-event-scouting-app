@@ -89,12 +89,12 @@ const ScoutPage = () => {
   const [isBrownedOut, setIsBrownedOut] = useState(false);
   const [isShooting, setIsShooting] = useState(false);
   const [isFeeding, setIsFeeding] = useState(false);
+  const [feedingElapsedSeconds, setFeedingElapsedSeconds] = useState(0);
   const [matchSchedule, setMatchSchedule] = useState<MatchScheduleType[]>([]);
   const [currentMatch, setCurrentMatch] = useState<MatchScheduleType>();
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const [matchNumber, setMatchNumber] = useState("");
   const [teamToScout, setTeamToScout] = useState<number | string | undefined>();
-  // TODO: REVERT THIS CHANGE
   const [allianceColour, setAllianceColour] = useState("red");
   const [uiOrientation, setUiOrientation] = useState(
     (typeof window !== "undefined" &&
@@ -294,6 +294,8 @@ const ScoutPage = () => {
           setIsShooting,
           isFeeding,
           setIsFeeding,
+          feedingElapsedSeconds,
+          setFeedingElapsedSeconds,
         }}
       >
         <ScoutingInfoHeader />

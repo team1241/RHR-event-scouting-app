@@ -18,6 +18,8 @@ const ScoutActionButton = ({
   onClick,
   disabled,
   shouldBeHidden = true,
+  getActionExtras,
+  shouldLogAction = true,
 }: {
   actionName: string;
   gamePiece?: string;
@@ -28,13 +30,26 @@ const ScoutActionButton = ({
   onClick?: () => void;
   disabled?: boolean;
   shouldBeHidden?: boolean;
+  getActionExtras?: () => Partial<ScoutAction>;
+  shouldLogAction?: boolean | (() => boolean);
 }) => {
   const scoutDataContext = useContext(ScoutDataContext);
   const isBlueAlliance =
     scoutDataContext.allianceColour === ALLIANCE_COLOURS.BLUE;
 
   const onActionClick = () => {
+    const canLogAction =
+      typeof shouldLogAction === "function"
+        ? shouldLogAction()
+        : shouldLogAction;
+    if (!canLogAction) {
+      if (onClick) {
+        onClick();
+      }
+      return;
+    }
     const timestamp = formatISO(new Date());
+    const actionExtras = getActionExtras?.() ?? {};
     const updatedActionsList = [
       ...scoutDataContext.actions,
       {
@@ -49,6 +64,7 @@ const ScoutActionButton = ({
         location,
         isAuto,
         timestamp,
+        ...actionExtras,
       } as ScoutAction,
     ];
     scoutDataContext.setActions(updatedActionsList);

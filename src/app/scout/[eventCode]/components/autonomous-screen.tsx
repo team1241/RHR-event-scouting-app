@@ -2,13 +2,12 @@
 
 import { formatISO } from "date-fns";
 import { CheckIcon } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import FieldImage from "~/app/scout/[eventCode]/components/common/field-image";
 import LocationState from "~/app/scout/[eventCode]/components/common/location-state";
-import TimerButton, {
-  TimerButtonType,
-} from "~/app/scout/[eventCode]/components/common/timer-button";
+import FeedingButton from "~/app/scout/[eventCode]/components/common/feeding-button";
+import ShootingButton from "~/app/scout/[eventCode]/components/common/shooting-button";
 import ZoneCrossingButtons from "~/app/scout/[eventCode]/components/common/zone-crossing-buttons";
 import { getFlexDirection } from "~/app/scout/[eventCode]/utils";
 import PageHeading from "~/components/common/page-heading";
@@ -16,6 +15,7 @@ import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import {
   ACTION_NAMES,
+  GAME_PIECE,
   LOCATION_STATES,
   LOCATIONS,
   MATCH_STATES,
@@ -29,6 +29,10 @@ export default function AutonomousScreen() {
   const context = useContext(ScoutDataContext);
   const screenContext = useContext(ScoutScreenContext);
   const [hasClimbed, setHasClimbed] = useState(false);
+  const [activeShootingZone, setActiveShootingZone] = useState<
+    "zone1" | "zone2" | "zone3" | null
+  >(null);
+  const { setIsShooting } = context;
 
   const { row, col } = getFlexDirection(
     context.uiOrientation,
@@ -37,6 +41,11 @@ export default function AutonomousScreen() {
 
   const isInNeutralZone =
     context.locationState === LOCATION_STATES.NEUTRAL_ZONE;
+  const isShootingActive = activeShootingZone !== null;
+
+  useEffect(() => {
+    setIsShooting(isShootingActive);
+  }, [isShootingActive, setIsShooting]);
 
   return (
     <>
@@ -68,6 +77,7 @@ export default function AutonomousScreen() {
               onClick={() => {
                 toast.info("Logged intake from depot!");
               }}
+              gamePiece={GAME_PIECE.FUEL}
             />
             <Button
               className={cn(
@@ -107,51 +117,53 @@ export default function AutonomousScreen() {
               onClick={() => {
                 toast.info("Logged intake from outpost!");
               }}
+              gamePiece={GAME_PIECE.FUEL}
             />
           </div>
           <div
             className={cn(
-              "flex h-full justify-between gap-2 py-4 data-[invisible=true]:invisible",
+              "flex h-full justify-between py-4 data-[invisible=true]:invisible",
               col,
               row === "flex-row" ? "ml-4" : "mr-4",
             )}
             data-invisible={isInNeutralZone}
           >
-            <ScoutActionButton
-              className="w-48 h-full text-wrap text-lg dark:bg-yellow-500/80"
+            <ShootingButton
+              className="w-48 h-[125px] text-wrap text-lg dark:bg-yellow-500/80"
               label="Shoot Zone 1"
               isAuto
-              actionName={
-                context.isShooting
-                  ? ACTION_NAMES.SHOOTING_END
-                  : ACTION_NAMES.SHOOTING
-              }
               location={LOCATIONS.SHOOTING.AUTO.DEPOT_ZONE}
+              gamePiece={GAME_PIECE.FUEL}
+              zone="zone1"
+              activeShootingZone={activeShootingZone}
+              setActiveShootingZone={setActiveShootingZone}
             />
-            <ScoutActionButton
-              className="w-48 h-full text-wrap text-lg dark:bg-yellow-500/80"
+            <ShootingButton
+              className="w-48 h-[125px] text-wrap text-lg dark:bg-yellow-500/80"
               label="Shoot Zone 2"
               isAuto
-              actionName={
-                context.isShooting
-                  ? ACTION_NAMES.SHOOTING_END
-                  : ACTION_NAMES.SHOOTING
-              }
               location={LOCATIONS.SHOOTING.AUTO.TOWER_ZONE}
+              gamePiece={GAME_PIECE.FUEL}
+              zone="zone2"
+              activeShootingZone={activeShootingZone}
+              setActiveShootingZone={setActiveShootingZone}
             />
-            <ScoutActionButton
-              className="w-48 h-full text-wrap text-lg dark:bg-yellow-500/80"
+            <ShootingButton
+              className="w-48 h-[125px] text-wrap text-lg dark:bg-yellow-500/80"
               label="Shoot Zone 3"
               isAuto
-              actionName={
-                context.isShooting
-                  ? ACTION_NAMES.SHOOTING_END
-                  : ACTION_NAMES.SHOOTING
-              }
               location={LOCATIONS.SHOOTING.AUTO.OUTPOST_ZONE}
+              gamePiece={GAME_PIECE.FUEL}
+              zone="zone3"
+              activeShootingZone={activeShootingZone}
+              setActiveShootingZone={setActiveShootingZone}
             />
           </div>
-          <ZoneCrossingButtons type="alliance" isAuto />
+          <ZoneCrossingButtons
+            type="alliance"
+            isAuto
+            disabled={isShootingActive}
+          />
           <div
             className={cn(
               "flex h-full justify-between py-16 gap-2 data-[invisible=true]:invisible",
@@ -166,6 +178,7 @@ export default function AutonomousScreen() {
               isAuto
               actionName={ACTION_NAMES.INTAKE}
               location={LOCATIONS.INTAKING.AUTO.NEUTRAL_ZONE.ZONE_1}
+              gamePiece={GAME_PIECE.FUEL}
             />
             <ScoutActionButton
               className="w-36 h-full text-wrap text-lg dark:bg-yellow-500/80"
@@ -173,6 +186,7 @@ export default function AutonomousScreen() {
               isAuto
               actionName={ACTION_NAMES.INTAKE}
               location={LOCATIONS.INTAKING.AUTO.NEUTRAL_ZONE.ZONE_2}
+              gamePiece={GAME_PIECE.FUEL}
             />
             <ScoutActionButton
               className="w-36 h-full text-wrap text-lg dark:bg-yellow-500/80"
@@ -180,13 +194,13 @@ export default function AutonomousScreen() {
               isAuto
               actionName={ACTION_NAMES.INTAKE}
               location={LOCATIONS.INTAKING.AUTO.NEUTRAL_ZONE.ZONE_3}
+              gamePiece={GAME_PIECE.FUEL}
             />
           </div>
           <div
             className={cn(
-              "flex h-full w-full items-end justify-between py-4 gap-8 data-[invisible=true]:invisible",
-              col,
-              row === "flex-row" ? "mr-16" : "ml-16",
+              "flex flex-col h-full w-full items-end justify-between py-4 gap-8 data-[invisible=true]:invisible",
+              row === "flex-row" ? "mr-16" : "ml-16 items-start",
             )}
             data-invisible={!isInNeutralZone}
           >
@@ -200,20 +214,13 @@ export default function AutonomousScreen() {
                 toast.info("Robot crossed mid line in auto!");
               }}
             />
-            <TimerButton
-              type={TimerButtonType.Feeding}
+            <FeedingButton
               label="FEED"
               isAuto
-              actionName={
-                context.isFeeding
-                  ? ACTION_NAMES.FEEDING_END
-                  : ACTION_NAMES.FEEDING
-              }
               location={LOCATIONS.NEUTRAL_ZONE}
               className="w-36 h-24 text-wrap text-lg dark:bg-yellow-500/80"
-              onClick={() => {
-                context.setIsFeeding(!context.isFeeding);
-              }}
+              gamePiece={GAME_PIECE.FUEL}
+              feedingEndZone={LOCATION_STATES.ALLIANCE_ZONE}
             />
           </div>
         </div>
@@ -243,7 +250,7 @@ export default function AutonomousScreen() {
                 hasUndo: false,
                 wasDefended: false,
                 actionName: ACTION_NAMES.CLIMB.SUCCESS,
-                gamePiece: "None",
+                gamePiece: GAME_PIECE.TOWER,
                 location: LOCATIONS.TOWER.L1,
                 isAuto: true,
                 timestamp: formatISO(timestamp),
