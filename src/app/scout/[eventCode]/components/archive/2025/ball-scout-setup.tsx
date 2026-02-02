@@ -2,11 +2,14 @@
 
 import PageHeading from "~/components/common/page-heading";
 import { Button } from "~/components/ui/button";
-import BackButton from "./common/back-button";
-import ContinueButton from "./common/continue-button";
+import BackButton from "~/app/scout/[eventCode]/components/common/back-button";
+import ContinueButton from "~/app/scout/[eventCode]/components/common/continue-button";
 import { useContext, useState } from "react";
 import { cn } from "~/lib/utils";
-import { ScoutDataContext, ScoutScreenContext } from "../context";
+import {
+  ScoutDataContext,
+  ScoutScreenContext,
+} from "~/app/scout/[eventCode]/context";
 
 export default function BallScoutSetup() {
   const [redHumanPlayerSelected, setRedHumanPlayerSelected] = useState("");
@@ -44,7 +47,7 @@ export default function BallScoutSetup() {
             className={cn(
               "h-20 w-72 text-2xl",
               redHumanPlayerSelected === "Red1" &&
-                "dark:ring-yellow-400 ring-2 ring-offset-4"
+                "dark:ring-yellow-400 ring-2 ring-offset-4",
             )}
             onClick={() => {
               setRedHumanPlayerSelected("Red1");
@@ -59,7 +62,7 @@ export default function BallScoutSetup() {
             className={cn(
               "h-20 text-2xl",
               redHumanPlayerSelected === "red2" &&
-                "dark:ring-2 ring-yellow-400 ring-offset-4"
+                "dark:ring-2 ring-yellow-400 ring-offset-4",
             )}
             onClick={() => {
               setRedHumanPlayerSelected("red2");
@@ -74,7 +77,7 @@ export default function BallScoutSetup() {
             className={cn(
               "h-20 text-2xl",
               redHumanPlayerSelected === "red3" &&
-                "dark:ring-2 ring-yellow-400  ring-offset-4"
+                "dark:ring-2 ring-yellow-400  ring-offset-4",
             )}
             onClick={() => {
               setRedHumanPlayerSelected("red3");
@@ -92,7 +95,7 @@ export default function BallScoutSetup() {
             className={cn(
               "h-20 w-72 text-2xl",
               blueHumanPlayerSelected === "blue1" &&
-                "dark:ring-2 ring-yellow-400  ring-offset-4"
+                "dark:ring-2 ring-yellow-400  ring-offset-4",
             )}
             onClick={() => {
               setBlueHumanPlayerSelected("blue1");
@@ -108,7 +111,7 @@ export default function BallScoutSetup() {
             className={cn(
               "h-20 text-2xl",
               blueHumanPlayerSelected === "blue2" &&
-                "dark:ring-2 ring-yellow-400  ring-offset-4"
+                "dark:ring-2 ring-yellow-400  ring-offset-4",
             )}
             onClick={() => {
               setBlueHumanPlayerSelected("blue2");
@@ -123,7 +126,7 @@ export default function BallScoutSetup() {
             className={cn(
               "h-20 text-2xl",
               blueHumanPlayerSelected === "blue3" &&
-                "dark:ring-2 ring-yellow-400  ring-offset-4"
+                "dark:ring-2 ring-yellow-400  ring-offset-4",
             )}
             onClick={() => {
               setBlueHumanPlayerSelected("blue3");
