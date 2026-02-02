@@ -7,5 +7,5 @@ export async function GET() {
 
   const resHeaders = isDev ? DEV_CORS_HEADERS : undefined
 
-  return Response.json({ data: { events: eventsForActiveSeason } }, { headers: resHeaders });
+  return Response.json({ data: { events: eventsForActiveSeason, year: activeSeason?.year } }, { headers: resHeaders });
 }
