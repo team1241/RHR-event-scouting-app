@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "./context";
 import {
   AlternateScoutData,
@@ -20,14 +20,13 @@ import { FieldImages } from "@prisma/client";
 import { getFieldImagesForActiveSeason } from "~/db/queries/field-images";
 import {
   FIELD_ORIENTATIONS,
-  GAME_PIECES,
+  GAME_PIECES_2025,
   LOCAL_STORAGE_KEYS,
+  LOCATION_STATES,
   MATCH_STATES,
   SCREEN_NAMES,
 } from "~/app/scout/[eventCode]/constants";
-import BallScoutSetup from "./components/ball-scout-setup";
 import StartingPositionScreen from "./components/starting-position-screen";
-import BallScoringScreen from "./components/ball-scoring-page";
 import MatchSelectionScreen from "./components/match-selection-screen";
 import EndgameScreen from "./components/endgame-screen";
 import AutonomousScreen from "./components/autonomous-screen";
@@ -40,52 +39,44 @@ const ScoutPage = () => {
   const eventYear = eventCode.substring(0, 4);
   const eventName = eventCode.substring(4);
 
-  // TODO: Update the components of each screen to be the actual screen once the dev for it is completed
-  const screens = [
-    {
-      component: <MatchSelectionScreen />,
-      name: SCREEN_NAMES.MATCH_SELECTION,
-      canGoBack: false,
-    },
-    {
-      component: <StartingPositionScreen />,
-      name: SCREEN_NAMES.STARTING_POSITIONS,
-      canGoBack: true,
-    },
-    {
-      component: <AutonomousScreen />,
-      name: SCREEN_NAMES.AUTO,
-      canGoBack: false,
-    },
-    {
-      component: <TeleopScoringScreen />,
-      name: SCREEN_NAMES.TELEOP,
-      canGoBack: false,
-    },
-    {
-      component: <EndgameScreen />,
-      name: SCREEN_NAMES.ENDGAME,
-      canGoBack: true,
-    },
-    {
-      component: <FinalizationScreen />,
-      name: SCREEN_NAMES.FINALIZE,
-      canGoBack: true,
-    },
-    {
-      component: <BallScoutSetup />,
-      name: SCREEN_NAMES.ALTERNATE_SCOUT.SETUP,
-      canGoBack: true,
-    },
-    {
-      component: <BallScoringScreen />,
-      name: SCREEN_NAMES.ALTERNATE_SCOUT.SCORING,
-      canGoBack: true,
-    },
-  ];
+  const screens = useMemo(
+    () => [
+      {
+        component: <MatchSelectionScreen />,
+        name: SCREEN_NAMES.MATCH_SELECTION,
+        canGoBack: false,
+      },
+      {
+        component: <StartingPositionScreen />,
+        name: SCREEN_NAMES.STARTING_POSITIONS,
+        canGoBack: true,
+      },
+      {
+        component: <AutonomousScreen />,
+        name: SCREEN_NAMES.AUTO,
+        canGoBack: false,
+      },
+      {
+        component: <TeleopScoringScreen />,
+        name: SCREEN_NAMES.TELEOP,
+        canGoBack: false,
+      },
+      {
+        component: <EndgameScreen />,
+        name: SCREEN_NAMES.ENDGAME,
+        canGoBack: true,
+      },
+      {
+        component: <FinalizationScreen />,
+        name: SCREEN_NAMES.FINALIZE,
+        canGoBack: true,
+      },
+    ],
+    [],
+  );
 
   const [matchState, setMatchState] = useState<MATCH_STATES>(
-    MATCH_STATES.PRE_START
+    MATCH_STATES.PRE_START,
   );
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isAlternateScout, setIsAlternateScout] = useState(false);
@@ -96,16 +87,19 @@ const ScoutPage = () => {
   const [hasLeftStartingLine, setHasLeftStartingLine] = useState(false);
   const [isAutoStopped, setIsAutoStopped] = useState(false);
   const [isBrownedOut, setIsBrownedOut] = useState(false);
+  const [isShooting, setIsShooting] = useState(false);
+  const [isFeeding, setIsFeeding] = useState(false);
+  const [feedingElapsedSeconds, setFeedingElapsedSeconds] = useState(0);
   const [matchSchedule, setMatchSchedule] = useState<MatchScheduleType[]>([]);
   const [currentMatch, setCurrentMatch] = useState<MatchScheduleType>();
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const [matchNumber, setMatchNumber] = useState("");
   const [teamToScout, setTeamToScout] = useState<number | string | undefined>();
-  const [allianceColour, setAllianceColour] = useState("");
+  const [allianceColour, setAllianceColour] = useState("red");
   const [uiOrientation, setUiOrientation] = useState(
     (typeof window !== "undefined" &&
       localStorage.getItem(LOCAL_STORAGE_KEYS.UI_ORIENTATION)) ||
-      FIELD_ORIENTATIONS.DEFAULT
+      FIELD_ORIENTATIONS.DEFAULT,
   );
 
   const [previousEndgameAction, setPreviousEndgameAction] = useState({
@@ -128,9 +122,12 @@ const ScoutPage = () => {
   const [gamePieceState, setGamePieceState] = useState<
     { type: string; count: number }[]
   >([
-    { type: GAME_PIECES.CORAL, count: 0 },
-    { type: GAME_PIECES.ALGAE, count: 0 },
+    { type: GAME_PIECES_2025.CORAL, count: 0 },
+    { type: GAME_PIECES_2025.ALGAE, count: 0 },
   ]);
+  const [locationState, setLocationState] = useState<LOCATION_STATES>(
+    LOCATION_STATES.ALLIANCE_ZONE,
+  );
   const [actions, setActions] = useState<ScoutAction[]>([]);
   const [alternateScoutData, setAlternateScoutData] =
     useState<AlternateScoutData>({
@@ -143,7 +140,7 @@ const ScoutPage = () => {
     setCurrentScreenIndex(
       currentScreenIndex < screens.length - 1
         ? currentScreenIndex + 1
-        : currentScreenIndex
+        : currentScreenIndex,
     );
   };
 
@@ -151,13 +148,13 @@ const ScoutPage = () => {
     typeof window !== "undefined" && window.scrollTo(0, 0);
     if (!screens[currentScreenIndex].canGoBack) return;
     setCurrentScreenIndex(
-      currentScreenIndex > 0 ? currentScreenIndex - 1 : currentScreenIndex
+      currentScreenIndex > 0 ? currentScreenIndex - 1 : currentScreenIndex,
     );
   };
 
   const goToScreen = (screenName: string) => {
     const screenIndex = screens.findIndex(
-      (screen) => screen.name === screenName
+      (screen) => screen.name === screenName,
     );
     typeof window !== "undefined" && window.scrollTo(0, 0);
     setCurrentScreenIndex(screenIndex);
@@ -183,7 +180,7 @@ const ScoutPage = () => {
         fetchMatchScheduleByYearAndEventCode(
           eventYear,
           eventName,
-          !!eventType ? "Practice" : "Qualification"
+          !!eventType ? "Practice" : "Qualification",
         ),
     });
 
@@ -204,7 +201,7 @@ const ScoutPage = () => {
       setScouterDetails(scouterDetails);
       localStorage.setItem(
         LOCAL_STORAGE_KEYS.SCOUTER_DETAILS,
-        JSON.stringify(scouterDetails)
+        JSON.stringify(scouterDetails),
       );
     }
   }, [userData]);
@@ -221,7 +218,7 @@ const ScoutPage = () => {
       JSON.stringify({
         currentScreenIndex,
         name: screens[currentScreenIndex].name,
-      })
+      }),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentScreenIndex]);
@@ -262,6 +259,8 @@ const ScoutPage = () => {
           setStartingPosition,
           gamePieceState,
           setGamePieceState,
+          locationState,
+          setLocationState,
           actions,
           setActions,
           undoOccurred,
@@ -291,10 +290,17 @@ const ScoutPage = () => {
           setComment,
           flashScoutLayout,
           setFlashScoutLayout,
+          isShooting,
+          setIsShooting,
+          isFeeding,
+          setIsFeeding,
+          feedingElapsedSeconds,
+          setFeedingElapsedSeconds,
         }}
       >
         <ScoutingInfoHeader />
-        {screens[currentScreenIndex].component}
+        {/* {screens[currentScreenIndex].component} */}
+        {screens[2].component}
       </ScoutDataContext.Provider>
     </ScoutScreenContext.Provider>
   );

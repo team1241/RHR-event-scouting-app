@@ -26,6 +26,9 @@ export async function getActiveSeason() {
     where: {
       isActive: true,
     },
+    include: {
+      events: true
+    }
   });
 }
 

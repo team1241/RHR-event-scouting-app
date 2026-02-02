@@ -1,8 +1,11 @@
 "use client";
 
 import { FieldImages } from "@prisma/client";
-import { createContext } from "react";
-import { MATCH_STATES } from "~/app/scout/[eventCode]/constants";
+import { createContext, Dispatch, SetStateAction } from "react";
+import {
+  LOCATION_STATES,
+  MATCH_STATES,
+} from "~/app/scout/[eventCode]/constants";
 import { MatchScheduleType } from "~/server/http/frc-events";
 
 export type ScoutAction = {
@@ -17,6 +20,11 @@ export type ScoutAction = {
   timestamp: string;
   hasUndo?: boolean;
   wasDefended?: boolean;
+  metadata?: {
+    durationSeconds?: number;
+    accuracy?: number;
+    feedingEndZone?: string;
+  };
 };
 
 export type StartingPositionDataType = {
@@ -66,10 +74,12 @@ interface ScoutDataContextType {
   setStartingPosition: (startingPosition: StartingPositionDataType) => void;
   gamePieceState: { type: string; count: number }[];
   setGamePieceState: (
-    gamePieceState: { type: string; count: number }[]
+    gamePieceState: { type: string; count: number }[],
   ) => void;
+  locationState: LOCATION_STATES;
+  setLocationState: (location: LOCATION_STATES) => void;
   actions: ScoutAction[];
-  setActions: (actions: ScoutAction[]) => void;
+  setActions: Dispatch<SetStateAction<ScoutAction[]>>;
   undoOccurred: boolean;
   setUndoOccurred: (undoOccurred: boolean) => void;
   wasDefended: boolean;
@@ -104,7 +114,13 @@ interface ScoutDataContextType {
   setComment: (comment: string) => void;
   flashScoutLayout: boolean;
   setFlashScoutLayout: (flashScoutLayout: boolean) => void;
+  isShooting: boolean;
+  setIsShooting: (isShooting: boolean) => void;
+  isFeeding: boolean;
+  setIsFeeding: (isFeeding: boolean) => void;
+  feedingElapsedSeconds: number;
+  setFeedingElapsedSeconds: (feedingElapsedSeconds: number) => void;
 }
 export const ScoutDataContext = createContext<ScoutDataContextType>(
-  {} as ScoutDataContextType
+  {} as ScoutDataContextType,
 );

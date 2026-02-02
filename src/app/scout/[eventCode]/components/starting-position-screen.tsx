@@ -10,12 +10,12 @@ import FieldImage from "./common/field-image";
 import { useContext, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
 import {
-  GAME_PIECES,
+  GAME_PIECES_2025,
   ACTION_NAMES,
   LOCAL_STORAGE_KEYS,
   MATCH_STATES,
   SCREEN_NAMES,
-  STARTING_POSITIONS,
+  STARTING_POSITIONS_2025,
 } from "../constants";
 import { cn } from "~/lib/utils";
 import { getFlexDirection } from "../utils";
@@ -36,12 +36,12 @@ export default function StartingPositionScreen() {
     });
     if (!context.startingPosition.hasPreload) {
       context.setGamePieceState([
-        { type: GAME_PIECES.CORAL, count: 1 },
+        { type: GAME_PIECES_2025.CORAL, count: 1 },
         context.gamePieceState[1],
       ]);
     } else {
       context.setGamePieceState([
-        { type: GAME_PIECES.CORAL, count: 0 },
+        { type: GAME_PIECES_2025.CORAL, count: 0 },
         context.gamePieceState[1],
       ]);
     }
@@ -103,7 +103,7 @@ export default function StartingPositionScreen() {
             toast.success("Starting position saved");
             localStorage.setItem(
               LOCAL_STORAGE_KEYS.STARTING_POSITION,
-              JSON.stringify(context.startingPosition)
+              JSON.stringify(context.startingPosition),
             );
             setSaved(true);
           }}
@@ -124,7 +124,7 @@ export default function StartingPositionScreen() {
         <div
           className={cn(
             "flex h-full w-full justify-between",
-            getFlexDirection(context.uiOrientation, context.allianceColour).row
+            getFlexDirection(context.uiOrientation, context.allianceColour).row,
           )}
         >
           <div className="flex flex-col space-y-20 items-start mx-4 justify-center">
@@ -169,19 +169,19 @@ export default function StartingPositionScreen() {
               // "flex justify-between w-72 my-10 mx-52",
               "flex justify-between my-12 mx-52",
               getFlexDirection(context.uiOrientation, context.allianceColour)
-                .col
+                .col,
             )}
           >
             <Button
               className={cn(
                 "h-full dark:bg-red-500/50 font-bold text-lg dark:text-white dark:hover:bg-red-500/70 w-28",
                 context.startingPosition.position ===
-                  STARTING_POSITIONS.ZONE_1 &&
-                  "dark:ring-2 dark:bg-red-500/70 ring-white"
+                  STARTING_POSITIONS_2025.ZONE_1 &&
+                  "dark:ring-2 dark:bg-red-500/70 ring-white",
               )}
               onClick={() => {
                 setSaved(false);
-                setPosition(STARTING_POSITIONS.ZONE_1);
+                setPosition(STARTING_POSITIONS_2025.ZONE_1);
               }}
             >
               Zone 1
@@ -190,12 +190,12 @@ export default function StartingPositionScreen() {
               className={cn(
                 "h-full dark:bg-green-500/50 font-bold text-lg dark:text-white dark:hover:bg-green-500/70 w-28",
                 context.startingPosition.position ===
-                  STARTING_POSITIONS.ZONE_2 &&
-                  "dark:ring-2 dark:bg-green-500/70 ring-white"
+                  STARTING_POSITIONS_2025.ZONE_2 &&
+                  "dark:ring-2 dark:bg-green-500/70 ring-white",
               )}
               onClick={() => {
                 setSaved(false);
-                setPosition(STARTING_POSITIONS.ZONE_2);
+                setPosition(STARTING_POSITIONS_2025.ZONE_2);
               }}
             >
               Zone 2
@@ -204,12 +204,12 @@ export default function StartingPositionScreen() {
               className={cn(
                 "h-full dark:bg-blue-500/50 font-bold text-lg dark:text-white dark:hover:bg-blue-500/70 w-28",
                 context.startingPosition.position ===
-                  STARTING_POSITIONS.ZONE_3 &&
-                  "dark:ring-2 dark:bg-blue-500/70 ring-white"
+                  STARTING_POSITIONS_2025.ZONE_3 &&
+                  "dark:ring-2 dark:bg-blue-500/70 ring-white",
               )}
               onClick={() => {
                 setSaved(false);
-                setPosition(STARTING_POSITIONS.ZONE_3);
+                setPosition(STARTING_POSITIONS_2025.ZONE_3);
               }}
             >
               Zone 3

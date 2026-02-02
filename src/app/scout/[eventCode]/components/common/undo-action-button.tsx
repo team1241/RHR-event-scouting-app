@@ -5,7 +5,7 @@ import React, { useContext } from "react";
 import { toast } from "sonner";
 import {
   ACTION_NAMES,
-  GAME_PIECES,
+  GAME_PIECES_2025,
   LOCAL_STORAGE_KEYS,
 } from "~/app/scout/[eventCode]/constants";
 import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
@@ -33,20 +33,20 @@ const UndoActionButton = ({
     if (actions.length === 0) return;
     const actionsCopy = [...actions];
     const lastAction = actionsCopy.pop();
-    if (lastAction?.gamePiece === GAME_PIECES.CORAL) {
+    if (lastAction?.gamePiece === GAME_PIECES_2025.CORAL) {
       const newCoralCount =
         lastAction.actionName === ACTION_NAMES.INTAKE ? 0 : 1;
       lastAction.actionName;
       setGamePieceState([
-        { type: GAME_PIECES.CORAL, count: newCoralCount },
+        { type: GAME_PIECES_2025.CORAL, count: newCoralCount },
         gamePieceState[1],
       ]);
-    } else if (lastAction?.gamePiece === GAME_PIECES.ALGAE) {
+    } else if (lastAction?.gamePiece === GAME_PIECES_2025.ALGAE) {
       const newAlgaeCount =
         lastAction.actionName === ACTION_NAMES.INTAKE ? 0 : 1;
       setGamePieceState([
         gamePieceState[0],
-        { type: GAME_PIECES.ALGAE, count: newAlgaeCount },
+        { type: GAME_PIECES_2025.ALGAE, count: newAlgaeCount },
       ]);
     }
 
@@ -61,7 +61,7 @@ const UndoActionButton = ({
     setActions(actionsCopy);
     localStorage.setItem(
       LOCAL_STORAGE_KEYS.ACTIONS,
-      JSON.stringify(actionsCopy)
+      JSON.stringify(actionsCopy),
     );
     setUndoOccurred(true);
     toast.error("PREVIOUS ACTION SUCCESSFULLY UNDONE");

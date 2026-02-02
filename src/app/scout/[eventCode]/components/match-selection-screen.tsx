@@ -11,7 +11,7 @@ import ContinueButton from "./common/continue-button";
 export default function MatchSelectionScreen() {
   const context = useContext(ScoutDataContext);
   const [isTeamSelectedEnabled, setTeamSelectedEnabled] = useState(
-    !!context.teamToScout
+    !!context.teamToScout,
   );
   const [positionSelected, setPositionSelected] = useState(() => {
     const currentMatch = context.matchNumber.match(/\d+/g);
@@ -41,7 +41,7 @@ export default function MatchSelectionScreen() {
               {/* BLUE BUTTONS */}
               {[1, 2, 3].map((position) => {
                 const team = context?.currentMatch?.teams.find(
-                  (team) => team.station === `Blue${position}`
+                  (team) => team.station === `Blue${position}`,
                 );
                 return (
                   <Button
@@ -50,7 +50,7 @@ export default function MatchSelectionScreen() {
                     className={cn(
                       "text-xl",
                       positionSelected === `Blue${position}` &&
-                        "dark:ring-2 ring-yellow-400 ring-offset-4"
+                        "dark:ring-2 ring-yellow-400 ring-offset-4",
                     )}
                     size={"team"}
                     id={`blue${position}`}
@@ -74,7 +74,7 @@ export default function MatchSelectionScreen() {
               {/* RED BUTTONS */}
               {[1, 2, 3].map((position) => {
                 const team = context?.currentMatch?.teams.find(
-                  (team) => team.station === `Red${position}`
+                  (team) => team.station === `Red${position}`,
                 );
                 return (
                   <Button
@@ -83,7 +83,7 @@ export default function MatchSelectionScreen() {
                     className={cn(
                       "text-xl",
                       positionSelected === `Red${position}` &&
-                        "dark:ring-2 ring-yellow-400 ring-offset-4"
+                        "dark:ring-2 ring-yellow-400 ring-offset-4",
                     )}
                     size={"team"}
                     id={`red${position}`}
@@ -103,23 +103,6 @@ export default function MatchSelectionScreen() {
                 );
               })}
             </div>
-          </div>
-          <div className="w-full">
-            <Button
-              className={cn(
-                "w-full h-20 mt-1 !bg-teal-500 font-bold text-xl",
-                positionSelected === "Human Players" &&
-                  "dark:ring-2 ring-yellow-400  ring-offset-4"
-              )}
-              disabled={!isTeamSelectedEnabled}
-              onClick={() => {
-                context.setIsAlternateScout(true);
-                context.setTeamToScout("Human Players");
-                setPositionSelected("Human Players");
-              }}
-            >
-              Ball Scout
-            </Button>
           </div>
         </div>
       </div>

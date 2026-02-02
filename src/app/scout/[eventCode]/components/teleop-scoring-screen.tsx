@@ -7,7 +7,7 @@ import MatchScoutingLayout from "./common/match-scouting-layout";
 import UndoActionButton from "./common/undo-action-button";
 import ContinueButton from "./common/continue-button";
 import ScoutActionButton from "./common/scout-action-button";
-import { ACTION_NAMES, GAME_PIECES, LOCATIONS } from "../constants";
+import { ACTION_NAMES, GAME_PIECES_2025, LOCATIONS_2025 } from "../constants";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import { toast } from "sonner";
@@ -36,7 +36,7 @@ const TeleopScoringScreen = () => {
         <Button
           className={cn(
             "dark:bg-orange-400 w-44 h-20 dark:text-white font-bold text-xl",
-            context.wasDefended && "dark:ring-yellow-400 ring-2 ring-offset-4"
+            context.wasDefended && "dark:ring-yellow-400 ring-2 ring-offset-4",
           )}
           disabled={context.isDefending}
           onClick={() => {
@@ -52,8 +52,8 @@ const TeleopScoringScreen = () => {
 
         <ScoutActionButton
           actionName={ACTION_NAMES.DEFENDING}
-          gamePiece={GAME_PIECES.NOGAMEPIECE}
-          location={LOCATIONS.OPPONENT_HALF}
+          gamePiece={GAME_PIECES_2025.NOGAMEPIECE}
+          location={LOCATIONS_2025.OPPONENT_HALF}
           className="font-bold text-xl dark:bg-orange-400 w-44 h-20"
           label="Is Defending"
           onClick={() => {
@@ -79,7 +79,7 @@ const TeleopScoringScreen = () => {
             toast.error(
               context.isBrownedOut
                 ? "Robot has restarted. Screen enabled!"
-                : "Robot has stopped. Screen disabled!"
+                : "Robot has stopped. Screen disabled!",
             );
             context.setIsBrownedOut(!context.isBrownedOut);
           }}
