@@ -1,4 +1,4 @@
-import { DEV_CORS_HEADERS, isDev } from "~/app/api/constants";
+import { DEV_CORS_HEADERS, isDev, PROD_CORS_HEADERS } from "~/app/api/constants";
 import { getRobotImagesForTeams } from "~/db/queries/robot-images";
 
 export const dynamic = 'force-dynamic'
@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     );
   }
 
-  const resHeaders = isDev ? DEV_CORS_HEADERS : undefined
+  const resHeaders = isDev ? DEV_CORS_HEADERS : PROD_CORS_HEADERS
 
 
   const data = await getRobotImagesForTeams(teamNumbers);
