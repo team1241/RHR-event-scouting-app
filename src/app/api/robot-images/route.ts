@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server";
 import { DEV_CORS_HEADERS, isDev, PROD_CORS_HEADERS } from "~/app/api/constants";
 import { getRobotImagesForTeams } from "~/db/queries/robot-images";
 
@@ -24,4 +25,13 @@ export async function GET(request: Request) {
   const data = await getRobotImagesForTeams(teamNumbers);
 
   return Response.json({ data }, { headers: resHeaders })
+}
+
+export async function OPTIONS() {
+  const headers = {
+    'Access-Control-Allow-Origin': isDev ? "http://localhost:5173" : "https://rebuilt.rhrscouting.ca",
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
+  return new NextResponse(null, { status: 204, headers });
 }
