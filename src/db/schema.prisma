@@ -191,11 +191,12 @@ model MatchComments {
 }
 
 model MatchSchedule {
-  id            Int    @id @default(autoincrement())
-  event         Events @relation(fields: [eventId], references: [id])
+  id            Int     @id @default(autoincrement())
+  event         Events  @relation(fields: [eventId], references: [id])
   eventId       Int
   matchNumber   String
   teamNumber    Int
+  teamName      String?
   driverStation Int
   colour        String
 }
