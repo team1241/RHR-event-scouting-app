@@ -5,7 +5,7 @@ export const DEV_CORS_HEADERS = {
 }
 
 export const PROD_CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "https://rebuilt.rhrscouting.ca",
+  "Access-Control-Allow-Origin": "https://tools.rhrscouting.ca",
   "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 }
