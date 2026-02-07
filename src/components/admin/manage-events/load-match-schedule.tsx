@@ -6,6 +6,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import { upsertMatchSchedule } from "~/db/queries/match-schedule";
+import { fetchAndCreateTeamsForEvent } from "~/db/queries/teams";
 import { fetchMatchScheduleByYearAndEventCode } from "~/server/http/frc-events";
 
 export default function LoadMatchSchedule({
@@ -43,10 +44,15 @@ export default function LoadMatchSchedule({
           };
         }),
       );
+
+      // Create the teams first since the match schedule depends on them
+      await fetchAndCreateTeamsForEvent(year, event.eventKey);
+
       await upsertMatchSchedule({
         eventId: event.id.toString(),
         matchSchedule: formattedMatchSchedule,
       });
+
       toast.success(
         `Match schedule for ${event.name} was uploaded successfully!`,
       );
