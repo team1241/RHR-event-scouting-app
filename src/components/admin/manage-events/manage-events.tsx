@@ -15,7 +15,7 @@ export default async function ManageEvents() {
   const seasons = await getSeasons();
 
   const activeSeason: SeasonWithEventsAndImages | undefined = seasons.find(
-    (season) => season.isActive
+    (season) => season.isActive,
   );
 
   return (
@@ -42,7 +42,11 @@ export default async function ManageEvents() {
             {activeSeason &&
               activeSeason.events &&
               activeSeason.events.map((event) => (
-                <EventCard key={event.id} event={event} />
+                <EventCard
+                  key={event.id}
+                  event={event}
+                  year={activeSeason.year}
+                />
               ))}
           </div>
         )}

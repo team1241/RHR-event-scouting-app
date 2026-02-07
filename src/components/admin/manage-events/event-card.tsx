@@ -1,6 +1,7 @@
 import { Events } from "@prisma/client";
 import { parseISO } from "date-fns";
 import DeleteEventModal from "~/components/admin/manage-events/delete-event-modal";
+import LoadMatchSchedule from "~/components/admin/manage-events/load-match-schedule";
 import {
   Card,
   CardContent,
@@ -8,7 +9,13 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 
-export default function EventCard({ event }: { event: Events }) {
+export default function EventCard({
+  event,
+  year,
+}: {
+  event: Events;
+  year: number;
+}) {
   return (
     <Card className="w-full md:w-72">
       <DeleteEventModal event={event} />
@@ -39,6 +46,7 @@ export default function EventCard({ event }: { event: Events }) {
           </p>
           <p>{parseISO(event.endDate).toDateString()}</p>
         </div>
+        <LoadMatchSchedule event={event} year={year} />
       </CardContent>
     </Card>
   );

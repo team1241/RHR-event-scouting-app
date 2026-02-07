@@ -66,6 +66,21 @@ export async function fetchEventByYearAndCode(year: string, eventCode: string) {
   return eventData.Events[0];
 }
 
+export interface FrcEventsTeam {
+  station: string,
+  surrogate: boolean,
+  teamNumber: number
+}
+
+export interface FrcEventsMatch {
+  description: string,
+  field: string,
+  matchNumber: number,
+  startTime: string,
+  tournamentLevel: string,
+  teams: FrcEventsTeam[]
+}
+
 export async function fetchMatchScheduleByYearAndEventCode(
   year: string,
   eventCode: string,
@@ -77,7 +92,7 @@ export async function fetchMatchScheduleByYearAndEventCode(
   );
 
   const matchScheduleData = await response.json();
-  return matchScheduleData.Schedule;
+  return matchScheduleData.Schedule as FrcEventsMatch[];
 }
 
 export async function fetchTeamsForEvent(
