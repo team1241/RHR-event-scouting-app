@@ -10,7 +10,7 @@ const isProtectedRoute = createRouteMatcher([
 
 const ALLOWED_ORIGINS = new Set([
   "http://localhost:5173",
-  "https://rebuilt.rhrscouting.ca",
+  "https://tools.rhrscouting.ca",
 ]);
 
 export default clerkMiddleware((auth, req) => {
