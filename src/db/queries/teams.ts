@@ -13,3 +13,29 @@ export async function fetchAndCreateTeamsForEvent(year: number, eventCode: strin
 export async function createTeams(teams: Prisma.TeamsCreateInput[]) {
   await prisma.teams.createMany({ data: teams, skipDuplicates: true })
 }
+
+export async function getTeamsAtEvent(eventCode: string) {
+  const year = eventCode.substring(0, 4)
+  const eventKey = eventCode.substring(4)
+  return await prisma.teams.findMany({
+    where: {
+      matchSchedules: {
+        some: {
+          event: {
+            season: {
+              year: {
+                equals: Number(year)
+              }
+            },
+            eventKey: {
+              equals: eventKey
+            }
+          }
+        },
+      }
+    },
+    orderBy: {
+      number: "asc"
+    },
+  })
+}
