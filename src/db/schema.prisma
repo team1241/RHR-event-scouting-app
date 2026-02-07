@@ -196,12 +196,14 @@ model MatchSchedule {
   eventId       Int
   matchNumber   String
   teamNumber    Int
+  team          Teams? @relation(fields: [teamNumber], references: [number])
   driverStation Int
   colour        String
 }
 
 model Teams {
-  id     Int    @id @default(autoincrement())
-  number Int
-  name   String
+  id             Int             @id @default(autoincrement())
+  number         Int             @unique
+  name           String
+  matchSchedules MatchSchedule[]
 }

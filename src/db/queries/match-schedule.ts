@@ -20,8 +20,8 @@ export async function getTeamsForMatchInEvent({ eventId, matchNumber }: TeamsFor
     select: {
       colour: true,
       driverStation: true,
-      teamNumber: true
-    }
+      team: true
+    },
   })
 }
 
