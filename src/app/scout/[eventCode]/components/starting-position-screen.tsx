@@ -10,12 +10,12 @@ import FieldImage from "./common/field-image";
 import { useContext, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
 import {
-  GAME_PIECES_2025,
   ACTION_NAMES,
   LOCAL_STORAGE_KEYS,
   MATCH_STATES,
   SCREEN_NAMES,
-  STARTING_POSITIONS_2025,
+  STARTING_POSITIONS,
+  GAME_PIECE,
 } from "../constants";
 import { cn } from "~/lib/utils";
 import { getFlexDirection } from "../utils";
@@ -36,12 +36,12 @@ export default function StartingPositionScreen() {
     });
     if (!context.startingPosition.hasPreload) {
       context.setGamePieceState([
-        { type: GAME_PIECES_2025.CORAL, count: 1 },
+        { type: GAME_PIECE.FUEL, count: 8 },
         context.gamePieceState[1],
       ]);
     } else {
       context.setGamePieceState([
-        { type: GAME_PIECES_2025.CORAL, count: 0 },
+        { type: GAME_PIECE.FUEL, count: 0 },
         context.gamePieceState[1],
       ]);
     }
@@ -56,6 +56,8 @@ export default function StartingPositionScreen() {
   const setPosition = (position: string) => {
     context.setStartingPosition({ ...context.startingPosition, position });
   };
+
+  console.log(context.startingPosition);
 
   const [isSaved, setSaved] = useState(false);
 
@@ -90,6 +92,11 @@ export default function StartingPositionScreen() {
     return true;
   };
 
+  const { row, col } = getFlexDirection(
+    context.uiOrientation,
+    context.allianceColour,
+  );
+
   return (
     <div>
       <PageHeading>Starting Position</PageHeading>
@@ -121,14 +128,114 @@ export default function StartingPositionScreen() {
         </Button>
       </div>
       <FieldImage imageSize="100%" fieldSize="half">
-        <div
-          className={cn(
-            "flex h-full w-full justify-between",
-            getFlexDirection(context.uiOrientation, context.allianceColour).row,
-          )}
-        >
+        <div className={cn("flex h-full w-full justify-between", row)}>
+          <div className="w-[185px]" />
+          <div className={cn("flex my-4 min-w-fit", row)}>
+            <div className={cn("flex justify-between", col)}>
+              <Button
+                className={cn(
+                  "h-full dark:bg-green-500/50 font-bold text-lg dark:text-white dark:hover:bg-green-500/70 w-28",
+                  context.startingPosition.position ===
+                    STARTING_POSITIONS.ZONE_2 &&
+                    "dark:ring-2 dark:bg-green-500/70 ring-white",
+                )}
+                onClick={() => {
+                  setSaved(false);
+                  setPosition(STARTING_POSITIONS.ZONE_2);
+                }}
+              >
+                Zone 2
+              </Button>
+              <Button
+                className={cn(
+                  "h-full dark:bg-pink-500/50 font-bold text-lg dark:text-white dark:hover:bg-pink-500/70 w-28",
+                  context.startingPosition.position ===
+                    STARTING_POSITIONS.ZONE_3 &&
+                    "dark:ring-2 dark:bg-pink-500/70 ring-white",
+                )}
+                onClick={() => {
+                  setSaved(false);
+                  setPosition(STARTING_POSITIONS.ZONE_3);
+                }}
+              >
+                Zone 3
+              </Button>
+              <Button
+                className={cn(
+                  "h-full dark:bg-yellow-500/50 font-bold text-lg dark:text-white dark:hover:bg-yellow-500/70 w-28",
+                  context.startingPosition.position ===
+                    STARTING_POSITIONS.ZONE_4 &&
+                    "dark:ring-2 dark:bg-yellow-500/70 ring-white",
+                )}
+                onClick={() => {
+                  setSaved(false);
+                  setPosition(STARTING_POSITIONS.ZONE_4);
+                }}
+              >
+                Zone 4
+              </Button>
+              <Button
+                className={cn(
+                  "h-full dark:bg-pink-500/50 font-bold text-lg dark:text-white dark:hover:bg-pink-500/70 w-28",
+                  context.startingPosition.position ===
+                    STARTING_POSITIONS.ZONE_5 &&
+                    "dark:ring-2 dark:bg-pink-500/70 ring-white",
+                )}
+                onClick={() => {
+                  setSaved(false);
+                  setPosition(STARTING_POSITIONS.ZONE_5);
+                }}
+              >
+                Zone 5
+              </Button>
+              <Button
+                className={cn(
+                  "h-full dark:bg-green-500/50 font-bold text-lg dark:text-white dark:hover:bg-green-500/70 w-28",
+                  context.startingPosition.position ===
+                    STARTING_POSITIONS.ZONE_6 &&
+                    "dark:ring-2 dark:bg-green-500/70 ring-white",
+                )}
+                onClick={() => {
+                  setSaved(false);
+                  setPosition(STARTING_POSITIONS.ZONE_6);
+                }}
+              >
+                Zone 6
+              </Button>
+            </div>
+            <div className={cn("flex justify-between", col)}>
+              <Button
+                className={cn(
+                  "h-1/5 dark:bg-orange-500/50 font-bold text-lg dark:text-white dark:hover:bg-orange-500/70 w-28",
+                  context.startingPosition.position ===
+                    STARTING_POSITIONS.ZONE_1 &&
+                    "dark:ring-2 dark:bg-orange-500/70 ring-white",
+                )}
+                onClick={() => {
+                  setSaved(false);
+                  setPosition(STARTING_POSITIONS.ZONE_1);
+                }}
+              >
+                Zone 1
+              </Button>
+              <Button
+                className={cn(
+                  "h-1/5 dark:bg-orange-500/50 font-bold text-lg dark:text-white dark:hover:bg-orange-500/70 w-28",
+                  context.startingPosition.position ===
+                    STARTING_POSITIONS.ZONE_7 &&
+                    "dark:ring-2 dark:bg-orange-500/70 ring-white",
+                )}
+                onClick={() => {
+                  setSaved(false);
+                  setPosition(STARTING_POSITIONS.ZONE_7);
+                }}
+              >
+                Zone 7
+              </Button>
+            </div>
+          </div>
           <div className="flex flex-col space-y-20 items-start mx-4 justify-center">
-            <div className="flex items-center space-x-4 bg-black/90 font-bold p-3 rounded-lg">
+            <div className="flex items-center bg-black/90 font-bold p-3 rounded-lg w-full gap-4">
               <Checkbox
                 id="noshow"
                 className="size-7"
@@ -140,13 +247,13 @@ export default function StartingPositionScreen() {
               />
               <label
                 htmlFor="noshow"
-                className="text-4xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                className="text-4xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex-1 text-center"
               >
                 {"Didn't show up?"}
               </label>
             </div>
 
-            <div className="flex items-center space-x-4 bg-black/90 font-bold p-3 rounded-lg">
+            <div className="flex items-center bg-black/90 font-bold p-3 rounded-lg gap-4 ">
               <Checkbox
                 id="preload"
                 className="size-7"
@@ -158,62 +265,11 @@ export default function StartingPositionScreen() {
               />
               <label
                 htmlFor="preload"
-                className="text-4xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                className="text-4xl leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-center"
               >
-                Has preload?
+                Has preloaded fuel?
               </label>
             </div>
-          </div>
-          <div
-            className={cn(
-              // "flex justify-between w-72 my-10 mx-52",
-              "flex justify-between my-12 mx-52",
-              getFlexDirection(context.uiOrientation, context.allianceColour)
-                .col,
-            )}
-          >
-            <Button
-              className={cn(
-                "h-full dark:bg-red-500/50 font-bold text-lg dark:text-white dark:hover:bg-red-500/70 w-28",
-                context.startingPosition.position ===
-                  STARTING_POSITIONS_2025.ZONE_1 &&
-                  "dark:ring-2 dark:bg-red-500/70 ring-white",
-              )}
-              onClick={() => {
-                setSaved(false);
-                setPosition(STARTING_POSITIONS_2025.ZONE_1);
-              }}
-            >
-              Zone 1
-            </Button>
-            <Button
-              className={cn(
-                "h-full dark:bg-green-500/50 font-bold text-lg dark:text-white dark:hover:bg-green-500/70 w-28",
-                context.startingPosition.position ===
-                  STARTING_POSITIONS_2025.ZONE_2 &&
-                  "dark:ring-2 dark:bg-green-500/70 ring-white",
-              )}
-              onClick={() => {
-                setSaved(false);
-                setPosition(STARTING_POSITIONS_2025.ZONE_2);
-              }}
-            >
-              Zone 2
-            </Button>
-            <Button
-              className={cn(
-                "h-full dark:bg-blue-500/50 font-bold text-lg dark:text-white dark:hover:bg-blue-500/70 w-28",
-                context.startingPosition.position ===
-                  STARTING_POSITIONS_2025.ZONE_3 &&
-                  "dark:ring-2 dark:bg-blue-500/70 ring-white",
-              )}
-              onClick={() => {
-                setSaved(false);
-                setPosition(STARTING_POSITIONS_2025.ZONE_3);
-              }}
-            >
-              Zone 3
-            </Button>
           </div>
         </div>
       </FieldImage>

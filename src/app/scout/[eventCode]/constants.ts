@@ -143,6 +143,16 @@ export const LOCATIONS = {
   MID_LINE: "mid-line"
 }
 
+export const STARTING_POSITIONS = {
+  ZONE_1: LOCATIONS.TRENCH.DEPOT,
+  ZONE_2: 'starting-line-depot',
+  ZONE_3: LOCATIONS.BUMP.DEPOT,
+  ZONE_4: 'starting-line-hub',
+  ZONE_5: LOCATIONS.BUMP.OUTPOST,
+  ZONE_6: 'starting-line-outpost',
+  ZONE_7: LOCATIONS.TRENCH.OUTPOST
+}
+
 export const SHOOTING_ACCURACY = {
   ALL: 1,
   MOST: 0.8,

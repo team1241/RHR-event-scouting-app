@@ -299,8 +299,7 @@ const ScoutPage = () => {
         }}
       >
         <ScoutingInfoHeader />
-        {/* {screens[currentScreenIndex].component} */}
-        {screens[2].component}
+        {screens[currentScreenIndex].component}
       </ScoutDataContext.Provider>
     </ScoutScreenContext.Provider>
   );
