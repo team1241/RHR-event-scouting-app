@@ -139,6 +139,9 @@ export const LOCATIONS = {
     L1: "tower-L1",
     L2: "tower-L2",
     L3: "tower-L3",
+    LEFT: "tower-left",
+    CENTER: "tower-center",
+    RIGHT: "tower-right",
   },
   MID_LINE: "mid-line"
 }

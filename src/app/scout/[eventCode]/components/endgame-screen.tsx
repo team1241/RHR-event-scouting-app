@@ -1,39 +1,29 @@
 "use client";
 
 import PageHeading from "~/components/common/page-heading";
-import { Button } from "~/components/ui/button";
 import FieldImage from "./common/field-image";
 import { useContext, useEffect, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
-import { cn } from "~/lib/utils";
 import ScoutActionButton from "./common/scout-action-button";
 import {
-  GAME_PIECES_2025,
-  LOCATIONS_2025,
   ACTION_NAMES,
+  GAME_PIECE,
+  LOCATIONS,
 } from "~/app/scout/[eventCode]/constants";
 import ContinueButton from "./common/continue-button";
 import BackButton from "./common/back-button";
 import UndoActionButton from "./common/undo-action-button";
-import { getFlexDirection } from "../utils";
 import { toast } from "sonner";
+import { cn } from "~/lib/utils";
 
 export default function EndgameScreen() {
   const context = useContext(ScoutDataContext);
   const screenContext = useContext(ScoutScreenContext);
-  const [hangPositionSelected, setHangPositionSelected] = useState<string>("");
   const [currentAction, setCurrentAction] = useState<string>("");
-  const [actionDone, setActionDone] = useState(false);
-  const [positionSelected, setPositionSelected] = useState(false);
-  const [climbStarted, setClimbStarted] = useState(false);
-
-  function checkActionButtonDisabled() {
-    return !positionSelected || actionDone;
-  }
+  const [positionSelected, setPositionSelected] = useState<string>("");
 
   useEffect(() => {
     setCurrentAction(context.previousEndgameAction.actionMessage);
-    setActionDone(context.previousEndgameAction.actionDone);
   }, []);
 
   return (
@@ -45,10 +35,7 @@ export default function EndgameScreen() {
           </div>
           <UndoActionButton
             onClick={() => {
-              setHangPositionSelected("");
-              setActionDone(false);
-              setPositionSelected(false);
-              setClimbStarted(false);
+              setPositionSelected("");
               setCurrentAction("");
               context.setPreviousEndgameAction({
                 actionDone: false,
@@ -59,251 +46,127 @@ export default function EndgameScreen() {
             className="text-xl bg-red-600 h-16 w-40"
           />
         </div>
-        <p className="text-2xl font-bold mt-4 ml-[5rem]">{`Most Recent: ${currentAction} `}</p>
+        <p className="text-2xl font-bold mt-4 ml-[5rem]">{`Most Recent: ${currentAction}`}</p>
       </div>
 
-      <FieldImage imageSize="100%" fieldSize="half">
-        <div
-          className={cn(
-            "flex justify-evenly gap-20 h-full",
-            getFlexDirection(context.uiOrientation, context.allianceColour).row,
-          )}
-        >
-          <div className="flex flex-col justify-evenly h-full">
+      <FieldImage
+        imageSize="100%"
+        fieldSize="half"
+        imageUrl="https://rb4alqiu9a.ufs.sh/f/42uJu9obYfa7DPux5fw9xVHyaSv7GgruA8IWmkXtdzQM3FTh"
+      >
+        <div className="flex h-full">
+          <div className="flex flex-col items-center justify-evenly h-full mt-2 w-2/5">
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
-              gamePiece={GAME_PIECES_2025.CAGE.DEEP}
-              location={hangPositionSelected}
+              gamePiece={GAME_PIECE.NONE}
+              location={LOCATIONS.TOWER.L3}
               className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
               onClick={() => {
-                setActionDone(true);
                 context.setPreviousEndgameAction({
                   actionDone: true,
-                  positionSelected: hangPositionSelected,
-                  actionMessage: "Successfully Climbed Deep",
+                  positionSelected: positionSelected,
+                  actionMessage: "Successfully Climbed L3",
                 });
 
-                toast.error("Robot climbed deep cage!");
-                setCurrentAction("Successfully Climbed Deep Cage");
-                setClimbStarted(false);
-                setHangPositionSelected("");
-                setPositionSelected(false);
+                toast.error("Robot climbed L3!");
+                setCurrentAction("Successfully Climbed L3");
+                setPositionSelected("");
               }}
-              disabled={
-                checkActionButtonDisabled() ||
-                !climbStarted ||
-                context.isBrownedOut
-              }
-              label="Deep Hang"
+              disabled={context.isBrownedOut || !positionSelected}
+              label="Level 3"
               shouldBeHidden={false}
             />
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
-              gamePiece={GAME_PIECES_2025.CAGE.SHALLOW}
-              location={hangPositionSelected}
+              gamePiece={GAME_PIECE.NONE}
+              location={LOCATIONS.TOWER.L2}
               className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
               onClick={() => {
-                setActionDone(true);
                 context.setPreviousEndgameAction({
                   actionDone: true,
-                  positionSelected: hangPositionSelected,
-                  actionMessage: "Successfully Climbed Shallow",
+                  positionSelected: positionSelected,
+                  actionMessage: "Successfully Climbed L2",
                 });
-                toast.error("Robot climbed shallow cage!");
-                setCurrentAction("Successfully Climbed Shallow Cage");
-                setClimbStarted(false);
-                setHangPositionSelected("");
-                setPositionSelected(false);
+
+                toast.error("Robot climbed L2!");
+                setCurrentAction("Successfully Climbed L2");
+                setPositionSelected("");
               }}
-              disabled={
-                checkActionButtonDisabled() ||
-                !climbStarted ||
-                context.isBrownedOut
-              }
-              label="Shallow Hang"
+              disabled={context.isBrownedOut || !positionSelected}
+              label="Level 2"
               shouldBeHidden={false}
             />
-
             <ScoutActionButton
-              actionName={ACTION_NAMES.PARK}
-              gamePiece={GAME_PIECES_2025.NOGAMEPIECE}
-              location={hangPositionSelected}
+              actionName={ACTION_NAMES.CLIMB.SUCCESS}
+              gamePiece={GAME_PIECE.NONE}
+              location={LOCATIONS.TOWER.L1}
               className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
               onClick={() => {
-                setActionDone(true);
                 context.setPreviousEndgameAction({
                   actionDone: true,
-                  positionSelected: hangPositionSelected,
-                  actionMessage: "Successfully Parked",
+                  positionSelected: positionSelected,
+                  actionMessage: "Successfully Climbed L1",
                 });
 
-                toast.error("Robot parked!");
-                setCurrentAction("Successfully Parked");
-                setHangPositionSelected("");
-                setPositionSelected(false);
+                toast.error("Robot climbed L1!");
+                setCurrentAction("Successfully Climbed L1");
+                setPositionSelected("");
               }}
-              disabled={
-                checkActionButtonDisabled() ||
-                climbStarted ||
-                context.isBrownedOut
-              }
-              label="Park"
-              shouldBeHidden={false}
-            />
-
-            <ScoutActionButton
-              actionName={ACTION_NAMES.CLIMB.FAIL}
-              gamePiece={GAME_PIECES_2025.CAGE.DEEP}
-              location={hangPositionSelected}
-              className={
-                "mb-1 h-16 w-40 font-bold text-xl !bg-red-500 text-black"
-              }
-              onClick={() => {
-                setActionDone(true);
-                context.setPreviousEndgameAction({
-                  actionDone: true,
-                  positionSelected: hangPositionSelected,
-                  actionMessage: "Deep Climb Failed",
-                });
-                toast.error("Robot failed deep climb!");
-                setCurrentAction("Deep Climb Failed");
-                setClimbStarted(false);
-                setHangPositionSelected("");
-                setPositionSelected(false);
-              }}
-              disabled={
-                checkActionButtonDisabled() ||
-                climbStarted === false ||
-                context.isBrownedOut
-              }
-              label="Failed Deep"
-              shouldBeHidden={false}
-            />
-
-            <ScoutActionButton
-              actionName={ACTION_NAMES.CLIMB.FAIL}
-              gamePiece={GAME_PIECES_2025.CAGE.SHALLOW}
-              location={hangPositionSelected}
-              className={
-                "mb-1 h-16 w-40 font-bold text-xl !bg-red-500 text-black"
-              }
-              onClick={() => {
-                setActionDone(true);
-                context.setPreviousEndgameAction({
-                  actionDone: true,
-                  positionSelected: hangPositionSelected,
-                  actionMessage: "Shallow Climb Failed ",
-                });
-                toast.error("Robot failed shallow climb!");
-                setCurrentAction("Shallow Climb Failed ");
-                setClimbStarted(false);
-                setHangPositionSelected("");
-                setPositionSelected(false);
-              }}
-              disabled={
-                checkActionButtonDisabled() ||
-                climbStarted === false ||
-                context.isBrownedOut
-              }
-              label="Failed Shallow"
+              disabled={context.isBrownedOut || !positionSelected}
+              label="Level 1"
               shouldBeHidden={false}
             />
           </div>
 
-          <div className="flex flex-col justify-center h-full gap-4">
+          <div className="flex h-full gap-4 w-3/5 ml-16 my-1">
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.START}
-              gamePiece={GAME_PIECES_2025.NOGAMEPIECE}
-              location={hangPositionSelected}
-              className={
-                "mb-1 h-16 w-40 font-bold text-xl !bg-green-700 !text-white"
-              }
+              gamePiece={GAME_PIECE.NONE}
+              location={LOCATIONS.TOWER.LEFT}
+              className={cn(
+                "h-full w-32 font-bold text-xl !bg-green-700/50 !text-white",
+                positionSelected === LOCATIONS.TOWER.LEFT &&
+                  "border-2 border-white",
+              )}
               onClick={() => {
-                toast.error("Climb started!");
-                setCurrentAction("Started Climb Attempt");
-                setClimbStarted(true);
+                setPositionSelected(LOCATIONS.TOWER.LEFT);
               }}
-              label="Start Climb"
+              label="Left"
+              disabled={!!currentAction}
               shouldBeHidden={false}
-              disabled={
-                !positionSelected || !!currentAction || context.isBrownedOut
-              }
             />
             <ScoutActionButton
-              actionName={ACTION_NAMES.CLIMB.NOTHING}
-              gamePiece={GAME_PIECES_2025.NOGAMEPIECE}
-              location={LOCATIONS_2025.BARGE.BASE}
-              className={"mb-1 h-16 w-40 font-bold text-xl bg-red-500"}
-              disabled={
-                climbStarted ||
-                positionSelected ||
-                actionDone ||
-                context.isBrownedOut
-              }
+              actionName={ACTION_NAMES.CLIMB.START}
+              gamePiece={GAME_PIECE.NONE}
+              location={LOCATIONS.TOWER.CENTER}
+              className={cn(
+                "h-full w-32 font-bold text-xl !bg-green-700/50 !text-white",
+                positionSelected === LOCATIONS.TOWER.CENTER &&
+                  "border-2 border-white",
+              )}
               onClick={() => {
-                setActionDone(true);
-                toast.error("Robot did not attempt endgame action!");
-                setCurrentAction("Endgame action skipped");
-                context.setPreviousEndgameAction({
-                  actionDone: true,
-                  positionSelected: hangPositionSelected,
-                  actionMessage: "Endgame action skipped",
-                });
+                setPositionSelected(LOCATIONS.TOWER.CENTER);
               }}
-              label="Not Attempted"
+              label="Center"
+              disabled={!!currentAction}
               shouldBeHidden={false}
             />
-          </div>
-
-          <div
-            className={cn(
-              "flex flex-col my-[3rem] gap-2",
-              getFlexDirection(context.uiOrientation, context.allianceColour)
-                .col,
-            )}
-          >
-            <Button
+            <ScoutActionButton
+              actionName={ACTION_NAMES.CLIMB.START}
+              gamePiece={GAME_PIECE.NONE}
+              location={LOCATIONS.TOWER.RIGHT}
               className={cn(
-                "h-12 w-40 font-bold text-xl !bg-white opacity-80",
-                hangPositionSelected === LOCATIONS_2025.BARGE.OUTER &&
-                  "dark:ring-4 ring-red-500",
+                "h-full w-32 font-bold text-xl !bg-green-700/50 !text-white",
+                positionSelected === LOCATIONS.TOWER.RIGHT &&
+                  "border-2 border-white",
               )}
               onClick={() => {
-                setPositionSelected(true);
-                setHangPositionSelected(LOCATIONS_2025.BARGE.OUTER);
+                setPositionSelected(LOCATIONS.TOWER.RIGHT);
               }}
-              disabled={actionDone || context.isBrownedOut}
-            >
-              Far Cage
-            </Button>
-            <Button
-              className={cn(
-                " h-12 w-40 font-bold text-xl !bg-white opacity-80",
-                hangPositionSelected === LOCATIONS_2025.BARGE.MIDDLE &&
-                  "dark:ring-4 ring-red-500",
-              )}
-              onClick={() => {
-                setHangPositionSelected(LOCATIONS_2025.BARGE.MIDDLE);
-                setPositionSelected(true);
-              }}
-              disabled={actionDone || context.isBrownedOut}
-            >
-              Middle Cage
-            </Button>
-            <Button
-              className={cn(
-                " mb-1 h-12 w-40  font-bold text-xl !bg-white opacity-80",
-                hangPositionSelected === LOCATIONS_2025.BARGE.INNER &&
-                  "dark:ring-4 ring-red-500",
-              )}
-              onClick={() => {
-                setPositionSelected(true);
-                setHangPositionSelected(LOCATIONS_2025.BARGE.INNER);
-              }}
-              disabled={actionDone || context.isBrownedOut}
-            >
-              Near Cage
-            </Button>
+              label="Right"
+              disabled={!!currentAction}
+              shouldBeHidden={false}
+            />
           </div>
         </div>
       </FieldImage>
@@ -335,7 +198,6 @@ export default function EndgameScreen() {
         />
 
         <ContinueButton
-          // disabled={currentAction === "" || context.isTimerRunning}
           onClick={() => {
             screenContext.nextScreen();
           }}
