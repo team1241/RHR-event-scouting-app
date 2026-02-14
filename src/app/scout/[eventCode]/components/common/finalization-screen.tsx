@@ -40,7 +40,6 @@ import { Label } from "~/components/ui/label";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { submitScoutDataForTeamAtEvent } from "~/db/queries/actions";
-import { submitAlternateScoutDataForMatch } from "~/db/queries/alternate-scout";
 import { cn } from "~/lib/utils";
 import { Textarea } from "~/components/ui/text-area";
 import { saveMatchCommentsForTeam } from "~/db/queries/match-comments";
@@ -71,29 +70,11 @@ const FinalizationScreen = () => {
 
   const teleopActions: ScoutAction[] = [];
   const autoActions: ScoutAction[] = [];
-  let totalAlgaeScored: number = 0;
-  let totalAlgaeMissed: number = 0;
-  let totalCoralScored: number = 0;
-  let totalCoralMissed: number = 0;
   context.actions.forEach((action) => {
     if (!action.isAuto) {
       teleopActions.push(action);
     } else {
       autoActions.push(action);
-    }
-    if (action.gamePiece === "algae" && action.actionName === "score") {
-      totalAlgaeScored++;
-    }
-
-    if (action.gamePiece === "algae" && action.actionName === "miss") {
-      totalAlgaeMissed++;
-    }
-    if (action.gamePiece === "coral" && action.actionName === "score") {
-      totalCoralScored++;
-    }
-
-    if (action.gamePiece === "coral" && action.actionName === "miss") {
-      totalCoralMissed++;
     }
   });
 
@@ -107,23 +88,8 @@ const FinalizationScreen = () => {
     mutationFn: async () => {
       await submitScoutDataForTeamAtEvent(
         context.eventCode.substring(4),
-        context.actions
+        context.actions,
       );
-    },
-  });
-
-  const alternateScoutDateMutation = useMutation({
-    mutationKey: [
-      "submit-alternate-scout-data",
-      context.eventCode,
-      context.matchNumber,
-    ],
-    mutationFn: async () => {
-      await submitAlternateScoutDataForMatch(context.eventCode.substring(4), {
-        scoutId: context.scouterDetails.id,
-        matchNumber: context.matchNumber,
-        data: JSON.stringify(context.alternateScoutData),
-      });
     },
   });
 
@@ -157,7 +123,7 @@ const FinalizationScreen = () => {
       if (index > 0) {
         timeRemaining -= differenceInSeconds(
           actions[index].timestamp,
-          actions[index - 1].timestamp
+          actions[index - 1].timestamp,
         );
       }
 
@@ -167,9 +133,9 @@ const FinalizationScreen = () => {
           className="flex flex-row gap-2 items-center"
         >
           <p className="font-semibold text-xl">{index + 1}</p>
-          <p>{capitalize(action.gamePiece)}</p>
-          <p>{capitalize(action.actionName)}</p>
-          <p>{capitalize(action.location)}</p>
+          <p>{capitalize(action?.gamePiece ?? "")}</p>
+          <p>{capitalize(action?.actionName ?? "")}</p>
+          <p>{capitalize(action?.location ?? "")}</p>
           {action.wasDefended && <ShieldIcon />}
           {action.hasUndo && <UndoIcon />}
           <p className="grow text-right">{`T = ${timeRemaining}`}</p>
@@ -207,121 +173,21 @@ const FinalizationScreen = () => {
                       {"---- End of list ----"}
                     </p>
                   </ScrollArea>
-                  {/* This content is disabled if the user is an alternate scout */}
                 </TabsContent>
                 <TabsContent value="teleop" className="h-[300px] w-full">
                   {teleopActions.length === 0 && !context.isAlternateScout && (
                     <p>No actions logged</p>
                   )}
-                  {context.isAlternateScout ? (
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-xl flex flex-col gap-2">
-                        <p className="font-semibold text-2xl">RED:</p>
-                        <p>
-                          Makes:{" "}
-                          <span>{`${context.alternateScoutData?.scoring.redScore}`}</span>
-                        </p>
-                        <p>
-                          Misses:{" "}
-                          <span>{`${context.alternateScoutData?.scoring.redMiss}`}</span>
-                        </p>
-                        <p className="font-semibold">
-                          Total shots:{" "}
-                          <span>{`${
-                            context.alternateScoutData!.scoring.redMiss +
-                            context.alternateScoutData!.scoring.redScore
-                          }`}</span>
-                        </p>
-                        <p className="font-semibold">
-                          Accuracy:{" "}
-                          <span>{`${
-                            context.alternateScoutData!.scoring.redMiss +
-                              context.alternateScoutData!.scoring.redScore !==
-                            0
-                              ? (
-                                  (parseFloat(
-                                    context.alternateScoutData!.scoring.redScore.toFixed(
-                                      2
-                                    )
-                                  ) /
-                                    (context.alternateScoutData!.scoring
-                                      .redMiss +
-                                      context.alternateScoutData!.scoring
-                                        .redScore)) *
-                                  100
-                                ).toFixed(1)
-                              : 0
-                          }%`}</span>
-                        </p>
-                      </div>
-                      <div className="text-xl flex flex-col gap-2">
-                        <p className="font-semibold text-2xl">BLUE:</p>
-                        <p>
-                          Makes:{" "}
-                          <span>{`${context.alternateScoutData?.scoring.blueScore}`}</span>
-                        </p>
-                        <p>
-                          Misses:{" "}
-                          <span>{`${context.alternateScoutData?.scoring.blueMiss}`}</span>
-                        </p>
-                        <p className="font-semibold">
-                          Total shots:{" "}
-                          <span>{`${
-                            context.alternateScoutData!.scoring.blueMiss +
-                            context.alternateScoutData!.scoring.blueScore
-                          }`}</span>
-                        </p>
-                        <p className="font-semibold">
-                          Accuracy:{" "}
-                          <span>{`${
-                            context.alternateScoutData!.scoring.blueMiss +
-                              context.alternateScoutData!.scoring.blueScore !==
-                            0
-                              ? (
-                                  (parseFloat(
-                                    context.alternateScoutData!.scoring.blueScore.toFixed(
-                                      2
-                                    )
-                                  ) /
-                                    (context.alternateScoutData!.scoring
-                                      .blueMiss +
-                                      context.alternateScoutData!.scoring
-                                        .blueScore)) *
-                                  100
-                                ).toFixed(1)
-                              : 0
-                          }%`}</span>
-                        </p>
-                      </div>
-                    </div>
-                  ) : (
-                    <ScrollArea className="h-[300px]">
-                      {renderActionList(teleopActions)}
-                      <p className="text-center text-xl font-semibold">
-                        {"---- End of list ----"}
-                      </p>
-                    </ScrollArea>
-                  )}
+                  <ScrollArea className="h-[300px]">
+                    {renderActionList(teleopActions)}
+                    <p className="text-center text-xl font-semibold">
+                      {"---- End of list ----"}
+                    </p>
+                  </ScrollArea>
                 </TabsContent>
 
                 <TabsContent value="total" className="h-[300px] w-full">
                   <div className="flex flex-col">
-                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
-                      <p className="align-start">Total Coral Scored:</p>
-                      <p className="text-3xl">{totalCoralScored}</p>
-                    </div>
-                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
-                      <p className="align-start">Total Coral Missed:</p>
-                      <p className="text-3xl">{totalCoralMissed}</p>
-                    </div>
-                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
-                      <p className="align-start">Total Algae Scored:</p>
-                      <p className="text-3xl">{totalAlgaeScored}</p>
-                    </div>
-                    <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
-                      <p className="align-start">Total Algae Missed:</p>
-                      <p className="text-3xl">{totalAlgaeMissed}</p>
-                    </div>
                     <div className="flex flex-row text-xl font-bold h-12 w-full justify-between">
                       <p className="align-start">Endgame Status: </p>
                       <p className="text-xl">
@@ -360,7 +226,7 @@ const FinalizationScreen = () => {
                       "rounded-sm px-2 pt-0.5 font-bold text-center text-white w-24 !text-lg max-h-8",
                       context.allianceColour === "red"
                         ? "bg-red-500"
-                        : "bg-blue-500"
+                        : "bg-blue-500",
                     )}
                   >
                     {context.teamToScout}
@@ -369,49 +235,32 @@ const FinalizationScreen = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {context.isAlternateScout ? (
-                <>
+              <>
+                {context.startingPosition.showedUp && (
                   <p className="text-xl font-semibold flex justify-between">
-                    Red Human Player:{" "}
-                    <span className="font-semibold bg-red-500 rounded-sm px-2 w-24 text-center">
-                      {`${context.alternateScoutData?.setup?.redTeamNumber}`}
-                    </span>
-                  </p>
-                  <p className="text-xl font-semibold flex justify-between mt-2">
-                    Blue Human Player:{" "}
-                    <span className="font-semibold bg-blue-500 rounded-sm px-2 w-24 text-center">
-                      {`${context.alternateScoutData?.setup?.blueTeamNumber}`}
-                    </span>
-                  </p>
-                </>
-              ) : (
-                <>
-                  {context.startingPosition.showedUp && (
-                    <p className="text-xl font-semibold flex justify-between">
-                      Starting position:{" "}
-                      <span className="font-normal">
-                        {context.startingPosition.position === ""
-                          ? "N/A"
-                          : context.startingPosition.position}
-                      </span>
-                    </p>
-                  )}
-                  <p className="text-xl font-semibold flex justify-between">
-                    Showed up to match?{" "}
+                    Starting position:{" "}
                     <span className="font-normal">
-                      {context.startingPosition.showedUp ? "YES" : "NO"}
+                      {context.startingPosition.position === ""
+                        ? "N/A"
+                        : context.startingPosition.position}
                     </span>
                   </p>
-                  {context.startingPosition.showedUp && (
-                    <p className="text-xl font-semibold flex justify-between">
-                      Had preload?{" "}
-                      <span className="font-normal">
-                        {context.startingPosition.hasPreload ? "YES" : "NO"}
-                      </span>
-                    </p>
-                  )}
-                </>
-              )}
+                )}
+                <p className="text-xl font-semibold flex justify-between">
+                  Showed up to match?{" "}
+                  <span className="font-normal">
+                    {context.startingPosition.showedUp ? "YES" : "NO"}
+                  </span>
+                </p>
+                {context.startingPosition.showedUp && (
+                  <p className="text-xl font-semibold flex justify-between">
+                    Had preload?{" "}
+                    <span className="font-normal">
+                      {context.startingPosition.hasPreload ? "YES" : "NO"}
+                    </span>
+                  </p>
+                )}
+              </>
             </CardContent>
           </Card>
           <div className="flex flex-col gap-2 w-full">
@@ -445,9 +294,7 @@ const FinalizationScreen = () => {
       <div className="flex justify-between w-full">
         <BackButton
           onClick={() => {
-            if (context.isAlternateScout) {
-              screenContext.goToScreen(SCREEN_NAMES.ALTERNATE_SCOUT.SCORING);
-            } else if (!context.startingPosition.showedUp) {
+            if (!context.startingPosition.showedUp) {
               screenContext.goToScreen(SCREEN_NAMES.STARTING_POSITIONS);
             } else {
               screenContext.prevScreen();
@@ -484,11 +331,7 @@ const FinalizationScreen = () => {
                       if (context.comment) {
                         await saveCommentsMutation.mutateAsync();
                       }
-                      if (context.isAlternateScout) {
-                        await alternateScoutDateMutation.mutateAsync();
-                      } else {
-                        await saveDataMutation.mutateAsync();
-                      }
+                      await saveDataMutation.mutateAsync();
                       toast.success("Match data submitted!");
                     }
                     if (typeof window !== "undefined") {
@@ -504,8 +347,7 @@ const FinalizationScreen = () => {
                 }}
               >
                 Confirm
-                {(saveDataMutation.isPending ||
-                  alternateScoutDateMutation.isPending) && (
+                {saveDataMutation.isPending && (
                   <Loader2Icon className="animate-spin size-5" />
                 )}
               </AlertDialogAction>
