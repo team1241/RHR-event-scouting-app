@@ -120,7 +120,6 @@ export default function EndgameScreen() {
           </div>
 
           <div className="flex h-full gap-4 w-3/5 ml-16 my-1">
-            /> */}
             <Button
               className={cn(
                 "h-full w-32 font-bold text-xl !bg-green-700/60 !text-white",
