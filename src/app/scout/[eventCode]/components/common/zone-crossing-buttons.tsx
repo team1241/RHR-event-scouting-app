@@ -33,10 +33,12 @@ export default function ZoneCrossingButtons({
   type,
   isAuto = false,
   disabled = false,
+  onCrossingClick,
 }: {
   type: ZoneCrossingType;
   isAuto?: boolean;
   disabled?: boolean;
+  onCrossingClick?: () => void;
 }) {
   const isAllianceCrossing = type === "alliance";
   const {
@@ -65,8 +67,9 @@ export default function ZoneCrossingButtons({
         uiOrientation,
         allianceColour,
         locationState,
+        !isAllianceCrossing,
       ),
-    [allianceColour, locationState, uiOrientation],
+    [allianceColour, isAllianceCrossing, locationState, uiOrientation],
   );
 
   const arrow =
@@ -110,6 +113,7 @@ export default function ZoneCrossingButtons({
   };
 
   const handleLocationUpdate = () => {
+    onCrossingClick?.();
     logFeedingEndIfNeeded();
 
     switch (locationState) {
@@ -136,10 +140,15 @@ export default function ZoneCrossingButtons({
       )}
     >
       <ScoutActionButton
-        className="h-16 w-20 bg-pink-800/90 "
+        className="h-16 w-20 bg-pink-800/90"
         onClick={() => handleLocationUpdate()}
         location={LOCATIONS.TRENCH.DEPOT}
-        actionName={ACTION_NAMES.ZONE_TRANSITION}
+        actionName={
+          isAllianceCrossing
+            ? ACTION_NAMES.ZONE_TRANSITION
+            : ACTION_NAMES.OPPONENT_ZONE_TRANSITION
+        }
+        gamePiece={GAME_PIECE.NONE}
         label={arrow}
         isAuto={isAuto}
         disabled={disabled}
@@ -151,7 +160,12 @@ export default function ZoneCrossingButtons({
         )}
         onClick={() => handleLocationUpdate()}
         location={LOCATIONS.BUMP.DEPOT}
-        actionName={ACTION_NAMES.ZONE_TRANSITION}
+        actionName={
+          isAllianceCrossing
+            ? ACTION_NAMES.ZONE_TRANSITION
+            : ACTION_NAMES.OPPONENT_ZONE_TRANSITION
+        }
+        gamePiece={GAME_PIECE.NONE}
         label={arrow}
         isAuto={isAuto}
         disabled={disabled}
@@ -164,7 +178,12 @@ export default function ZoneCrossingButtons({
         )}
         onClick={() => handleLocationUpdate()}
         location={LOCATIONS.BUMP.OUTPOST}
-        actionName={ACTION_NAMES.ZONE_TRANSITION}
+        actionName={
+          isAllianceCrossing
+            ? ACTION_NAMES.ZONE_TRANSITION
+            : ACTION_NAMES.OPPONENT_ZONE_TRANSITION
+        }
+        gamePiece={GAME_PIECE.NONE}
         label={arrow}
         isAuto={isAuto}
         disabled={disabled}
@@ -173,7 +192,12 @@ export default function ZoneCrossingButtons({
         className="h-16 w-20 bg-pink-800/90"
         onClick={() => handleLocationUpdate()}
         location={LOCATIONS.TRENCH.OUTPOST}
-        actionName={ACTION_NAMES.ZONE_TRANSITION}
+        actionName={
+          isAllianceCrossing
+            ? ACTION_NAMES.ZONE_TRANSITION
+            : ACTION_NAMES.OPPONENT_ZONE_TRANSITION
+        }
+        gamePiece={GAME_PIECE.NONE}
         label={arrow}
         isAuto={isAuto}
         disabled={disabled}

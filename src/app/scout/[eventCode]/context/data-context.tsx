@@ -24,6 +24,7 @@ export type ScoutAction = {
     durationSeconds?: number;
     accuracy?: number;
     feedingEndZone?: string;
+    defendedTeamNumber?: number;
   };
 };
 

@@ -15,6 +15,7 @@ import BackButton from "./common/back-button";
 import UndoActionButton from "./common/undo-action-button";
 import { toast } from "sonner";
 import { cn } from "~/lib/utils";
+import { Button } from "~/components/ui/button";
 
 export default function EndgameScreen() {
   const context = useContext(ScoutDataContext);
@@ -119,54 +120,46 @@ export default function EndgameScreen() {
           </div>
 
           <div className="flex h-full gap-4 w-3/5 ml-16 my-1">
-            <ScoutActionButton
-              actionName={ACTION_NAMES.CLIMB.START}
-              gamePiece={GAME_PIECE.NONE}
-              location={LOCATIONS.TOWER.LEFT}
+            /> */}
+            <Button
               className={cn(
-                "h-full w-32 font-bold text-xl !bg-green-700/50 !text-white",
+                "h-full w-32 font-bold text-xl !bg-green-700/60 !text-white",
                 positionSelected === LOCATIONS.TOWER.LEFT &&
                   "border-2 border-white",
               )}
               onClick={() => {
                 setPositionSelected(LOCATIONS.TOWER.LEFT);
               }}
-              label="Left"
               disabled={!!currentAction}
-              shouldBeHidden={false}
-            />
-            <ScoutActionButton
-              actionName={ACTION_NAMES.CLIMB.START}
-              gamePiece={GAME_PIECE.NONE}
-              location={LOCATIONS.TOWER.CENTER}
+            >
+              Left
+            </Button>
+            <Button
               className={cn(
-                "h-full w-32 font-bold text-xl !bg-green-700/50 !text-white",
+                "h-full w-32 font-bold text-xl !bg-orange-700/60 !text-white",
                 positionSelected === LOCATIONS.TOWER.CENTER &&
                   "border-2 border-white",
               )}
               onClick={() => {
                 setPositionSelected(LOCATIONS.TOWER.CENTER);
               }}
-              label="Center"
               disabled={!!currentAction}
-              shouldBeHidden={false}
-            />
-            <ScoutActionButton
-              actionName={ACTION_NAMES.CLIMB.START}
-              gamePiece={GAME_PIECE.NONE}
-              location={LOCATIONS.TOWER.RIGHT}
+            >
+              Center
+            </Button>
+            <Button
               className={cn(
-                "h-full w-32 font-bold text-xl !bg-green-700/50 !text-white",
+                "h-full w-32 font-bold text-xl !bg-purple-700/60 !text-white",
                 positionSelected === LOCATIONS.TOWER.RIGHT &&
                   "border-2 border-white",
               )}
               onClick={() => {
                 setPositionSelected(LOCATIONS.TOWER.RIGHT);
               }}
-              label="Right"
               disabled={!!currentAction}
-              shouldBeHidden={false}
-            />
+            >
+              Right
+            </Button>
           </div>
         </div>
       </FieldImage>

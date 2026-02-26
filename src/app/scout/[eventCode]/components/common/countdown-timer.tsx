@@ -19,12 +19,12 @@ const CountdownTimer = () => {
     if (matchState === MATCH_STATES.AUTO) {
       setFlashScoutLayout(false);
       setIsTimerRunning(true);
-      setSeconds(15);
+      setSeconds(20);
     }
     if (matchState === MATCH_STATES.TELEOP) {
       setFlashScoutLayout(false);
       setIsTimerRunning(true);
-      setSeconds(135);
+      setSeconds(130);
     }
 
     const countdownInterval = setInterval(() => {
@@ -60,7 +60,7 @@ const CountdownTimer = () => {
           minutesRemaining < 1 ? "min-w-24" : "min-w-36",
           secondsRemaining < 10 &&
             minutesRemaining < 1 &&
-            "animate-pulse bg-yellow-500 rounded-sm py-0.5 px-2 text-black"
+            "animate-pulse bg-yellow-500 rounded-sm py-0.5 px-2 text-black",
         )}
       >
         <p>{matchState[0].toUpperCase().concat(matchState.substring(1))}:</p>

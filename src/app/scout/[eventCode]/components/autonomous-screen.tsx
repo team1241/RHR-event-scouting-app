@@ -209,6 +209,7 @@ export default function AutonomousScreen() {
               label="Crossed Mid Line"
               isAuto
               actionName={ACTION_NAMES.CROSS_MID_LINE}
+              gamePiece={GAME_PIECE.NONE}
               location={LOCATIONS.MID_LINE}
               onClick={() => {
                 toast.info("Robot crossed mid line in auto!");
@@ -250,7 +251,7 @@ export default function AutonomousScreen() {
                 hasUndo: false,
                 wasDefended: false,
                 actionName: ACTION_NAMES.CLIMB.SUCCESS,
-                gamePiece: GAME_PIECE.TOWER,
+                gamePiece: GAME_PIECE.NONE,
                 location: LOCATIONS.TOWER.L1,
                 isAuto: true,
                 timestamp: formatISO(timestamp),

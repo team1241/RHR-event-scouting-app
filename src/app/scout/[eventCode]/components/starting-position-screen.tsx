@@ -57,8 +57,6 @@ export default function StartingPositionScreen() {
     context.setStartingPosition({ ...context.startingPosition, position });
   };
 
-  console.log(context.startingPosition);
-
   const [isSaved, setSaved] = useState(false);
 
   const saveStartingPosition = useMutation({

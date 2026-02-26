@@ -48,22 +48,55 @@ export const getHasCoralOrAlgae = (
   return `Has no game piece${defending}`;
 };
 
-export const getZoneCrossingArrowDirection = (uiOrientation: string, allianceColour: string, currentZone: LOCATION_STATES): ZONE_CROSSING_ARROW_DIRECTION => {
+export const getZoneCrossingArrowDirection = (
+  uiOrientation: string,
+  allianceColour: string,
+  currentZone: LOCATION_STATES,
+  isOpponentCrossing: boolean = false
+): ZONE_CROSSING_ARROW_DIRECTION => {
+  const getOppositeDirection = (direction: ZONE_CROSSING_ARROW_DIRECTION) =>
+    direction === ZONE_CROSSING_ARROW_DIRECTION.LEFT
+      ? ZONE_CROSSING_ARROW_DIRECTION.RIGHT
+      : ZONE_CROSSING_ARROW_DIRECTION.LEFT;
+
+  let direction: ZONE_CROSSING_ARROW_DIRECTION;
+
   switch (currentZone) {
     case LOCATION_STATES.ALLIANCE_ZONE:
       if (uiOrientation === FIELD_ORIENTATIONS.DEFAULT) {
-        return allianceColour === ALLIANCE_COLOURS.RED ? ZONE_CROSSING_ARROW_DIRECTION.RIGHT : ZONE_CROSSING_ARROW_DIRECTION.LEFT
+        direction = allianceColour === ALLIANCE_COLOURS.RED ? ZONE_CROSSING_ARROW_DIRECTION.RIGHT : ZONE_CROSSING_ARROW_DIRECTION.LEFT;
+        break;
       }
-      return allianceColour === ALLIANCE_COLOURS.RED ? ZONE_CROSSING_ARROW_DIRECTION.LEFT : ZONE_CROSSING_ARROW_DIRECTION.RIGHT
+      direction = allianceColour === ALLIANCE_COLOURS.RED ? ZONE_CROSSING_ARROW_DIRECTION.LEFT : ZONE_CROSSING_ARROW_DIRECTION.RIGHT;
+      break;
     case LOCATION_STATES.NEUTRAL_ZONE:
+      if (uiOrientation === FIELD_ORIENTATIONS.DEFAULT) {
+        direction = allianceColour === ALLIANCE_COLOURS.RED ? ZONE_CROSSING_ARROW_DIRECTION.RIGHT : ZONE_CROSSING_ARROW_DIRECTION.LEFT;
+        break;
+      }
+      direction = allianceColour === ALLIANCE_COLOURS.RED ? ZONE_CROSSING_ARROW_DIRECTION.LEFT : ZONE_CROSSING_ARROW_DIRECTION.RIGHT;
+      break;
     case LOCATION_STATES.OPPONENT_ZONE:
       if (uiOrientation === FIELD_ORIENTATIONS.DEFAULT) {
-        return allianceColour === ALLIANCE_COLOURS.RED ? ZONE_CROSSING_ARROW_DIRECTION.LEFT : ZONE_CROSSING_ARROW_DIRECTION.RIGHT
+        direction = allianceColour === ALLIANCE_COLOURS.RED ? ZONE_CROSSING_ARROW_DIRECTION.LEFT : ZONE_CROSSING_ARROW_DIRECTION.RIGHT;
+        break;
       }
-      return allianceColour === ALLIANCE_COLOURS.RED ? ZONE_CROSSING_ARROW_DIRECTION.RIGHT : ZONE_CROSSING_ARROW_DIRECTION.LEFT
+      direction = allianceColour === ALLIANCE_COLOURS.RED ? ZONE_CROSSING_ARROW_DIRECTION.RIGHT : ZONE_CROSSING_ARROW_DIRECTION.LEFT;
+      break;
+    default:
+      direction = ZONE_CROSSING_ARROW_DIRECTION.LEFT;
   }
-  // This should never happen
-  return ZONE_CROSSING_ARROW_DIRECTION.LEFT
+
+  if (currentZone === LOCATION_STATES.NEUTRAL_ZONE) {
+    // Neutral-zone baseline should point outward from center.
+    direction = getOppositeDirection(direction);
+  }
+
+  if (currentZone === LOCATION_STATES.NEUTRAL_ZONE && isOpponentCrossing) {
+    return getOppositeDirection(direction);
+  }
+
+  return direction;
 }
 
 export const getZoneCrossingDirection = () => {

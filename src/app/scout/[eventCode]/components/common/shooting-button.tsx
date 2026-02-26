@@ -36,6 +36,14 @@ type ShootingButtonProps = Omit<
 const formatAccuracyLabel = (key: string) =>
   `${key.charAt(0)}${key.slice(1).toLowerCase()}`;
 
+const ACCURACY_BUTTON_CLASSES: Record<string, string> = {
+  ALL: "bg-emerald-600",
+  MOST: "bg-lime-600",
+  HALF: "bg-amber-500 text-black",
+  FEW: "bg-orange-600",
+  NONE: "bg-red-600",
+};
+
 export default function ShootingButton({
   zone,
   activeShootingZone,
@@ -69,10 +77,11 @@ export default function ShootingButton({
       popoverAlign="center"
       popoverSideOffset={8}
       popoverAlignOffset={100}
-      popoverClassName="w-[350px]"
+      popoverClassName="w-[250px]"
       renderPopoverContent={({ elapsedSeconds, stopTimer }) => {
         const accuracyOptions = Object.entries(SHOOTING_ACCURACY).map(
           ([label, value]) => ({
+            key: label,
             label: formatAccuracyLabel(label),
             value,
             percentLabel: `${Math.round(value * 100)}%`,
@@ -80,10 +89,10 @@ export default function ShootingButton({
         );
 
         return (
-          <div className="grid grid-cols-2 gap-2 w-full">
+          <div className="flex flex-col gap-2 w-full">
             {accuracyOptions.map((option) => (
               <ScoutActionButton
-                key={option.label}
+                key={option.key}
                 actionName={ACTION_NAMES.SHOOTING_END}
                 gamePiece={props.gamePiece}
                 location={props.location}
@@ -100,7 +109,7 @@ export default function ShootingButton({
                     </span>
                   </span>
                 }
-                className="h-12 px-4 text-sm"
+                className={`${ACCURACY_BUTTON_CLASSES[option.key]} h-12 px-4 text-sm`}
                 getActionExtras={() => ({
                   metadata: {
                     accuracy: option.value,

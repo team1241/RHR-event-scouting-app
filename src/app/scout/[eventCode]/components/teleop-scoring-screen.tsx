@@ -1,37 +1,43 @@
 "use client";
 
-import { useContext } from "react";
-import { ScoutDataContext, ScoutScreenContext } from "../context";
+import { useContext, useMemo } from "react";
+import { toast } from "sonner";
+import AllianceZoneTeleop from "~/app/scout/[eventCode]/components/teleop/alliance-zone";
 import PageHeading from "~/components/common/page-heading";
-import MatchScoutingLayout from "./common/match-scouting-layout";
-import UndoActionButton from "./common/undo-action-button";
-import ContinueButton from "./common/continue-button";
-import ScoutActionButton from "./common/scout-action-button";
-import { ACTION_NAMES, GAME_PIECES_2025, LOCATIONS_2025 } from "../constants";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
-import { toast } from "sonner";
+import { ACTION_NAMES, LOCATION_STATES } from "../constants";
+import { ScoutDataContext, ScoutScreenContext } from "../context";
+import ContinueButton from "./common/continue-button";
+import ScoutActionButton from "./common/scout-action-button";
+import OpponentZoneTeleop from "~/app/scout/[eventCode]/components/teleop/opponent-zone";
+import NeutralZoneTeleop from "~/app/scout/[eventCode]/components/teleop/neutral-zone";
+import LocationState from "~/app/scout/[eventCode]/components/common/location-state";
 
 const TeleopScoringScreen = () => {
   const context = useContext(ScoutDataContext);
   const screenContext = useContext(ScoutScreenContext);
+
+  const zoneScreen = useMemo(() => {
+    switch (context.locationState) {
+      case LOCATION_STATES.ALLIANCE_ZONE:
+        return <AllianceZoneTeleop />;
+      case LOCATION_STATES.NEUTRAL_ZONE:
+        return <NeutralZoneTeleop />;
+      case LOCATION_STATES.OPPONENT_ZONE:
+        return <OpponentZoneTeleop />;
+    }
+  }, [context.locationState]);
 
   return (
     <>
       <div className="flex flex-row justify-between">
         <div className="flex flex-row items-center space-x-4">
           <PageHeading>Teleop</PageHeading>
-          <UndoActionButton
-            className="text-2xl font-bold w-36 h-16 dark:bg-red-600"
-            onClick={() => {
-              if (context.isDefending) {
-                context.setIsDefending(false);
-              }
-            }}
-          />
         </div>
+        <LocationState />
       </div>
-      <MatchScoutingLayout isDisabled={context.isBrownedOut} />
+      {zoneScreen}
       <div className="flex flex-row gap-3 justify-end w-full">
         <Button
           className={cn(
@@ -49,21 +55,6 @@ const TeleopScoringScreen = () => {
         >
           Was Defended
         </Button>
-
-        <ScoutActionButton
-          actionName={ACTION_NAMES.DEFENDING}
-          gamePiece={GAME_PIECES_2025.NOGAMEPIECE}
-          location={LOCATIONS_2025.OPPONENT_HALF}
-          className="font-bold text-xl dark:bg-orange-400 w-44 h-20"
-          label="Is Defending"
-          onClick={() => {
-            if (context.isDefending) {
-              context.setIsDefending(false);
-            } else {
-              context.setIsDefending(true);
-            }
-          }}
-        />
 
         <ScoutActionButton
           className="bg-red-500 flex items-center justify-center text-black font-bold text-xl h-20 w-64 px-4 py-2"

@@ -49,14 +49,18 @@ export const ACTION_NAMES = {
   },
   PARK: "park",
   DEFENDING: "defending",
+  DEFENDING_END: "defending-end",
   LEAVE: "left-starting-line",
   ZONE_TRANSITION: "zone-transition",
+  OPPONENT_ZONE_TRANSITION: "opponent-zone-transition",
   FEEDING: "feeding-start",
   FEEDING_END: "feeding-end",
   SHOOTING: "shooting-start",
   SHOOTING_END: "shooting-end",
   SHOOTING_ACCURACY: "shooting-accuracy",
-  CROSS_MID_LINE: "cross-mid-line"
+  CROSS_MID_LINE: "cross-mid-line",
+  DUMP_FUEL: 'dump-fuel',
+  HERD_FUEL: "herd-fuel"
 };
 
 export const GAME_PIECES_2025 = {

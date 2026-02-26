@@ -14,9 +14,15 @@ type FeedingButtonProps = Omit<
   | "timerLabel"
   | "onElapsedSecondsChange"
   | "shouldForceStop"
-> & { feedingEndZone: string };
+> & {
+  feedingEndZone: string;
+  onFeedingStateChange?: (isFeeding: boolean) => void;
+};
 
-export default function FeedingButton(props: FeedingButtonProps) {
+export default function FeedingButton({
+  onFeedingStateChange,
+  ...props
+}: FeedingButtonProps) {
   const scoutDataContext = useContext(ScoutDataContext);
 
   return (
@@ -34,7 +40,9 @@ export default function FeedingButton(props: FeedingButtonProps) {
         scoutDataContext.setFeedingElapsedSeconds(elapsedSeconds);
       }}
       onClick={() => {
-        scoutDataContext.setIsFeeding(!scoutDataContext.isFeeding);
+        const nextIsFeeding = !scoutDataContext.isFeeding;
+        scoutDataContext.setIsFeeding(nextIsFeeding);
+        onFeedingStateChange?.(nextIsFeeding);
       }}
     />
   );

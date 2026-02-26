@@ -117,7 +117,7 @@ const ScoutPage = () => {
     useState<StartingPositionDataType>({
       position: "",
       showedUp: true,
-      hasPreload: false,
+      hasPreload: true,
     });
   const [gamePieceState, setGamePieceState] = useState<
     { type: string; count: number }[]
@@ -300,6 +300,7 @@ const ScoutPage = () => {
       >
         <ScoutingInfoHeader />
         {screens[currentScreenIndex].component}
+        {/* {screens[3].component} */}
       </ScoutDataContext.Provider>
     </ScoutScreenContext.Provider>
   );
