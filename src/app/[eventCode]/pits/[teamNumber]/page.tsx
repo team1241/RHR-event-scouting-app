@@ -4,7 +4,6 @@ import { Loader2Icon, MoveLeftIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import PageHeading from "~/components/common/page-heading";
-import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "@radix-ui/react-label";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -43,16 +42,15 @@ const PitScoutingTeamPage = ({
     robotWeight: z.string({ required_error: "Robot weight is required" }),
     driveType: z.string(),
     groundIntake: z.string(),
-    reefIntake: z.string(),
-    algaeScoringCapability: z.string(),
-    coralScoringCapability: z
-      .array(z.string())
-      .min(1, "Please select at least one item"),
+    approxHopperSize: z.string(),
+    fieldCrossing: z.string(),
+    feedingAbility: z.string(),
+    shooterType: z.string(),
+    numberOfBarrels: z.string(),
     endGameScoringCapability: z.string(),
+    climbLocation: z.string(),
+    canAutoClimb: z.string(),
     autonomousCapability: z.string({ required_error: "Describe their autos" }),
-    driveTeamCapability: z.string({
-      required_error: "Enter drive team experience",
-    }),
     comments: z.string({ required_error: "Please enter a value" }),
   });
 
@@ -60,9 +58,6 @@ const PitScoutingTeamPage = ({
     mode: "all",
     reValidateMode: "onChange",
     resolver: zodResolver(pitScoutingSchema),
-    defaultValues: {
-      coralScoringCapability: [],
-    },
   });
 
   const { data: pitScoutingData } = useQuery({
@@ -86,11 +81,15 @@ const PitScoutingTeamPage = ({
           teleop: "",
           endgame: updateData.endGameScoringCapability,
           gameSpecificJson: JSON.stringify({
-            algaeScoring: updateData.algaeScoringCapability,
-            coralScoring: updateData.coralScoringCapability,
-            reefIntaking: updateData.reefIntake,
+            feedingAbility: updateData.feedingAbility,
+            fieldCrossing: updateData.fieldCrossing,
+            shooterType: updateData.shooterType,
+            numberOfBarrels: updateData.numberOfBarrels,
+            approxHopperSize: updateData.approxHopperSize,
+            climbLocation: updateData.climbLocation,
+            canAutoClimb: updateData.canAutoClimb,
           }),
-          driveteamExperience: updateData.driveTeamCapability,
+          driveteamExperience: "N/A",
           generalComments: updateData.comments,
         },
       });
@@ -98,7 +97,7 @@ const PitScoutingTeamPage = ({
   });
 
   const submitPitScoutingForm = async (
-    data: z.infer<typeof pitScoutingSchema>
+    data: z.infer<typeof pitScoutingSchema>,
   ) => {
     toast.promise(pitScoutingMutation.mutateAsync(data), {
       loading: "Saving...",
@@ -119,33 +118,31 @@ const PitScoutingTeamPage = ({
     pitScoutingForm.setValue("groundIntake", pitScoutingData.gamepieceIntake);
     pitScoutingForm.setValue(
       "autonomousCapability",
-      pitScoutingData.autonomous
+      pitScoutingData.autonomous,
     );
     pitScoutingForm.setValue(
       "endGameScoringCapability",
-      pitScoutingData.endgame
-    );
-    pitScoutingForm.setValue(
-      "driveTeamCapability",
-      pitScoutingData.driveteamExperience
+      pitScoutingData.endgame,
     );
     pitScoutingForm.setValue("comments", pitScoutingData.generalComments);
 
     const gameSpecific: {
-      reefIntaking: string;
-      algaeScoring: string;
-      coralScoring: string[];
+      fieldCrossing: string;
+      feedingAbility: string;
+      shooterType: string;
+      numberOfBarrels: string;
+      approxHopperSize: string;
+      climbLocation: string;
+      canAutoClimb: string;
     } = JSON.parse(pitScoutingData.gameSpecificJson);
 
-    pitScoutingForm.setValue("reefIntake", gameSpecific.reefIntaking);
-    pitScoutingForm.setValue(
-      "algaeScoringCapability",
-      gameSpecific.algaeScoring
-    );
-    pitScoutingForm.setValue(
-      "coralScoringCapability",
-      gameSpecific.coralScoring
-    );
+    pitScoutingForm.setValue("fieldCrossing", gameSpecific.fieldCrossing);
+    pitScoutingForm.setValue("feedingAbility", gameSpecific.feedingAbility);
+    pitScoutingForm.setValue("shooterType", gameSpecific.shooterType);
+    pitScoutingForm.setValue("numberOfBarrels", gameSpecific.numberOfBarrels);
+    pitScoutingForm.setValue("approxHopperSize", gameSpecific.approxHopperSize);
+    pitScoutingForm.setValue("climbLocation", gameSpecific.climbLocation);
+    pitScoutingForm.setValue("canAutoClimb", gameSpecific.canAutoClimb);
   }, [pitScoutingData]);
 
   return (
@@ -229,7 +226,7 @@ const PitScoutingTeamPage = ({
           {/*Drive radio group */}
           <div className="flex flex-col gap-2">
             <FormLabel className="text-2xl font-semibold">
-              Drive base?
+              Drive base type
             </FormLabel>
             <FormField
               name="driveType"
@@ -241,37 +238,35 @@ const PitScoutingTeamPage = ({
                       onValueChange={field.onChange}
                       value={field.value}
                     >
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="flex items-center space-x-2">
-                          <FormControl>
-                            <RadioGroupItem
-                              value="Swerve"
-                              id="r1"
-                              className="size-5"
-                            />
-                          </FormControl>
-                          <Label htmlFor="r1">Swerve</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <FormControl>
-                            <RadioGroupItem
-                              value="Tank"
-                              id="r2"
-                              className="size-5"
-                            />
-                          </FormControl>
-                          <Label htmlFor="r2">Tank</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <FormControl>
-                            <RadioGroupItem
-                              value="Other"
-                              id="r3"
-                              className="size-5"
-                            />
-                          </FormControl>
-                          <Label htmlFor="r3">Other</Label>
-                        </div>
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <RadioGroupItem
+                            value="Swerve"
+                            id="r1"
+                            className="size-5"
+                          />
+                        </FormControl>
+                        <Label htmlFor="r1">Swerve</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <RadioGroupItem
+                            value="Tank"
+                            id="r2"
+                            className="size-5"
+                          />
+                        </FormControl>
+                        <Label htmlFor="r2">Tank</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <RadioGroupItem
+                            value="Other"
+                            id="r3"
+                            className="size-5"
+                          />
+                        </FormControl>
+                        <Label htmlFor="r3">Other</Label>
                       </div>
                     </RadioGroup>
                   </FormControl>
@@ -284,7 +279,7 @@ const PitScoutingTeamPage = ({
           {/*Ground intake radio group */}
           <div className="flex flex-col gap-2">
             <FormLabel className="text-2xl font-semibold">
-              Ground intake?
+              Can intake from ground?
             </FormLabel>
             <FormField
               name="groundIntake"
@@ -296,47 +291,25 @@ const PitScoutingTeamPage = ({
                       onValueChange={field.onChange}
                       value={field.value}
                     >
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="flex items-center space-x-2">
-                          <FormControl>
-                            <RadioGroupItem
-                              value="Coral"
-                              id="groundIntake-1"
-                              className="size-5"
-                            />
-                          </FormControl>
-                          <Label htmlFor="groundIntake-1">Coral</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <FormControl>
-                            <RadioGroupItem
-                              value="Algae"
-                              id="groundIntake-2"
-                              className="size-5"
-                            />
-                          </FormControl>
-                          <Label htmlFor="groundIntake-2">Algae</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <FormControl>
-                            <RadioGroupItem
-                              value="Both"
-                              id="groundIntake-3"
-                              className="size-5"
-                            />
-                          </FormControl>
-                          <Label htmlFor="groundIntake-3">Both</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <FormControl>
-                            <RadioGroupItem
-                              value="None"
-                              id="groundIntake-4"
-                              className="size-5"
-                            />
-                          </FormControl>
-                          <Label htmlFor="groundIntake-4">None</Label>
-                        </div>
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <RadioGroupItem
+                            value="Yes"
+                            id="groundIntake-1"
+                            className="size-5"
+                          />
+                        </FormControl>
+                        <Label htmlFor="groundIntake-1">Yes</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <RadioGroupItem
+                            value="No"
+                            id="groundIntake-2"
+                            className="size-5"
+                          />
+                        </FormControl>
+                        <Label htmlFor="groundIntake-2">No</Label>
                       </div>
                     </RadioGroup>
                   </FormControl>
@@ -346,88 +319,36 @@ const PitScoutingTeamPage = ({
             />
           </div>
 
-          {/*Reef intake radio group */}
+          {/* approxHopperSize input */}
           <div className="flex flex-col gap-2">
             <FormLabel className="text-2xl font-semibold">
-              Can they intake from the Reef?
+              Approximate hopper size
             </FormLabel>
             <FormField
-              name="reefIntake"
+              name="approxHopperSize"
               control={pitScoutingForm.control}
               render={({ field }) => (
-                <>
+                <FormItem>
                   <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      value={field.value}
-                    >
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="flex items-center space-x-2">
-                          <FormControl>
-                            <RadioGroupItem
-                              value="L2"
-                              id="reefIntake-1"
-                              className="size-5"
-                            />
-                          </FormControl>
-                          <Label htmlFor="reefIntake-1">L2</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <FormControl>
-                            <RadioGroupItem
-                              value="L3"
-                              id="reefIntake-2"
-                              className="size-5"
-                            />
-                          </FormControl>
-                          <Label htmlFor="reefIntake-2">L3</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <FormControl>
-                            <RadioGroupItem
-                              value="Both"
-                              id="reefIntake-3"
-                              className="size-5"
-                            />
-                          </FormControl>
-                          <Label htmlFor="reefIntake-3">Both</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <FormControl>
-                            <RadioGroupItem
-                              value="Dislodge"
-                              id="reefIntake-4"
-                              className="size-5"
-                            />
-                          </FormControl>
-                          <Label htmlFor="reefIntake-4">Dislodge Only</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <FormControl>
-                            <RadioGroupItem
-                              value="None"
-                              id="reefIntake-5"
-                              className="size-5"
-                            />
-                          </FormControl>
-                          <Label htmlFor="reefIntake-5">None</Label>
-                        </div>
-                      </div>
-                    </RadioGroup>
+                    <Input
+                      {...field}
+                      placeholder="Enter approximate hopper size"
+                      className="resize-y "
+                    />
                   </FormControl>
                   <FormMessage />
-                </>
+                </FormItem>
               )}
             />
           </div>
 
-          {/*Algae scoring capability radio group */}
+          {/* Field crossings */}
           <div className="flex flex-col gap-2">
             <FormLabel className="text-2xl font-semibold">
-              Algae scoring capability?
+              Field crossing ability
             </FormLabel>
             <FormField
-              name="algaeScoringCapability"
+              name="fieldCrossing"
               control={pitScoutingForm.control}
               render={({ field }) => (
                 <>
@@ -436,39 +357,35 @@ const PitScoutingTeamPage = ({
                       onValueChange={field.onChange}
                       value={field.value}
                     >
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="flex items-center space-x-2 ">
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
                           <RadioGroupItem
-                            value="Net"
-                            id="algae-1"
+                            value="Trench Only"
+                            id="field-crossing-1"
                             className="size-5"
                           />
-                          <Label htmlFor="algae-1">Net</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
+                        </FormControl>
+                        <Label htmlFor="field-crossing-1">Trench Only</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
                           <RadioGroupItem
-                            value="Processor"
-                            id="algae-2"
+                            value="Bump Only"
+                            id="field-crossing-2"
                             className="size-5"
                           />
-                          <Label htmlFor="algae-2">Processor</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
+                        </FormControl>
+                        <Label htmlFor="field-crossing-2">Bump Only</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
                           <RadioGroupItem
                             value="Both"
-                            id="algae-3"
+                            id="field-crossing-3"
                             className="size-5"
                           />
-                          <Label htmlFor="algae-3">Both</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="None"
-                            id="algae-4"
-                            className="size-5"
-                          />
-                          <Label htmlFor="algae-4">None</Label>
-                        </div>
+                        </FormControl>
+                        <Label htmlFor="field-crossing-3">Both</Label>
                       </div>
                     </RadioGroup>
                   </FormControl>
@@ -478,136 +395,123 @@ const PitScoutingTeamPage = ({
             />
           </div>
 
-          {/*Coral scoring capability checkbox group */}
+          {/* Shooter type radio group */}
           <div className="flex flex-col gap-2">
             <FormLabel className="text-2xl font-semibold">
-              Coral scoring capability?
+              Shooter type
             </FormLabel>
             <FormField
-              name="coralScoringCapability"
+              name="shooterType"
               control={pitScoutingForm.control}
               render={({ field }) => (
                 <>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="flex flex-col gap-2">
-                      <div className="flex items-center space-x-2">
-                        <FormControl>
-                          <Checkbox
-                            id="c1"
-                            className="size-5 rounded-sm"
-                            checked={field.value.includes("L1")}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, "L1"])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value !== "L1"
-                                    )
-                                  );
-                            }}
-                          />
-                        </FormControl>
-                        <Label htmlFor="c1">L1</Label>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
+                      <div className="flex items-center space-x-2 ">
+                        <RadioGroupItem
+                          value="Turret"
+                          id="shooter-type-1"
+                          className="size-5"
+                        />
+                        <Label htmlFor="shooter-type-1">Turret</Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <FormControl>
-                          <Checkbox
-                            id="c2"
-                            className="size-5 rounded-sm"
-                            checked={field.value.includes("L2")}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, "L2"])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value !== "L2"
-                                    )
-                                  );
-                            }}
-                          />
-                        </FormControl>
-                        <Label htmlFor="c2">L2</Label>
+                        <RadioGroupItem
+                          value="Fixed"
+                          id="shooter-type-2"
+                          className="size-5"
+                        />
+                        <Label htmlFor="shooter-type-2">Fixed</Label>
+                      </div>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </>
+              )}
+            />
+          </div>
+
+          {/* numberOfBarrels input */}
+          <div className="flex flex-col gap-2">
+            <FormLabel className="text-2xl font-semibold">
+              Number of shooter barrels
+            </FormLabel>
+            <FormField
+              name="numberOfBarrels"
+              control={pitScoutingForm.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Enter number of shooter barrels"
+                      className="resize-y "
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/* Feeding ability radio group */}
+          <div className="flex flex-col gap-2">
+            <FormLabel className="text-2xl font-semibold">
+              Where can they feed?
+            </FormLabel>
+            <FormField
+              name="feedingAbility"
+              control={pitScoutingForm.control}
+              render={({ field }) => (
+                <>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
+                      <div className="flex items-center space-x-2 ">
+                        <RadioGroupItem
+                          value="Neural Zone Only"
+                          id="feeding-ability-1"
+                          className="size-5"
+                        />
+                        <Label htmlFor="feeding-ability-1">
+                          Neural Zone Only
+                        </Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <FormControl>
-                          <Checkbox
-                            id="c3"
-                            className="size-5 rounded-sm"
-                            checked={field.value.includes("L3")}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, "L3"])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value !== "L3"
-                                    )
-                                  );
-                            }}
-                          />
-                        </FormControl>
-                        <Label htmlFor="c3">L3</Label>
+                        <RadioGroupItem
+                          value="Opponent Zone Only"
+                          id="feeding-ability-2"
+                          className="size-5"
+                        />
+                        <Label htmlFor="feeding-ability-2">
+                          Opponent Zone Only
+                        </Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <FormControl>
-                          <Checkbox
-                            id="c4"
-                            className="size-5 rounded-sm"
-                            checked={field.value.includes("L4")}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, "L4"])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value !== "L4"
-                                    )
-                                  );
-                            }}
-                          />
-                        </FormControl>
-                        <Label htmlFor="c4">L4</Label>
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <div className="flex items-center space-x-2">
-                        <FormControl>
-                          <Checkbox
-                            id="c5"
-                            className="size-5 rounded-sm"
-                            checked={field.value.includes("All levels")}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, "All levels"])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value !== "All levels"
-                                    )
-                                  );
-                            }}
-                          />
-                        </FormControl>
-                        <Label htmlFor="c5">All Levels</Label>
+                        <RadioGroupItem
+                          value="All Zones"
+                          id="feeding-ability-3"
+                          className="size-5"
+                        />
+                        <Label htmlFor="feeding-ability-3">All Zones</Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <FormControl>
-                          <Checkbox
-                            id="c6"
-                            className="size-5 rounded-sm"
-                            checked={field.value.includes("None")}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, "None"])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value !== "None"
-                                    )
-                                  );
-                            }}
-                          />
-                        </FormControl>
-                        <Label htmlFor="c6">None</Label>
+                        <RadioGroupItem
+                          value="Unsure/Doesn't Feed"
+                          id="feeding-ability-4"
+                          className="size-5"
+                        />
+                        <Label htmlFor="feeding-ability-4">
+                          {"Unsure/Doesn't Feed"}
+                        </Label>
                       </div>
-                    </div>
-                  </div>
+                    </RadioGroup>
+                  </FormControl>
                   <FormMessage />
                 </>
               )}
@@ -617,7 +521,7 @@ const PitScoutingTeamPage = ({
           {/*Endgame scoring capability radio group */}
           <div className="flex flex-col gap-2">
             <FormLabel className="text-2xl font-semibold">
-              Endgame scoring capability?
+              Highest Climb Level
             </FormLabel>
             <FormField
               name="endGameScoringCapability"
@@ -629,39 +533,143 @@ const PitScoutingTeamPage = ({
                       onValueChange={field.onChange}
                       value={field.value}
                     >
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="None"
+                          id="endgame-1"
+                          className="size-5"
+                        />
+                        <Label htmlFor="endgame-1">No Climb</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="L1"
+                          id="endgame-2"
+                          className="size-5"
+                        />
+                        <Label htmlFor="endgame-2">L1</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="L2"
+                          id="endgame-3"
+                          className="size-5"
+                        />
+                        <Label htmlFor="endgame-3">L2</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="L3"
+                          id="endgame-4"
+                          className="size-5"
+                        />
+                        <Label htmlFor="endgame-4">L3</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="All Levels"
+                          id="endgame-5"
+                          className="size-5"
+                        />
+                        <Label htmlFor="endgame-5">All Levels</Label>
+                      </div>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </>
+              )}
+            />
+          </div>
+
+          {/* auto climb radio group */}
+          <div className="flex flex-col gap-2">
+            <FormLabel className="text-2xl font-semibold">
+              Can climb in auto?
+            </FormLabel>
+            <FormField
+              name="canAutoClimb"
+              control={pitScoutingForm.control}
+              render={({ field }) => (
+                <>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
                           <RadioGroupItem
-                            value="Park"
-                            id="endgame-1"
+                            value="Yes"
+                            id="auto-climb-1"
                             className="size-5"
                           />
-                          <Label htmlFor="endgame-1">Park</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
+                        </FormControl>
+                        <Label htmlFor="auto-climb-1">Yes</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
                           <RadioGroupItem
-                            value="Shallow Hang"
-                            id="endgame-2"
+                            value="No"
+                            id="auto-climb-2"
                             className="size-5"
                           />
-                          <Label htmlFor="endgame-2">Shallow Hang</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="Deep Hang"
-                            id="endgame-3"
-                            className="size-5"
-                          />
-                          <Label htmlFor="endgame-3">Deep Hang</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="Shallow+Deep"
-                            id="endgame-4"
-                            className="size-5"
-                          />
-                          <Label htmlFor="endgame-4">Shallow and Deep</Label>
-                        </div>
+                        </FormControl>
+                        <Label htmlFor="auto-climb-2">No</Label>
+                      </div>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </>
+              )}
+            />
+          </div>
+
+          {/* Tower climb location radio group */}
+          <div className="flex flex-col gap-2">
+            <FormLabel className="text-2xl font-semibold">
+              Tower climb location
+            </FormLabel>
+            <FormField
+              name="climbLocation"
+              control={pitScoutingForm.control}
+              render={({ field }) => (
+                <>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="None"
+                          id="tower-location-4"
+                          className="size-5"
+                        />
+                        <Label htmlFor="tower-location-4">None</Label>
+                      </div>
+                      <div className="flex items-center space-x-2 ">
+                        <RadioGroupItem
+                          value="Side Only"
+                          id="tower-location-1"
+                          className="size-5"
+                        />
+                        <Label htmlFor="tower-location-1">Side Only</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="Middle Only"
+                          id="tower-location-2"
+                          className="size-5"
+                        />
+                        <Label htmlFor="tower-location-2">Middle Only</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="Any"
+                          id="tower-location-3"
+                          className="size-5"
+                        />
+                        <Label htmlFor="tower-location-3">Any</Label>
                       </div>
                     </RadioGroup>
                   </FormControl>
@@ -685,29 +693,6 @@ const PitScoutingTeamPage = ({
                     <Input
                       {...field}
                       placeholder="Enter autonomous cycles here"
-                      className="resize-y "
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/*Drive team experience\*/}
-          <div className="flex flex-col gap-2">
-            <FormLabel className="text-2xl font-semibold">
-              Drive team experience?
-            </FormLabel>
-            <FormField
-              name="driveTeamCapability"
-              control={pitScoutingForm.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="Enter drive team experience here"
                       className="resize-y "
                     />
                   </FormControl>

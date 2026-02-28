@@ -115,14 +115,13 @@ const PitScoutCard = ({
             },
           }}
           onBeforeUploadBegin={(files) => {
-            // This adds a prefix of the restaurant name to the image
             return files.map((f) => {
               return new File(
                 [f],
                 `${team.teamNumber}_${eventCode}_${f.name}`,
                 {
                   type: f.type,
-                }
+                },
               );
             });
           }}
@@ -132,7 +131,7 @@ const PitScoutCard = ({
               teamNumber: team.teamNumber,
             });
             toast.success(
-              `Image for ${team.teamNumber} uploaded successfully!`
+              `Image for ${team.teamNumber} uploaded successfully!`,
             );
           }}
         />
