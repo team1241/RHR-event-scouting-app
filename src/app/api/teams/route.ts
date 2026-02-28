@@ -1,6 +1,8 @@
 import { DEV_CORS_HEADERS, isDev, PROD_CORS_HEADERS } from "~/app/api/constants";
 import { getTeamsForMatchInEvent } from "~/db/queries/match-schedule";
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const eventId = url.searchParams.get("eventId");
