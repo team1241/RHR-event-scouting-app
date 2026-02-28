@@ -37,12 +37,18 @@ const PitScoutCard = ({
 }) => {
   const pathname = usePathname();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isDialogImageLoading, setIsDialogImageLoading] = useState(false);
 
   const uploadRobotImageMutation = useMutation({
     mutationKey: ["uploadRobotImage", team?.teamNumber],
     mutationFn: async (updateData: { imageUrl: string; teamNumber: number }) =>
       upsertRobotImage({ ...updateData, revalidateUrl: `/pits` }),
   });
+
+  const openImageDialog = (imageUrl: string) => {
+    setIsDialogImageLoading(true);
+    setSelectedImage(imageUrl);
+  };
 
   return (
     <>
@@ -62,7 +68,7 @@ const PitScoutCard = ({
                         <div className="size-full flex items-center justify-center rounded-xl bg-background">
                           <button
                             type="button"
-                            onClick={() => setSelectedImage(imageUrl)}
+                            onClick={() => openImageDialog(imageUrl)}
                             className="w-full cursor-zoom-in"
                           >
                             <Image
@@ -152,21 +158,36 @@ const PitScoutCard = ({
       <Dialog
         open={selectedImage !== null}
         onOpenChange={(isOpen) => {
-          if (!isOpen) setSelectedImage(null);
+          if (!isOpen) {
+            setSelectedImage(null);
+            setIsDialogImageLoading(false);
+          }
         }}
       >
-        <DialogContent className="max-w-[95vw] w-auto p-2 sm:p-4 border-none bg-transparent shadow-none">
+        <DialogContent className="max-w-[95vw] w-[95vw] md:w-[85vw] lg:w-[75vw] p-2 sm:p-4 border-none bg-transparent shadow-none">
           <DialogTitle className="sr-only">
             Full size robot image for team {team.teamNumber}
           </DialogTitle>
           {selectedImage && (
-            <Image
-              src={selectedImage}
-              width={1600}
-              height={1600}
-              alt={`Full size picture of ${team.teamNumber}`}
-              className="max-h-[85vh] w-auto max-w-[92vw] object-contain rounded-md"
-            />
+            <div className="relative flex min-h-[45vh] items-center justify-center">
+              {isDialogImageLoading && (
+                <div className="absolute inset-0 z-10 flex items-center justify-center rounded-md bg-black/35">
+                  <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                </div>
+              )}
+              <Image
+                src={selectedImage}
+                width={1400}
+                height={1400}
+                sizes="(max-width: 768px) 95vw, (max-width: 1200px) 85vw, 75vw"
+                alt={`Full size picture of ${team.teamNumber}`}
+                className={`max-h-[85vh] w-auto max-w-full object-contain rounded-md transition-opacity ${
+                  isDialogImageLoading ? "opacity-0" : "opacity-100"
+                }`}
+                onLoad={() => setIsDialogImageLoading(false)}
+                onError={() => setIsDialogImageLoading(false)}
+              />
+            </div>
           )}
         </DialogContent>
       </Dialog>
