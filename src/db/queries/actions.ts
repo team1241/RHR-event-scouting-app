@@ -35,6 +35,7 @@ export async function submitScoutDataForTeamAtEvent(
       hasUndo: action.hasUndo,
       wasDefended: action.wasDefended,
       isAuto: action.isAuto,
+      metadata: action.metadata
     })),
   });
 }
