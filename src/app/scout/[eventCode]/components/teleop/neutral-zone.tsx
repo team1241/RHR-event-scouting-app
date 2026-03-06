@@ -1,6 +1,7 @@
 "use client";
 
 import { useContext } from "react";
+import { toast } from "sonner";
 import FeedingButton from "~/app/scout/[eventCode]/components/common/feeding-button";
 import FieldImage from "~/app/scout/[eventCode]/components/common/field-image";
 import ScoutActionButton from "~/app/scout/[eventCode]/components/common/scout-action-button";
@@ -18,7 +19,7 @@ export default function NeutralZoneTeleop() {
   const context = useContext(ScoutDataContext);
   const { row } = getFlexDirection(
     context.uiOrientation,
-    context.allianceColour,
+    context.allianceColour
   );
   return (
     <FieldImage imageSize="100%" fieldSize="half">
@@ -26,14 +27,14 @@ export default function NeutralZoneTeleop() {
         className={cn(
           "flex w-full h-full justify-end",
           row,
-          row === "flex-row" ? "pr-1" : "pl-1",
+          row === "flex-row" ? "pr-1" : "pl-1"
         )}
       >
         <ZoneCrossingButtons type="alliance" />
         <div
           className={cn(
             "h-full flex flex-col justify-center w-[420px] py-5 px-4 gap-4",
-            row === "flex-row" ? "pr-1" : "pl-1",
+            row === "flex-row" ? "pr-1" : "pl-1"
           )}
         >
           <FeedingButton
@@ -50,6 +51,7 @@ export default function NeutralZoneTeleop() {
             label="HERD FUEL"
             className="h-16 w-full"
             disabled={context.isFeeding}
+            onClick={() => toast.success("SUCCESSFULLY LOGGED HERD FUEL")}
           />
         </div>
         <ZoneCrossingButtons type="opponent" />

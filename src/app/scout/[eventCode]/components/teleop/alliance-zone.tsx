@@ -1,6 +1,7 @@
 "use client";
 
 import { useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 import FieldImage from "~/app/scout/[eventCode]/components/common/field-image";
 import ScoutActionButton from "~/app/scout/[eventCode]/components/common/scout-action-button";
 import ZoneCrossingButtons from "~/app/scout/[eventCode]/components/common/zone-crossing-buttons";
@@ -43,7 +44,7 @@ export default function AllianceZoneTeleop() {
 
   const { row } = getFlexDirection(
     context.uiOrientation,
-    context.allianceColour,
+    context.allianceColour
   );
   const accuracyOptions = Object.entries(SHOOTING_ACCURACY).map(
     ([label, value]) => ({
@@ -51,7 +52,7 @@ export default function AllianceZoneTeleop() {
       label: formatAccuracyLabel(label),
       value,
       percentLabel: `${Math.round(value * 100)}%`,
-    }),
+    })
   );
 
   useEffect(() => {
@@ -70,7 +71,7 @@ export default function AllianceZoneTeleop() {
         <div
           className={cn(
             "h-full flex flex-col gap-4 py-5",
-            row === "flex-row" ? "pl-[74px]" : "pr-[74px]",
+            row === "flex-row" ? "pl-[74px]" : "pr-[74px]"
           )}
         >
           <div className="relative h-full w-full">
@@ -93,13 +94,14 @@ export default function AllianceZoneTeleop() {
             location={LOCATIONS.ALLIANCE_ZONE}
             label="DUMP FUEL"
             className="h-16 w-[260px]"
+            onClick={() => toast.success("SUCCESSFULLY LOGGED HERD FUEL")}
           />
         </div>
         <ZoneCrossingButtons type="alliance" />
         <div
           className={cn(
             "data-[visible=false]:hidden data-[visible=true]:visible h-full flex flex-col justify-center",
-            row === "flex-row" ? "ml-[15px]" : "mr-[15px]",
+            row === "flex-row" ? "ml-[15px]" : "mr-[15px]"
           )}
           data-visible={isShooting}
         >
@@ -128,7 +130,7 @@ export default function AllianceZoneTeleop() {
                   }
                   className={cn(
                     "h-12 px-4 text-sm",
-                    ACCURACY_BUTTON_CLASSES[option.key],
+                    ACCURACY_BUTTON_CLASSES[option.key]
                   )}
                   getActionExtras={() => ({
                     metadata: {

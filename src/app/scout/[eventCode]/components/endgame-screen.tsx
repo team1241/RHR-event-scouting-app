@@ -2,29 +2,46 @@
 
 import PageHeading from "~/components/common/page-heading";
 import FieldImage from "./common/field-image";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { ScoutDataContext, ScoutScreenContext } from "../context";
 import ScoutActionButton from "./common/scout-action-button";
 import {
   ACTION_NAMES,
   GAME_PIECE,
+  LOCAL_STORAGE_KEYS,
   LOCATIONS,
 } from "~/app/scout/[eventCode]/constants";
 import ContinueButton from "./common/continue-button";
 import BackButton from "./common/back-button";
-import UndoActionButton from "./common/undo-action-button";
 import { toast } from "sonner";
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
+import { Undo } from "lucide-react";
 
 export default function EndgameScreen() {
   const context = useContext(ScoutDataContext);
   const screenContext = useContext(ScoutScreenContext);
-  const [currentAction, setCurrentAction] = useState<string>("");
+  const [currentAction, setCurrentAction] = useState<string>(
+    context.previousEndgameAction.actionMessage
+  );
   const [positionSelected, setPositionSelected] = useState<string>("");
 
-  useEffect(() => {
-    setCurrentAction(context.previousEndgameAction.actionMessage);
+  const onUndoClick = useCallback(() => {
+    setPositionSelected("");
+    setCurrentAction("");
+    context.setPreviousEndgameAction({
+      actionDone: false,
+      positionSelected: "",
+      actionMessage: "",
+    });
+    const filteredActions = context.actions.filter(
+      (action) => action.actionName !== ACTION_NAMES.CLIMB.SUCCESS
+    );
+    context.setActions(filteredActions);
+    localStorage.setItem(
+      LOCAL_STORAGE_KEYS.ACTIONS,
+      JSON.stringify(filteredActions)
+    );
   }, []);
 
   return (
@@ -34,18 +51,13 @@ export default function EndgameScreen() {
           <div className="mt-4">
             <PageHeading>Endgame</PageHeading>
           </div>
-          <UndoActionButton
-            onClick={() => {
-              setPositionSelected("");
-              setCurrentAction("");
-              context.setPreviousEndgameAction({
-                actionDone: false,
-                positionSelected: "",
-                actionMessage: "",
-              });
-            }}
-            className="text-xl bg-red-600 h-16 w-40"
-          />
+          <Button
+            className="text-xl dark:bg-red-600 h-16 w-40 dark:text-white dark:hover:bg-red-700"
+            onClick={onUndoClick}
+          >
+            UNDO
+            <Undo className="!size-6" />
+          </Button>
         </div>
         <p className="text-2xl font-bold mt-4 ml-[5rem]">{`Most Recent: ${currentAction}`}</p>
       </div>
@@ -124,7 +136,7 @@ export default function EndgameScreen() {
               className={cn(
                 "h-full w-32 font-bold text-xl !bg-green-700/60 !text-white",
                 positionSelected === LOCATIONS.TOWER.LEFT &&
-                  "border-2 border-white",
+                  "border-2 border-white"
               )}
               onClick={() => {
                 setPositionSelected(LOCATIONS.TOWER.LEFT);
@@ -137,7 +149,7 @@ export default function EndgameScreen() {
               className={cn(
                 "h-full w-32 font-bold text-xl !bg-orange-700/60 !text-white",
                 positionSelected === LOCATIONS.TOWER.CENTER &&
-                  "border-2 border-white",
+                  "border-2 border-white"
               )}
               onClick={() => {
                 setPositionSelected(LOCATIONS.TOWER.CENTER);
@@ -150,7 +162,7 @@ export default function EndgameScreen() {
               className={cn(
                 "h-full w-32 font-bold text-xl !bg-purple-700/60 !text-white",
                 positionSelected === LOCATIONS.TOWER.RIGHT &&
-                  "border-2 border-white",
+                  "border-2 border-white"
               )}
               onClick={() => {
                 setPositionSelected(LOCATIONS.TOWER.RIGHT);
@@ -183,7 +195,7 @@ export default function EndgameScreen() {
             toast.error(
               context.isBrownedOut
                 ? "Robot has restarted. Screen enabled!"
-                : "Robot has stopped. Screen disabled!",
+                : "Robot has stopped. Screen disabled!"
             );
             context.setIsBrownedOut(!context.isBrownedOut);
           }}
