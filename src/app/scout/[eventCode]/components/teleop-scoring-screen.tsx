@@ -13,6 +13,7 @@ import ScoutActionButton from "./common/scout-action-button";
 import OpponentZoneTeleop from "~/app/scout/[eventCode]/components/teleop/opponent-zone";
 import NeutralZoneTeleop from "~/app/scout/[eventCode]/components/teleop/neutral-zone";
 import LocationState from "~/app/scout/[eventCode]/components/common/location-state";
+import UndoActionButton from "~/app/scout/[eventCode]/components/common/undo-action-button";
 
 const TeleopScoringScreen = () => {
   const context = useContext(ScoutDataContext);
@@ -34,6 +35,7 @@ const TeleopScoringScreen = () => {
       <div className="flex flex-row justify-between">
         <div className="flex flex-row items-center space-x-4">
           <PageHeading>Teleop</PageHeading>
+          <UndoActionButton className="text-2xl font-bold w-36 h-16 dark:bg-red-600" />
         </div>
         <LocationState />
       </div>
@@ -42,7 +44,7 @@ const TeleopScoringScreen = () => {
         <Button
           className={cn(
             "dark:bg-orange-400 w-44 h-20 dark:text-white font-bold text-xl",
-            context.wasDefended && "dark:ring-yellow-400 ring-2 ring-offset-4",
+            context.wasDefended && "dark:ring-yellow-400 ring-2 ring-offset-4"
           )}
           disabled={context.isDefending}
           onClick={() => {
@@ -70,7 +72,7 @@ const TeleopScoringScreen = () => {
             toast.error(
               context.isBrownedOut
                 ? "Robot has restarted. Screen enabled!"
-                : "Robot has stopped. Screen disabled!",
+                : "Robot has stopped. Screen disabled!"
             );
             context.setIsBrownedOut(!context.isBrownedOut);
           }}
