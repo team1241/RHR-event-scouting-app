@@ -2,7 +2,7 @@
 
 import type { ComponentProps } from "react";
 import { useContext } from "react";
-import { ACTION_NAMES } from "~/app/scout/[eventCode]/constants";
+import { ACTION_NAMES, GAME_PIECE } from "~/app/scout/[eventCode]/constants";
 import { ScoutDataContext } from "~/app/scout/[eventCode]/context";
 import TimerButton from "./timer-button";
 
@@ -34,6 +34,7 @@ export default function FeedingButton({
           ? ACTION_NAMES.FEEDING_END
           : ACTION_NAMES.FEEDING
       }
+      gamePiece={GAME_PIECE.FUEL}
       allowStopOnClick
       shouldForceStop={!scoutDataContext.isFeeding}
       onElapsedSecondsChange={(elapsedSeconds) => {
