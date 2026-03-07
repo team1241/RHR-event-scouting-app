@@ -48,7 +48,7 @@ export default function NeutralZoneTeleop() {
             actionName={ACTION_NAMES.HERD_FUEL}
             gamePiece={GAME_PIECE.FUEL}
             location={LOCATIONS.NEUTRAL_ZONE}
-            label="HERD FUEL"
+            label="HERD FUEL THROUGH TRENCH"
             className="h-16 w-full"
             disabled={context.isFeeding}
             onClick={() => toast.success("SUCCESSFULLY LOGGED HERD FUEL")}

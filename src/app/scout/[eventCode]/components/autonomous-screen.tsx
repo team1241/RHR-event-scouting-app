@@ -36,7 +36,7 @@ export default function AutonomousScreen() {
 
   const { row, col } = getFlexDirection(
     context.uiOrientation,
-    context.allianceColour,
+    context.allianceColour
   );
 
   const isInNeutralZone =
@@ -61,14 +61,14 @@ export default function AutonomousScreen() {
           <div
             className={cn(
               "flex h-full justify-between py-4 data-[invisible=true]:invisible",
-              col,
+              col
             )}
             data-invisible={isInNeutralZone}
           >
             <ScoutActionButton
               className={cn(
                 "w-32 h-20 text-wrap text-lg",
-                row === "flex-row" ? "mt-12" : "mb-12",
+                row === "flex-row" ? "mt-12" : "mb-12"
               )}
               label="Depot Intake"
               actionName={ACTION_NAMES.INTAKE}
@@ -84,14 +84,12 @@ export default function AutonomousScreen() {
                 "w-32 h-20 text-wrap text-lg opacity-80 text-white font-bold transition-transform duration-100 ease-out active:scale-95",
                 context.allianceColour === "blue"
                   ? "bg-blue-500/80"
-                  : "bg-red-500/80",
+                  : "bg-red-500/80"
               )}
               onClick={() => {
                 const newClimbValue = !hasClimbed;
                 toast.info(
-                  newClimbValue
-                    ? "Toggled L1 climb ON"
-                    : "Toggled L1 climb OFF",
+                  newClimbValue ? "Toggled L1 climb ON" : "Toggled L1 climb OFF"
                 );
                 setHasClimbed(newClimbValue);
               }}
@@ -124,7 +122,7 @@ export default function AutonomousScreen() {
             className={cn(
               "flex h-full justify-between py-4 data-[invisible=true]:invisible",
               col,
-              row === "flex-row" ? "ml-4" : "mr-4",
+              row === "flex-row" ? "ml-4" : "mr-4"
             )}
             data-invisible={isInNeutralZone}
           >
@@ -168,7 +166,7 @@ export default function AutonomousScreen() {
             className={cn(
               "flex h-full justify-between py-16 gap-2 data-[invisible=true]:invisible",
               col,
-              row === "flex-row" ? "ml-16" : "mr-16",
+              row === "flex-row" ? "ml-16" : "mr-16"
             )}
             data-invisible={!isInNeutralZone}
           >
@@ -200,7 +198,7 @@ export default function AutonomousScreen() {
           <div
             className={cn(
               "flex flex-col h-full w-full items-end justify-between py-4 gap-8 data-[invisible=true]:invisible",
-              row === "flex-row" ? "mr-16" : "ml-16 items-start",
+              row === "flex-row" ? "mr-16" : "ml-16 items-start"
             )}
             data-invisible={!isInNeutralZone}
           >
@@ -243,19 +241,23 @@ export default function AutonomousScreen() {
           onClick={() => {
             const timestamp = new Date();
             context.actions.push(
-              {
-                scoutId: context.scouterDetails.id.toString(),
-                matchNumber: context.matchNumber,
-                teamNumber: Number(context.teamToScout!),
-                eventCode: context.matchNumber,
-                hasUndo: false,
-                wasDefended: false,
-                actionName: ACTION_NAMES.CLIMB.SUCCESS,
-                gamePiece: GAME_PIECE.NONE,
-                location: LOCATIONS.TOWER.L1,
-                isAuto: true,
-                timestamp: formatISO(timestamp),
-              },
+              ...(hasClimbed
+                ? [
+                    {
+                      scoutId: context.scouterDetails.id.toString(),
+                      matchNumber: context.matchNumber,
+                      teamNumber: Number(context.teamToScout!),
+                      eventCode: context.matchNumber,
+                      hasUndo: false,
+                      wasDefended: false,
+                      actionName: ACTION_NAMES.CLIMB.SUCCESS,
+                      gamePiece: GAME_PIECE.NONE,
+                      location: LOCATIONS.TOWER.L1,
+                      isAuto: true,
+                      timestamp: formatISO(timestamp),
+                    },
+                  ]
+                : []),
               {
                 scoutId: context.scouterDetails.id.toString(),
                 matchNumber: context.matchNumber,
@@ -281,7 +283,7 @@ export default function AutonomousScreen() {
                 location: "None",
                 isAuto: false,
                 timestamp: formatISO(timestamp),
-              },
+              }
             );
             context.setMatchState(MATCH_STATES.TELEOP);
             screenContext.nextScreen();

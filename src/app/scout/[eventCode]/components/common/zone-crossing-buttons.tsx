@@ -67,9 +67,9 @@ export default function ZoneCrossingButtons({
         uiOrientation,
         allianceColour,
         locationState,
-        !isAllianceCrossing,
+        !isAllianceCrossing
       ),
-    [allianceColour, isAllianceCrossing, locationState, uiOrientation],
+    [allianceColour, isAllianceCrossing, locationState, uiOrientation]
   );
 
   const arrow =
@@ -103,7 +103,7 @@ export default function ZoneCrossingButtons({
       ];
       localStorage.setItem(
         LOCAL_STORAGE_KEYS.ACTIONS,
-        JSON.stringify(updatedActionsList),
+        JSON.stringify(updatedActionsList)
       );
       return updatedActionsList;
     });
@@ -125,7 +125,7 @@ export default function ZoneCrossingButtons({
         setLocationState(
           isAllianceCrossing
             ? LOCATION_STATES.ALLIANCE_ZONE
-            : LOCATION_STATES.OPPONENT_ZONE,
+            : LOCATION_STATES.OPPONENT_ZONE
         );
         break;
     }
@@ -136,11 +136,11 @@ export default function ZoneCrossingButtons({
       className={cn(
         "flex h-full justify-between py-4",
         flexCol,
-        row === "flex-row" ? "ml-3" : "mr-3",
+        row === "flex-row" ? "ml-3" : "mr-3"
       )}
     >
       <ScoutActionButton
-        className="h-16 w-20 bg-pink-800/90"
+        className="h-16 w-20 bg-green-800/90"
         onClick={() => handleLocationUpdate()}
         location={LOCATIONS.TRENCH.DEPOT}
         actionName={
@@ -156,7 +156,7 @@ export default function ZoneCrossingButtons({
       <ScoutActionButton
         className={cn(
           "h-[90px] w-20 bg-pink-800/90",
-          flexCol === "flex-col" ? "mb-[22px]" : "mt-[22px]",
+          flexCol === "flex-col" ? "mb-[22px]" : "mt-[22px]"
         )}
         onClick={() => handleLocationUpdate()}
         location={LOCATIONS.BUMP.DEPOT}
@@ -174,7 +174,7 @@ export default function ZoneCrossingButtons({
       <ScoutActionButton
         className={cn(
           "h-[90px] w-20 bg-pink-800/90",
-          flexCol === "flex-col" ? "mt-[22px]" : "mb-[22px]",
+          flexCol === "flex-col" ? "mt-[22px]" : "mb-[22px]"
         )}
         onClick={() => handleLocationUpdate()}
         location={LOCATIONS.BUMP.OUTPOST}
@@ -189,7 +189,7 @@ export default function ZoneCrossingButtons({
         disabled={disabled}
       />
       <ScoutActionButton
-        className="h-16 w-20 bg-pink-800/90"
+        className="h-16 w-20 bg-green-800/90"
         onClick={() => handleLocationUpdate()}
         location={LOCATIONS.TRENCH.OUTPOST}
         actionName={
