@@ -7,7 +7,6 @@ import { ScoutDataContext, ScoutScreenContext } from "../context";
 import ScoutActionButton from "./common/scout-action-button";
 import {
   ACTION_NAMES,
-  GAME_PIECE,
   LOCAL_STORAGE_KEYS,
   LOCATIONS,
 } from "~/app/scout/[eventCode]/constants";
@@ -71,8 +70,8 @@ export default function EndgameScreen() {
           <div className="flex flex-col items-center justify-evenly h-full mt-2 w-2/5">
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
-              gamePiece={GAME_PIECE.NONE}
-              location={`${positionSelected}:${LOCATIONS.TOWER.L3}`}
+              gamePiece={positionSelected}
+              location={LOCATIONS.TOWER.L1}
               className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
               onClick={() => {
                 context.setPreviousEndgameAction({
@@ -91,8 +90,8 @@ export default function EndgameScreen() {
             />
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
-              gamePiece={GAME_PIECE.NONE}
-              location={`${positionSelected}:${LOCATIONS.TOWER.L2}`}
+              gamePiece={positionSelected}
+              location={LOCATIONS.TOWER.L2}
               className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
               onClick={() => {
                 context.setPreviousEndgameAction({
@@ -111,8 +110,8 @@ export default function EndgameScreen() {
             />
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
-              gamePiece={GAME_PIECE.NONE}
-              location={`${positionSelected}:${LOCATIONS.TOWER.L1}`}
+              gamePiece={positionSelected}
+              location={LOCATIONS.TOWER.L1}
               className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
               onClick={() => {
                 context.setPreviousEndgameAction({
