@@ -72,7 +72,7 @@ export default function EndgameScreen() {
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
               gamePiece={GAME_PIECE.NONE}
-              location={`${positionSelected} - ${LOCATIONS.TOWER.L3}`}
+              location={`${positionSelected}:${LOCATIONS.TOWER.L3}`}
               className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
               onClick={() => {
                 context.setPreviousEndgameAction({
@@ -92,7 +92,7 @@ export default function EndgameScreen() {
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
               gamePiece={GAME_PIECE.NONE}
-              location={`${positionSelected} - ${LOCATIONS.TOWER.L2}`}
+              location={`${positionSelected}:${LOCATIONS.TOWER.L2}`}
               className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
               onClick={() => {
                 context.setPreviousEndgameAction({
@@ -112,7 +112,7 @@ export default function EndgameScreen() {
             <ScoutActionButton
               actionName={ACTION_NAMES.CLIMB.SUCCESS}
               gamePiece={GAME_PIECE.NONE}
-              location={`${positionSelected} - ${LOCATIONS.TOWER.L1}`}
+              location={`${positionSelected}:${LOCATIONS.TOWER.L1}`}
               className={"mb-1 h-16 w-40 font-bold text-xl bg-blue-500"}
               onClick={() => {
                 context.setPreviousEndgameAction({
